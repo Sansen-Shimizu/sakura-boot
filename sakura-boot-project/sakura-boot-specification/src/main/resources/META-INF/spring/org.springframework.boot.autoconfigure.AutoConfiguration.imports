@@ -1,0 +1,3 @@
+org.sansenshimizu.sakuraboot.specification.aop.RelationshipSpecificationAspect
+org.sansenshimizu.sakuraboot.specification.business.SpecificationBuilderImpl
+org.sansenshimizu.sakuraboot.specification.business.SpecificationBuilderHelper

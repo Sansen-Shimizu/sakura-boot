@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionXpathFilter Experimental Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2_xpath_experimental.dtd">
+
+<suppressions>
+    <suppress-xpath checks="IllegalCatch" files="aop[\\/]AspectUtilTest.java"/>
+    <suppress-xpath checks="ParameterNumber" files="NumberFilterImpl.java"/>
+    <suppress-xpath checks="ParameterNumber" files="TextFilterImpl.java"/>
+    <suppress-xpath checks="MultipleStringLiterals" files="BasicFT.java"/>
+    <suppress-xpath checks="EmptyCatchBlock" files="BeanCreatorHelper.java"/>
+    <suppress-xpath checks="IllegalThrows" files="CachingUtil.java"/>
+    <suppress-xpath checks="IllegalThrows" files=".*Aspect.java"/>
+    <suppress-xpath checks="ParameterNumber"
+                    files="FetchRelationshipRepositoryImpl.java"
+                    query="//METHOD_DEF/IDENT[@text='appendJoinFetchClausesAux'
+                    or @text='handleNestedRelationship']"/>
+    <suppress-xpath checks="MatchXpath"
+                    files="CachesSpecification.java"
+                    query="//METHOD_DEF/IDENT[@text='simple']"/>
+    <suppress-xpath checks="CustomImportOrder"
+                    files="CacheConfiguration.java"
+                    query="//IMPORT[.//DOT/IDENT[@text='javax']]"/>
+    <suppress-xpath checks=".*Javadoc.*|DesignForExtension|UncommentedMain"
+                    files=".*example*."/>
+</suppressions>

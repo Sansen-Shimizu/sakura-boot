@@ -1,0 +1,186 @@
+= Sakura Boot
+:toc: macro
+
+[.text-right]
+By https://sansen-shimizu.co.jp[Sansen Shimizu]
+
+[cols="^a,^a",frame=none,grid=none]
+|===
+| image::SakuraBootLogo.png[alt="Sakura Boot logo"]
+| image::sansenshimizuLogo.png[alt="Sansen Shimizu logo"]
+|===
+
+toc::[]
+
+== Introduction
+
+This framework, built on top of Spring Boot, is designed to speed up the development of robust backends.
+It ensures adherence to best practices while allowing a high degree of customization.
+The framework is structured using a modular architecture, making it easy to add or remove features based on the project’s specific needs.
+
+*Who should use this framework?*
+
+* Developers with Spring Boot Experience: +
+This framework can help developers who’re already familiar with Spring Boot.
+** *Faster Development*: By using built-in configurations and pre-defined templates, this framework significantly reduces development time. +
+** *Best Practices Enforcement*: It ensures that the code adheres to best practices, reducing the risk of common mistakes.
+** *Highly Customizable*: The framework’s modular architecture allows developers to easily extend or modify functionality by adding or removing modules.
+It also includes a variety of tests for unit, integration, and functional testing.
+Developers can start with a quick, functional application and then gradually add custom logic or additional libraries as required.
+* Developers with Little or No Experience in Java or Spring Boot: +
+This framework can also help for those new to Java development or Spring Boot:
+** *Ease of Use*: Even developers with minimal Java experience can build reliable and maintainable backends using this framework.
+It abstracts much of the complexity of setting up a backend by providing production-ready default.
+** *Comprehensive Guidance*: Through well-documented Javadoc with example and pre-built modules, the framework helps developers avoid common pitfalls while ensuring that their applications are built on solid foundations.
+
+*Modular Architecture*
+
+One of the key strengths of this framework is its modular design.
+Modules can be easily added or removed, allowing developers to tailor the application to their specific needs.
+The framework includes a variety of pre-built modules, such as +
+
+* Caching +
+* DTO mapping +
+* Filtering +
+* Logging +
+* Hypermedia support(HATEOAS) +
+* OPENAPI documentation
+
+*Purpose*
+
+This framework doesn’t intend to replace Spring Boot but instead complements it by enhancing the development process.
+It also integrates widely used libraries such as Hibernate, MapStruct, ...
+Spring boot is known for its convention over configuration, while retaining this important feature, Sakura boot introduces a convention over programming, providing predefined interface, class, and methods.
+Developers can start quickly with a modular, efficient solution while retaining the ability to customize every aspect of their application as needed.
+
+*Why Version 0.1.0?*
+
+The framework is still in early stage of development.
+While the core functionality is operational, users should be aware that there are still potential bugs and improvements to be addressed.
+Additionally, some modules, such as security, auditing, and others, are yet to be implemented before reaching a stable 1.0.0 release.
+
+Despite being in version 0.1.0, the framework can still be used for developing production-ready backends today.
+However, it may require more testing due to the possibility of bugs, and some key features may need to be added manually using spring boot.
+Moreover, developers should be cautious of potential breaking changes in future updates before the 1.0.0 release.
+
+Feel free to raise issues, propose enhancements, and contribute to the framework.
+Feedback will be taken into consideration to help reach a stable 1.0.0 release.
+
+== Prerequisites & Installation Instructions
+
+=== Prerequisites
+
+The framework uses Java 21 for its modern features, and it is the latest LTS JDK release.
+Currently, no backward compatibility with older versions is planned.
+
+Maven or Gradle are recommended.
+
+=== Installation
+
+To install with predefined dependencies for a production-ready application, follow this step:
+
+* With Maven:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+        <version>${org.sansenshimizu.sakuraboot.version}</version>
+    </dependency>
+</dependencies>
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+        <version>${org.sansenshimizu.sakuraboot.version}</version>
+    </dependency>
+</dependencies>
+----
+
+* With Gradle:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,kotlin]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:LATEST_VERSION")
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,kotlin]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:LATEST_VERSION")
+----
+
+For custom dependencies that include necessary dependencies, starters without predefined are also available:
+
+* sakura-boot-starter-basic
+* sakura-boot-starter-all-module
+
+Starters are also available for test with:
+
+* sakura-boot-starter-basic-unit-test
+* sakura-boot-starter-basic-integration-test
+* sakura-boot-starter-basic-functional-test
+* Same for all-module and predefined.
+
+For more fine-grained control over dependencies, import directly from each module:
+
+* sakura-boot-basic
+* sakura-boot-cache
+* ...
+* sakura-boot-basic-test
+* sakura-boot-cache-test
+* sakura-boot-functional-test
+* ...
+
+== Documentation
+
+The project documentation is located in the link:./documentation/[documentation] folder and available at
+https://sansenshimizu.org/sakuraboot.
+
+All the classes are well-documented with Javadoc and example.
+
+link:./example-project/[Example projects] are available to help understand how to use the framework in different basic situations.
+
+== Contribution and Code of conduct
+
+Contributions are welcome! +
+If you find a bug, want to correct an issue or suggest improvements, please check out this link:./CONTRIBUTING.adoc[contributing].
+
+The project follows a code of conduct, please check out this link:./CODE_OF_CONDUCT.adoc[code of conduct].
+
+== Acknowledgements
+
+This project is possible thanks to a number of open source frameworks and libraries, special thanks to :
+
+* https://github.com/spring-projects[The spring projects] and https://github.com/spring-projects/spring-boot[Spring
+boot].
+* https://github.com/hibernate[Hibernate]
+* https://github.com/mapstruct/mapstruct[Mapstruct]
+* https://github.com/springdoc[Spring doc]
+* https://github.com/projectlombok/lombok[Lombok]
+* https://github.com/jjohannes/gradle-project-setup-howto/tree/spring_boot[Gradle best practice]
+
+== Contact Information
+
+If you have any questions, feedback, or collaboration ideas, feel free to contact:
+
+* Email: malcolm@sansenshimizu.com
+* GitHub: https://github.com/malcolmSansen
+* Sansen Shimizu: https://sansen-shimizu.co.jp
+
+== License
+
+Sakura Boot is licensed under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].

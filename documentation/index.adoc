@@ -1,0 +1,3 @@
+= Sakura Boot
+
+The documentation will be updated soon.

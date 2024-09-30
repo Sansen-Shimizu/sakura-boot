@@ -1,0 +1,50 @@
+= Contributing to Sakura Boot
+
+== Find a bug?
+
+If you find a bug, please open an https://github.com/Sansen-Shimizu/sakura-boot/issues[issue].
+
+Please provide any information that can help resolve the problem with a short description, a stacktrace, and a minimal reproducible example if applicable.
+
+== Idea for improvement or question
+
+If you have any idea that could improve this project or any question:
+
+* Open an https://github.com/Sansen-Shimizu/sakura-boot/issues[issue]
+* Start a new https://github.com/Sansen-Shimizu/sakura-boot/discussions[discussion]
+
+== Contribute
+
+If you want to contribute by correcting a bug or improving this project, please follow this step:
+
+* Fork the project
+* Create a new branch
+* Apply the changes
+* Add or modify the tests
+* Update the documentation if necessary
+* Submit a pull request
+
+Remember to:
+
+* Use the link:sakura-boot-checkstyle/formatter/java-formatter.xml[java formatter] and respect the
+link:sakura-boot-checkstyle/src/main/resources/checkstyle.xml[checkstyle rules]
+* Create one branch and one pull request by bug or feature
+
+The java formatter uses eclipse code formatter. +
+https://plugins.jetbrains.com/plugin/6546-adapter-for-eclipse-code-formatter[This plugin] helps use eclipse code formatter on intellij.
+
+== Code of conduct
+
+The project follows a code of conduct, please check out this link:./CODE_OF_CONDUCT.adoc[code of conduct].
+
+== Contact Information
+
+If you have any questions, feedback, or collaboration ideas, feel free to contact:
+
+* Email: malcolm@sansenshimizu.com
+* GitHub: https://github.com/malcolmSansen
+* Sansen Shimizu: https://sansen-shimizu.co.jp
+
+== License
+
+Sakura Boot is licensed under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].

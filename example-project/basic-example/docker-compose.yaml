@@ -1,0 +1,22 @@
+services:
+  database:
+    image: 'postgres:alpine'
+    container_name: basic-example-postgres
+    ports:
+      - '5432'
+    environment:
+      - 'POSTGRES_USER=sa'
+      - 'POSTGRES_DB=database'
+      - 'POSTGRES_PASSWORD=password'
+
+#  app:
+#    image: sakura-boot-basic-example
+#    container_name: sakura-boot-basic-example
+#    depends_on:
+#      - database
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/database
+#      SPRING_DATASOURCE_USERNAME: sa
+#      SPRING_DATASOURCE_PASSWORD: password
+#    ports:
+#      - "8080"

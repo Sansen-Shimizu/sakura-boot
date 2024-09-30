@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="grammar" pattern="!file[sakura-boot]:.idea//*&amp;&amp;!file[sakura-boot]:gradle//*&amp;&amp;!file[sakura-boot]:.gitignore&amp;&amp;!file[sakura-boot]:build.gradle.kts&amp;&amp;!file[sakura-boot]:gradle.properties&amp;&amp;!file[sakura-boot]:gradlew&amp;&amp;!file[sakura-boot]:gradlew.bat&amp;&amp;!file[sakura-boot]:sakura-boot.iml&amp;&amp;!file[sakura-boot]:settings.gradle.kts&amp;&amp;!file[sakura-boot-plugin]:*/&amp;&amp;!file[sakura-boot-plugin*]:*//*&amp;&amp;!file[sakura-boot.sakura-boot-checkstyle*]:*//*&amp;&amp;!file[sakura-boot.versions]:*/&amp;&amp;!file[sakura-boot.aggregation]:*/&amp;&amp;!file[sakura-boot.sakura-boot-checkstyle]:*/&amp;&amp;!file[sakura-boot]:checkstyle//*" />
+</component>

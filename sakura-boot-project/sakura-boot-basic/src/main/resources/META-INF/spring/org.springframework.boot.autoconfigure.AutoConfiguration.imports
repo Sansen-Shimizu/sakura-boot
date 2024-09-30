@@ -1,0 +1,4 @@
+org.sansenshimizu.sakuraboot.exceptions.SuperControllerExceptionHandler
+org.sansenshimizu.sakuraboot.basic.aop.RelationshipAspect
+org.sansenshimizu.sakuraboot.basic.aop.SaveRelationshipAspect
+org.sansenshimizu.sakuraboot.basic.configuration.BasicConfiguration

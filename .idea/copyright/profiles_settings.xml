@@ -1,0 +1,10 @@
+<component name="CopyrightManager">
+  <settings>
+    <module2copyright>
+      <element module="java" copyright="java" />
+    </module2copyright>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="filler" value="*" />
+    </LanguageOptions>
+  </settings>
+</component>
