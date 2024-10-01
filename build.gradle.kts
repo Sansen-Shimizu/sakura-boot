@@ -9,6 +9,7 @@ nmcp {
     publishAllProjectsProbablyBreakingProjectIsolation {
         username = (project.findProperty("mavenCentralUsername") ?: System.getenv("mavenCentralUsername")) as String
         password = (project.findProperty("mavenCentralPassword") ?: System.getenv("mavenCentralPassword")) as String
-        publicationType = "USER_MANAGED"
+        //publicationType = "USER_MANAGED"
+        publicationType = "AUTOMATIC"
     }
 }

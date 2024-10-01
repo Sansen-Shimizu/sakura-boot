@@ -4,8 +4,10 @@ plugins {
     alias(libs.plugins.dependency.lombok.test)
 }
 
-description = "Framework to simplify the creation of a spring boot application. " +
+description =
+    "Framework to simplify the creation of a spring boot application. " +
         "The hypermedia functionalities."
+
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description
 }
