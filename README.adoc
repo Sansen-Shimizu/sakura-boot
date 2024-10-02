@@ -159,7 +159,7 @@ link:./example-project/[Example projects] are available to help understand how t
 Contributions are welcome! +
 If you find a bug, want to correct an issue or suggest improvements, please check out this link:./CONTRIBUTING.adoc[contributing].
 
-The project follows a code of conduct, please check out this link:./CODE_OF_CONDUCT.adoc[code of conduct].
+The project follows a code of conduct, please check out this link:./CODE_OF_CONDUCT.md[code of conduct].
 
 == Acknowledgements
 
