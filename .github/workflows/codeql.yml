@@ -93,6 +93,9 @@ jobs:
         exit 1
 
     - name: Perform CodeQL Analysis
+      env:
+        MAVENCENTRALPASSWORD: ${{ secrets.MAVENCENTRALPASSWORD }}
+        MAVENCENTRALUSERNAME: ${{ secrets.MAVENCENTRALUSERNAME }}
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
