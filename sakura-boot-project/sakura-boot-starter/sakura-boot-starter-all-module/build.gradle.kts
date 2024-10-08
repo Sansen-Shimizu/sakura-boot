@@ -7,6 +7,7 @@ publishing.publications.getByName<MavenPublication>("mavenJava") {
 
 dependencies {
     api(projects.sakuraBootStarterBasic)
+    api(projects.sakuraBootCache)
     api(projects.sakuraBootCacheApi)
     api(projects.sakuraBootHypermedia)
     api(projects.sakuraBootHypermediaApi)
@@ -16,7 +17,6 @@ dependencies {
     api(projects.sakuraBootSpecification)
     api(projects.sakuraBootSpecificationApi)
     api(libs.spring.hateoas)
-    runtimeOnly(projects.sakuraBootCache)
     runtimeOnly(projects.sakuraBootLog)
     runtimeOnly(projects.sakuraBootOpenapi)
     runtimeOnly(libs.springdoc.openapi.starter.webmvc.ui)
