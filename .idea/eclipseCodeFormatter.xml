@@ -13,7 +13,7 @@
       <Settings>
         <option name="formatter" value="ECLIPSE" />
         <option name="id" value="1718694623351" />
-        <option name="importOrder" value="java;javax;jakarta;;org.sansenshimizu.sakuraboot;#" />
+        <option name="importOrder" value="java;jakarta;javax;;org.sansenshimizu.sakuraboot;#" />
         <option name="name" value="sakura-boot" />
         <option name="pathToConfigFileJava" value="$PROJECT_DIR$/sakura-boot-checkstyle/formatter/java-formatter.xml" />
         <option name="selectedJavaProfile" value="java formatter" />

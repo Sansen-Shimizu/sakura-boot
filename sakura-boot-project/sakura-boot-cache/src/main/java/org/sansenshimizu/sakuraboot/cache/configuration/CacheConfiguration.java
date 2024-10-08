@@ -242,7 +242,7 @@ public class CacheConfiguration {
         @Nullable final String dtoPackage) {
 
         Class<?> keyType;
-        final Class<?> valueType;
+        Class<?> valueType;
 
         try {
 
@@ -265,11 +265,7 @@ public class CacheConfiguration {
                     false, Thread.currentThread().getContextClassLoader());
             } catch (final ClassNotFoundException e) {
 
-                throw new RuntimeException("The dto class can't be found for: "
-                    + cacheSpecification.type()
-                        .getName()
-                        .replace(PERSISTENCE_STRING, dtoPackage)
-                    + "Dto", e);
+                valueType = cacheSpecification.type();
             }
         } else {
 
