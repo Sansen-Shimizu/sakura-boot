@@ -280,10 +280,7 @@ public class SwaggerConfiguration {
                     continue;
                 }
 
-                @SuppressWarnings("unchecked")
-                final Map<String, Schema<?>> properties
-                    = data.schema.getProperties();
-                properties.put(field.getName(),
+                data.schema.addProperty(field.getName(),
                     removeIdRecursively(relationalClassType, visited).schema);
             }
         }
@@ -307,11 +304,7 @@ public class SwaggerConfiguration {
             final ResolvedSchema page = getResolvedSchema(Page.class);
             page.schema
                 .title(Page.class.getSimpleName() + classType.getSimpleName());
-
-            @SuppressWarnings("unchecked")
-            final Map<String, Schema<?>> properties
-                = page.schema.getProperties();
-            properties.put("content",
+            page.schema.addProperty("content",
                 new Schema<>().$ref(classType.getSimpleName()));
             schema.addAllOfItem(page.schema);
         } else {
@@ -350,10 +343,7 @@ public class SwaggerConfiguration {
                 .getProperties()
                 .put("objectList", new ArraySchema().items(model.schema));
 
-            @SuppressWarnings("unchecked")
-            final Map<String, Schema<?>> properties
-                = pagedModel.schema.getProperties();
-            properties.put("page", pageMetadata.schema);
+            pagedModel.schema.addProperty("page", pageMetadata.schema);
             schema.addAllOfItem(pagedModel.schema);
 
             final String linkPath
