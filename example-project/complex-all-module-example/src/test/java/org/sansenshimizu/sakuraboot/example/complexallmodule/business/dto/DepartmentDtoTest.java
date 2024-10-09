@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 
+import java.util.UUID;
+
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.DepartmentTestUtil;
@@ -26,7 +28,7 @@ import org.sansenshimizu.sakuraboot.test.mapper.dto.AbstractBasicDtoTest;
 })
 @Getter
 public class DepartmentDtoTest
-    extends AbstractBasicDtoTest<DepartmentDto, Long> {
+    extends AbstractBasicDtoTest<DepartmentDto, UUID> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();
 }

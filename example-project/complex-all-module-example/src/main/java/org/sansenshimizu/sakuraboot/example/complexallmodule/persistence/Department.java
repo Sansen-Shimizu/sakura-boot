@@ -20,6 +20,7 @@ import java.io.Serial;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,16 +53,16 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractB
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Department
-    extends AbstractBasicEntity2RelationshipAnyToOne<Long, Company, Manager> {
+    extends AbstractBasicEntity2RelationshipAnyToOne<UUID, Company, Manager> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
         CascadeType.PERSIST, CascadeType.MERGE

@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 import java.io.Serial;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,16 +47,16 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractB
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Manager
-    extends AbstractBasicEntity1RelationshipAnyToOne<Long, Department> {
+    extends AbstractBasicEntity1RelationshipAnyToOne<UUID, Department> {
 
     @Serial
     private static final long serialVersionUID = -4869852242794893140L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @OneToOne(mappedBy = "manager")
     @Nullable

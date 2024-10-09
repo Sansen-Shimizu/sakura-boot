@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
+import java.util.UUID;
+
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.CompanyTestUtil;
@@ -23,7 +25,7 @@ import org.sansenshimizu.sakuraboot.test.basic.persistence.AbstractBasicEntityTe
 
 @SuppressWarnings("java:S2187")
 @Getter
-public class CompanyTest extends AbstractBasicEntityTest<Company, Long> {
+public class CompanyTest extends AbstractBasicEntityTest<Company, UUID> {
 
     private final CompanyTestUtil util = new CompanyTestUtil();
 }

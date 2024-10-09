@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.mockito.InjectMocks;
@@ -40,7 +42,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class ManagerServiceTest
-    implements CriteriaServiceTest<Manager, Long, ManagerFilter>, CacheableTest,
+    implements CriteriaServiceTest<Manager, UUID, ManagerFilter>, CacheableTest,
     MappableTest<Manager, ManagerDto> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

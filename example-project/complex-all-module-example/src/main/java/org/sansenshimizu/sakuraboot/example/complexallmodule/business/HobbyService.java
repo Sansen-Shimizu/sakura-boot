@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +39,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class HobbyService
-    implements CriteriaService<Hobby, Long, HobbyFilter>, Cacheable,
+    implements CriteriaService<Hobby, UUID, HobbyFilter>, Cacheable,
     Mappable<Hobby, HobbyDto>, Loggable {
 
     private final HobbyRepository repository;

@@ -20,6 +20,7 @@ import java.io.Serial;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,14 +37,14 @@ import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto
 @Jacksonized
 @Getter
 public class DepartmentDto
-    extends AbstractBasicDto2RelationshipAnyToOne<Long, CompanyDto, Long,
-        ManagerDto, Long> {
+    extends AbstractBasicDto2RelationshipAnyToOne<UUID, CompanyDto, UUID,
+        ManagerDto, UUID> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
 
     @Nullable
-    private final Long id;
+    private final UUID id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -51,7 +52,7 @@ public class DepartmentDto
 
     @JsonProperty("companyId")
     @Nullable
-    private final Long relationshipId;
+    private final UUID relationshipId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -59,7 +60,7 @@ public class DepartmentDto
 
     @JsonProperty("managerId")
     @Nullable
-    private final Long secondRelationshipId;
+    private final UUID secondRelationshipId;
 
     @Nullable
     private final String name;

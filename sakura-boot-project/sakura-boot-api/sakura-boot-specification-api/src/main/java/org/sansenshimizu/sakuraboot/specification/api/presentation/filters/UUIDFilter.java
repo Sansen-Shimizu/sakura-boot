@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
+package org.sansenshimizu.sakuraboot.specification.api.presentation.filters;
 
-import java.util.List;
 import java.util.UUID;
 
-import lombok.Getter;
-
-import org.sansenshimizu.sakuraboot.example.complexallmodule.util.HobbyTestUtil;
-import org.sansenshimizu.sakuraboot.test.basic.persistence.AbstractBasicEntityTest;
-
-@SuppressWarnings("java:S2187")
-@Getter
-public class HobbyTest extends AbstractBasicEntityTest<Hobby, UUID> {
-
-    private final HobbyTestUtil util = new HobbyTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "federations", "name");
-    }
-}
+/**
+ * A filter interface that can be used for UUID values.
+ *
+ * @author Malcolm Rozé
+ * @see    Filter
+ * @since  0.1.1
+ */
+public interface UUIDFilter extends CommonFilter<UUID> {}

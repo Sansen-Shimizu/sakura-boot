@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.mockito.InjectMocks;
@@ -40,7 +42,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class HobbyServiceTest
-    implements CriteriaServiceTest<Hobby, Long, HobbyFilter>, CacheableTest,
+    implements CriteriaServiceTest<Hobby, UUID, HobbyFilter>, CacheableTest,
     MappableTest<Hobby, HobbyDto> {
 
     private final HobbyTestUtil util = new HobbyTestUtil();

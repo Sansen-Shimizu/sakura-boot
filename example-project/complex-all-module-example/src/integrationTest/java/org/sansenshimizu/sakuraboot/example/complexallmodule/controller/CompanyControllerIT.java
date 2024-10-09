@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
     HypermediaAspect.class
 })
 public class CompanyControllerIT
-    implements CriteriaControllerIT<Company, Long, CompanyDto, CompanyFilter>,
-    HypermediaIT<Company, Long, CompanyDto> {
+    implements CriteriaControllerIT<Company, UUID, CompanyDto, CompanyFilter>,
+    HypermediaIT<Company, UUID, CompanyDto> {
 
     private final CompanyITUtil util = new CompanyITUtil();
 

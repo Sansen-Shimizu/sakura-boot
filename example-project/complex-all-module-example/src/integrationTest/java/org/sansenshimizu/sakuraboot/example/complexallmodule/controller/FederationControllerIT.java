@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +50,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 })
 public class FederationControllerIT
     implements
-    CriteriaControllerIT<Federation, Long, FederationDto, FederationFilter>,
-    HypermediaIT<Federation, Long, FederationDto> {
+    CriteriaControllerIT<Federation, UUID, FederationDto, FederationFilter>,
+    HypermediaIT<Federation, UUID, FederationDto> {
 
     private final FederationITUtil util = new FederationITUtil();
 

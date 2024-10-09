@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 import java.io.Serial;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -45,16 +46,16 @@ import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Company extends AbstractBasicEntity<Long> {
+public class Company extends AbstractBasicEntity<UUID> {
 
     @Serial
     private static final long serialVersionUID = 8075672169790602082L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @Embedded
     @Nullable

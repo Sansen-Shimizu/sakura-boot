@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.mockito.InjectMocks;
@@ -40,7 +42,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class DepartmentServiceTest
-    implements CriteriaServiceTest<Department, Long, DepartmentFilter>,
+    implements CriteriaServiceTest<Department, UUID, DepartmentFilter>,
     CacheableTest, MappableTest<Department, DepartmentDto> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();

@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +38,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @RequiredArgsConstructor
 public class FederationController
     implements
-    CriteriaController<Federation, Long, FederationDto, FederationFilter>,
+    CriteriaController<Federation, UUID, FederationDto, FederationFilter>,
     Hypermedia<FederationDto, FederationModelAssembler>, Loggable {
 
     private final FederationService service;

@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -38,13 +39,13 @@ import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto
 @Jacksonized
 @Getter
 public class FederationDto
-    extends AbstractBasicDto1RelationshipAnyToMany<Long, HobbyDto, Long> {
+    extends AbstractBasicDto1RelationshipAnyToMany<UUID, HobbyDto, UUID> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
 
     @Nullable
-    private final Long id;
+    private final UUID id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -52,7 +53,7 @@ public class FederationDto
 
     @JsonProperty("hobbiesId")
     @Nullable
-    private final Set<Long> relationshipsId;
+    private final Set<UUID> relationshipsId;
 
     @Nullable
     private final Address address;
@@ -86,7 +87,7 @@ public class FederationDto
 
     @Override
     @Nullable
-    public Set<Long> getRelationshipsId() {
+    public Set<UUID> getRelationshipsId() {
 
         if (relationshipsId == null) {
 

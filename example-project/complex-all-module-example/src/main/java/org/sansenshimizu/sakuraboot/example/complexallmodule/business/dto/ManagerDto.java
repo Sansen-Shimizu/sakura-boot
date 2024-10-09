@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 import java.io.Serial;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -35,13 +36,13 @@ import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto
 @Jacksonized
 @Getter
 public class ManagerDto
-    extends AbstractBasicDto1RelationshipAnyToOne<Long, DepartmentDto, Long> {
+    extends AbstractBasicDto1RelationshipAnyToOne<UUID, DepartmentDto, UUID> {
 
     @Serial
     private static final long serialVersionUID = -4869852242794893140L;
 
     @Nullable
-    private final Long id;
+    private final UUID id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -49,7 +50,7 @@ public class ManagerDto
 
     @JsonProperty("departmentId")
     @Nullable
-    private final Long relationshipId;
+    private final UUID relationshipId;
 
     @Nullable
     private final String name;

@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
+import java.util.UUID;
+
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.DepartmentTestUtil;
@@ -23,7 +25,7 @@ import org.sansenshimizu.sakuraboot.test.basic.persistence.AbstractBasicEntityTe
 
 @SuppressWarnings("java:S2187")
 @Getter
-public class DepartmentTest extends AbstractBasicEntityTest<Department, Long> {
+public class DepartmentTest extends AbstractBasicEntityTest<Department, UUID> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();
 }

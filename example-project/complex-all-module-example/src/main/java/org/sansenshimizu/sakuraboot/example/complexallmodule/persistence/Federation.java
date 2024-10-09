@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -49,16 +50,16 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractB
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Federation
-    extends AbstractBasicEntity1RelationshipAnyToMany<Long, Hobby> {
+    extends AbstractBasicEntity1RelationshipAnyToMany<UUID, Hobby> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @ManyToMany(mappedBy = "federations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

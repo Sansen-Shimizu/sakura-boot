@@ -16,7 +16,9 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
+import java.util.UUID;
+
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
 public interface DepartmentRepository
-    extends CriteriaRepository<Department, Long> {}
+    extends CriteriaRepository<Department, UUID> {}

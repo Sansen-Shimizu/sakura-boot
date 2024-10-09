@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -44,7 +46,7 @@ import org.sansenshimizu.sakuraboot.mapper.relationship.two.AbstractBasicMapper2
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractHobbyMapper
     extends AbstractBasicMapper2RelationshipAnyToMany<Hobby, HobbyDto, Employee,
-        EmployeeDto, Long, Federation, FederationDto, Long> {
+        EmployeeDto, UUID, Federation, FederationDto, UUID> {
 
     @Nullable
     private EmployeeRepository repository;
@@ -58,14 +60,14 @@ public abstract class AbstractHobbyMapper
     @Nullable
     private AbstractFederationMapper secondMapper;
 
-    public Class<Long> getRelationalIdType() {
+    public Class<UUID> getRelationalIdType() {
 
-        return Long.class;
+        return UUID.class;
     }
 
-    public Class<Long> getSecondRelationalIdType() {
+    public Class<UUID> getSecondRelationalIdType() {
 
-        return Long.class;
+        return UUID.class;
     }
 
     @Autowired

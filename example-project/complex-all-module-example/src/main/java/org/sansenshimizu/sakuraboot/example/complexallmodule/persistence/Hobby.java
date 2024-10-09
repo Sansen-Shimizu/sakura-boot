@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,16 +53,16 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractB
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Hobby
     extends
-    AbstractBasicEntity2RelationshipAnyToMany<Long, Employee, Federation> {
+    AbstractBasicEntity2RelationshipAnyToMany<UUID, Employee, Federation> {
 
     @Serial
     private static final long serialVersionUID = -7056599975876114239L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @ManyToMany(mappedBy = "hobbies")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

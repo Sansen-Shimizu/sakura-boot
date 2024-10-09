@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
     HypermediaAspect.class
 })
 public class ManagerControllerIT
-    implements CriteriaControllerIT<Manager, Long, ManagerDto, ManagerFilter>,
-    HypermediaIT<Manager, Long, ManagerDto> {
+    implements CriteriaControllerIT<Manager, UUID, ManagerDto, ManagerFilter>,
+    HypermediaIT<Manager, UUID, ManagerDto> {
 
     private final ManagerITUtil util = new ManagerITUtil();
 

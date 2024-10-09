@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 import java.io.Serial;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -32,13 +33,13 @@ import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class CompanyDto extends AbstractBasicDto<Long> {
+public class CompanyDto extends AbstractBasicDto<UUID> {
 
     @Serial
     private static final long serialVersionUID = 8075672169790602082L;
 
     @Nullable
-    private final Long id;
+    private final UUID id;
 
     @Nullable
     private final Address address;
