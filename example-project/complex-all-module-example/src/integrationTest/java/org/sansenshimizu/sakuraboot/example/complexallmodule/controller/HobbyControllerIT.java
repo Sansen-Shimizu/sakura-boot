@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
     HypermediaAspect.class
 })
 public class HobbyControllerIT
-    implements CriteriaControllerIT<Hobby, Long, HobbyDto, HobbyFilter>,
-    HypermediaIT<Hobby, Long, HobbyDto> {
+    implements CriteriaControllerIT<Hobby, UUID, HobbyDto, HobbyFilter>,
+    HypermediaIT<Hobby, UUID, HobbyDto> {
 
     private final HobbyITUtil util = new HobbyITUtil();
 

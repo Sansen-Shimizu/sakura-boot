@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +50,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 })
 public class DepartmentControllerIT
     implements
-    CriteriaControllerIT<Department, Long, DepartmentDto, DepartmentFilter>,
-    HypermediaIT<Department, Long, DepartmentDto> {
+    CriteriaControllerIT<Department, UUID, DepartmentDto, DepartmentFilter>,
+    HypermediaIT<Department, UUID, DepartmentDto> {
 
     private final DepartmentITUtil util = new DepartmentITUtil();
 

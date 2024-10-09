@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,7 +37,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 })
 @Getter
 public class ManagerControllerTest
-    implements CriteriaControllerTest<Manager, Long, ManagerDto, ManagerFilter>,
+    implements CriteriaControllerTest<Manager, UUID, ManagerDto, ManagerFilter>,
     HypermediaTest<ManagerDto, ManagerModelAssembler> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

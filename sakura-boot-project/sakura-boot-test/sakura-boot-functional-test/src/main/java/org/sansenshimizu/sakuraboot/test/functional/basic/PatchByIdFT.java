@@ -256,11 +256,20 @@ public interface PatchByIdFT<E extends DataPresentation<I>,
         // GIVEN
         final E savedEntity = createAndSaveEntity();
         final I savedEntityId = Objects.requireNonNull(savedEntity.getId());
+        final String idString;
+
+        if (savedEntityId instanceof final Number number) {
+
+            idString = number.toString();
+        } else {
+
+            idString = "\"" + savedEntityId + "\"";
+        }
 
         // WHEN
         final ValidatableResponse response = RestAssured.given()
             .contentType(ContentType.JSON)
-            .body("{\"id\" : " + savedEntityId + "}")
+            .body("{\"id\" : " + idString + "}")
             .when()
             .patch()
             .then();

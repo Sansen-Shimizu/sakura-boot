@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.controller;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +50,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 })
 public class EmployeeControllerIT
     implements
-    CriteriaControllerIT<Employee, Long, EmployeeDto, EmployeeFilter>,
-    HypermediaIT<Employee, Long, EmployeeDto> {
+    CriteriaControllerIT<Employee, UUID, EmployeeDto, EmployeeFilter>,
+    HypermediaIT<Employee, UUID, EmployeeDto> {
 
     private final EmployeeITUtil util = new EmployeeITUtil();
 

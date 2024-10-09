@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 })
 @Getter
 public class DepartmentFT
-    implements CriteriaFT<Department, Long, DepartmentFilter> {
+    implements CriteriaFT<Department, UUID, DepartmentFilter> {
 
     private final DepartmentFTUtil util;
 

@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,7 +37,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 })
 @Getter
 public class HobbyControllerTest
-    implements CriteriaControllerTest<Hobby, Long, HobbyDto, HobbyFilter>,
+    implements CriteriaControllerTest<Hobby, UUID, HobbyDto, HobbyFilter>,
     HypermediaTest<HobbyDto, HobbyModelAssembler> {
 
     private final HobbyTestUtil util = new HobbyTestUtil();

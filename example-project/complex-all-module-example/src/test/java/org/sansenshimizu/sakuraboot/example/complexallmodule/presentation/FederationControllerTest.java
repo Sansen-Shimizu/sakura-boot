@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,7 +38,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class FederationControllerTest
     implements
-    CriteriaControllerTest<Federation, Long, FederationDto, FederationFilter>,
+    CriteriaControllerTest<Federation, UUID, FederationDto, FederationFilter>,
     HypermediaTest<FederationDto, FederationModelAssembler> {
 
     private final FederationTestUtil util = new FederationTestUtil();

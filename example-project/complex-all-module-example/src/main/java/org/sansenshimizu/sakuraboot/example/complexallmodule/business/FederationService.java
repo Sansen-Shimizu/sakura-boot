@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +39,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class FederationService
-    implements CriteriaService<Federation, Long, FederationFilter>, Cacheable,
+    implements CriteriaService<Federation, UUID, FederationFilter>, Cacheable,
     Mappable<Federation, FederationDto>, Loggable {
 
     private final FederationRepository repository;

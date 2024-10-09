@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.mockito.InjectMocks;
@@ -40,7 +42,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class FederationServiceTest
-    implements CriteriaServiceTest<Federation, Long, FederationFilter>,
+    implements CriteriaServiceTest<Federation, UUID, FederationFilter>,
     CacheableTest, MappableTest<Federation, FederationDto> {
 
     private final FederationTestUtil util = new FederationTestUtil();

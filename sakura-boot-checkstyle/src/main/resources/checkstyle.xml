@@ -393,7 +393,7 @@
 
         <module name="AbbreviationAsWordInName">
             <property name="allowedAbbreviationLength" value="0"/>
-            <property name="allowedAbbreviations" value="IT,FT"/>
+            <property name="allowedAbbreviations" value="IT,FT,UUID"/>
             <property name="ignoreFinal" value="false"/>
         </module>
         <module name="AbstractClassName">

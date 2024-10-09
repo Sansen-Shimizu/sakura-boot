@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +37,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @Getter
 @RequiredArgsConstructor
 public class ManagerController
-    implements CriteriaController<Manager, Long, ManagerDto, ManagerFilter>,
+    implements CriteriaController<Manager, UUID, ManagerDto, ManagerFilter>,
     Hypermedia<ManagerDto, ManagerModelAssembler>, Loggable {
 
     private final ManagerService service;

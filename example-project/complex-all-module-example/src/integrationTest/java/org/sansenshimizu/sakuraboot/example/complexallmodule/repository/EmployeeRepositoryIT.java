@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.repository;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -34,7 +36,7 @@ import org.sansenshimizu.sakuraboot.test.integration.repository.basic.BasicRepos
 })
 @Getter
 @DataJpaTest
-public class EmployeeRepositoryIT implements BasicRepositoryIT<Employee, Long> {
+public class EmployeeRepositoryIT implements BasicRepositoryIT<Employee, UUID> {
 
     private final EmployeeITUtil util = new EmployeeITUtil();
 

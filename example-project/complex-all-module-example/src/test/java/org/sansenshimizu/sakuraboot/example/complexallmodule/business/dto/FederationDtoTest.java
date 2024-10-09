@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Getter;
 
@@ -28,7 +29,7 @@ import org.sansenshimizu.sakuraboot.test.mapper.dto.AbstractBasicDtoTest;
 })
 @Getter
 public class FederationDtoTest
-    extends AbstractBasicDtoTest<FederationDto, Long> {
+    extends AbstractBasicDtoTest<FederationDto, UUID> {
 
     private final FederationTestUtil util = new FederationTestUtil();
 

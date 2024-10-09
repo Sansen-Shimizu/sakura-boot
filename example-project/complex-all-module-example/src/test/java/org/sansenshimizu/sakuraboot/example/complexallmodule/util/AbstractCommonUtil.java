@@ -16,27 +16,29 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.util;
 
+import java.util.UUID;
+
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.test.BasicDataTestUtil;
 
-public abstract class AbstractCommonUtil<E extends DataPresentation<Long>,
-    D extends DataPresentation<Long>> implements BasicDataTestUtil<E, Long, D> {
+public abstract class AbstractCommonUtil<E extends DataPresentation<UUID>,
+    D extends DataPresentation<UUID>> implements BasicDataTestUtil<E, UUID, D> {
 
     @Override
-    public Long getValidId() {
+    public UUID getValidId() {
 
-        return 0L;
+        return UUID.fromString("47b54ad6-42db-4617-b54a-d642db16173d");
     }
 
     @Override
-    public Long getBiggerValidId() {
+    public UUID getBiggerValidId() {
 
-        return 1L;
+        return UUID.fromString("6a923367-19d7-444d-9233-6719d7c44d09");
     }
 
     @Override
-    public Long getInvalidId() {
+    public UUID getInvalidId() {
 
-        return -1L;
+        return UUID.fromString("bb08256d-26b1-4314-8825-6d26b1e31422");
     }
 }

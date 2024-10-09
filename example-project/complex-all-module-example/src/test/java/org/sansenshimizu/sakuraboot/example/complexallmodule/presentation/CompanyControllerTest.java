@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,7 +37,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 })
 @Getter
 public class CompanyControllerTest
-    implements CriteriaControllerTest<Company, Long, CompanyDto, CompanyFilter>,
+    implements CriteriaControllerTest<Company, UUID, CompanyDto, CompanyFilter>,
     HypermediaTest<CompanyDto, CompanyModelAssembler> {
 
     private final CompanyTestUtil util = new CompanyTestUtil();

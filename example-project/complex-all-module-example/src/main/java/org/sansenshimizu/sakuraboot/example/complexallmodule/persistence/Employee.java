@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -55,17 +56,17 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractB
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Employee
-    extends AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany<Long,
+    extends AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany<UUID,
         Department, Hobby> {
 
     @Serial
     private static final long serialVersionUID = -2636662559034440172L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @Nullable
-    private Long id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
         CascadeType.PERSIST, CascadeType.MERGE

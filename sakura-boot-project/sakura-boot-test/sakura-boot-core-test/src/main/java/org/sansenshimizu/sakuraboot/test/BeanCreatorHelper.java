@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
@@ -656,6 +657,11 @@ public final class BeanCreatorHelper {
         if (clazz == String.class) {
 
             return RandomStringUtils.randomAlphabetic(STRING_SIZE);
+        }
+
+        if (clazz == UUID.class) {
+
+            return UUID.randomUUID();
         }
 
         if (Temporal.class.isAssignableFrom(clazz)) {

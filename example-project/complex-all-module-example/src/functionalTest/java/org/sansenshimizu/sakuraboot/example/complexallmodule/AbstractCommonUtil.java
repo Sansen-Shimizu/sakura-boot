@@ -16,12 +16,14 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule;
 
+import java.util.UUID;
+
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.hypermedia.HypermediaFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 
-public abstract class AbstractCommonUtil<E extends DataPresentation<Long>,
-    D extends DataPresentation<Long>>
-    implements CachingFTUtil<E, Long>, MapperFTUtil<E, Long, D>,
-    HypermediaFTUtil<E, Long> {}
+public abstract class AbstractCommonUtil<E extends DataPresentation<UUID>,
+    D extends DataPresentation<UUID>>
+    implements CachingFTUtil<E, UUID>, MapperFTUtil<E, UUID, D>,
+    HypermediaFTUtil<E, UUID> {}

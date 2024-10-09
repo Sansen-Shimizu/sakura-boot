@@ -16,7 +16,9 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
+import java.util.UUID;
+
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
 public interface FederationRepository
-    extends CriteriaRepository<Federation, Long> {}
+    extends CriteriaRepository<Federation, UUID> {}

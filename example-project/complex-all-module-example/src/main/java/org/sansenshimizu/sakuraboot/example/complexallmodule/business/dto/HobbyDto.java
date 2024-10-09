@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,14 +38,14 @@ import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto
 @Jacksonized
 @Getter
 public class HobbyDto
-    extends AbstractBasicDto2RelationshipAnyToMany<Long, EmployeeDto, Long,
-        FederationDto, Long> {
+    extends AbstractBasicDto2RelationshipAnyToMany<UUID, EmployeeDto, UUID,
+        FederationDto, UUID> {
 
     @Serial
     private static final long serialVersionUID = -7056599975876114239L;
 
     @Nullable
-    private final Long id;
+    private final UUID id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -52,7 +53,7 @@ public class HobbyDto
 
     @JsonProperty("employeesId")
     @Nullable
-    private final Set<Long> relationshipsId;
+    private final Set<UUID> relationshipsId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
@@ -60,7 +61,7 @@ public class HobbyDto
 
     @JsonProperty("federationsId")
     @Nullable
-    private final Set<Long> secondRelationshipsId;
+    private final Set<UUID> secondRelationshipsId;
 
     @Nullable
     private final String name;
@@ -91,7 +92,7 @@ public class HobbyDto
 
     @Override
     @Nullable
-    public Set<Long> getRelationshipsId() {
+    public Set<UUID> getRelationshipsId() {
 
         if (relationshipsId == null) {
 
@@ -120,7 +121,7 @@ public class HobbyDto
 
     @Override
     @Nullable
-    public Set<Long> getSecondRelationshipsId() {
+    public Set<UUID> getSecondRelationshipsId() {
 
         if (secondRelationshipsId == null) {
 

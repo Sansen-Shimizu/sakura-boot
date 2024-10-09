@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.repository;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -35,7 +37,7 @@ import org.sansenshimizu.sakuraboot.test.integration.repository.basic.BasicRepos
 @Getter
 @DataJpaTest
 public class FederationRepositoryIT
-    implements BasicRepositoryIT<Federation, Long> {
+    implements BasicRepositoryIT<Federation, UUID> {
 
     private final FederationITUtil util = new FederationITUtil();
 

@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 })
 @Getter
 public class FederationFT
-    implements CriteriaFT<Federation, Long, FederationFilter> {
+    implements CriteriaFT<Federation, UUID, FederationFilter> {
 
     private final FederationFTUtil util;
 

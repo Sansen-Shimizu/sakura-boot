@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class HobbyFT implements CriteriaFT<Hobby, Long, HobbyFilter> {
+public class HobbyFT implements CriteriaFT<Hobby, UUID, HobbyFilter> {
 
     private final HobbyFTUtil util;
 

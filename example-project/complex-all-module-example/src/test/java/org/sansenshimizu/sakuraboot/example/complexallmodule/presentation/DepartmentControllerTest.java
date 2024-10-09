@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,7 +38,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class DepartmentControllerTest
     implements
-    CriteriaControllerTest<Department, Long, DepartmentDto, DepartmentFilter>,
+    CriteriaControllerTest<Department, UUID, DepartmentDto, DepartmentFilter>,
     HypermediaTest<DepartmentDto, DepartmentModelAssembler> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();

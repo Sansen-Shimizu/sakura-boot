@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +39,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class DepartmentService
-    implements CriteriaService<Department, Long, DepartmentFilter>, Cacheable,
+    implements CriteriaService<Department, UUID, DepartmentFilter>, Cacheable,
     Mappable<Department, DepartmentDto>, Loggable {
 
     private final DepartmentRepository repository;

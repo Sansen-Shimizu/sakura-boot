@@ -26,18 +26,19 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.NumberFilter;
+import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.UUIDFilter;
 import org.sansenshimizu.sakuraboot.specification.presentation.AbstractBasicFilter;
 import org.sansenshimizu.sakuraboot.specification.presentation.filters.BooleanFilterImpl;
 import org.sansenshimizu.sakuraboot.specification.presentation.filters.DateFilterImpl;
 import org.sansenshimizu.sakuraboot.specification.presentation.filters.NumberFilterImpl;
 import org.sansenshimizu.sakuraboot.specification.presentation.filters.TextFilterImpl;
+import org.sansenshimizu.sakuraboot.specification.presentation.filters.UUIDFilterImpl;
 
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class DepartmentFilter extends AbstractBasicFilter<NumberFilter<Long>> {
+public class DepartmentFilter extends AbstractBasicFilter<UUIDFilter> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -52,7 +53,7 @@ public class DepartmentFilter extends AbstractBasicFilter<NumberFilter<Long>> {
 
     @EqualsAndHashCode.Exclude
     @Nullable
-    private final NumberFilterImpl<Long> id;
+    private final UUIDFilterImpl id;
 
     @Nullable
     private final CompanyFilter company;
