@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -255,17 +256,20 @@ public class SuperControllerExceptionHandler
     }
 
     /**
-     * Handles ConstraintViolationException and returns an appropriate error
-     * response.
+     * Handles ConstraintViolationException, DataIntegrityViolationException and
+     * returns an appropriate error response.
      *
      * @param  ex      The exception to handle.
      * @param  request The web request.
      * @return         ResponseEntity containing the error response.
      */
     @Nullable
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler({
+        ConstraintViolationException.class,
+        DataIntegrityViolationException.class
+    })
     protected ResponseEntity<Object> handleConstraintViolation(
-        final ConstraintViolationException ex, final WebRequest request) {
+        final RuntimeException ex, final WebRequest request) {
 
         return handleException(ex, HttpHeaders.EMPTY, HttpStatus.BAD_REQUEST,
             request, "Entity validation error: " + ex.getMessage());
