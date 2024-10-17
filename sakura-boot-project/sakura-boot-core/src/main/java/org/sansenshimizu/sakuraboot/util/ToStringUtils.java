@@ -18,11 +18,13 @@ package org.sansenshimizu.sakuraboot.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
+import org.hibernate.LazyInitializationException;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.lang.Nullable;
 
@@ -210,21 +212,23 @@ public class ToStringUtils {
 
         if (object instanceof final HibernateProxy proxy) {
 
-            return proxy.getHibernateLazyInitializer()
-                .getImplementationClass()
-                .getSimpleName()
-                + "Proxy{id="
-                + proxy.getHibernateLazyInitializer().getIdentifier().toString()
-                + "}";
+            try {
+
+                return proxy.getHibernateLazyInitializer()
+                    .getImplementationClass()
+                    .getSimpleName()
+                    + "Proxy{id="
+                    + proxy.getHibernateLazyInitializer()
+                        .getIdentifier()
+                        .toString()
+                    + "}";
+            } catch (final LazyInitializationException e) {
+
+                return "UninitializedProxy";
+            }
         } else {
 
-            if (object == null) {
-
-                return "null";
-            } else {
-
-                return object.toString();
-            }
+            return Objects.requireNonNullElse(object, "null").toString();
         }
     }
 }
