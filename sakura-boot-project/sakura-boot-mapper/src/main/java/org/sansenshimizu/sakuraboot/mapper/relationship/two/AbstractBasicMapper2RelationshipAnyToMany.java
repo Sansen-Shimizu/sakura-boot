@@ -231,8 +231,7 @@ public abstract class AbstractBasicMapper2RelationshipAnyToMany<
 
             final Set<D3> entities = dto.getSecondRelationships();
 
-            if ((entities != null && !entities.isEmpty())
-                || useRelationObjectToMapToDto()) {
+            if ((entities != null && !entities.isEmpty())) {
 
                 return secondRelationshipFromDto(entities);
             }

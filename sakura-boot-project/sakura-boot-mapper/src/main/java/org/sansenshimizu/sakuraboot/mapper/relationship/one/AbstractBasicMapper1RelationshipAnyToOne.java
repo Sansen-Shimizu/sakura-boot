@@ -169,7 +169,7 @@ public abstract class AbstractBasicMapper1RelationshipAnyToOne<
 
             final D2 entity = dto.getRelationship();
 
-            if (entity != null || useRelationObjectToMapToDto()) {
+            if (entity != null) {
 
                 return relationshipToEntity(entity);
             }

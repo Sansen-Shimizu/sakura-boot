@@ -214,7 +214,7 @@ public abstract class AbstractBasicMapper2RelationshipAnyToOne<
 
             final D3 entity = dto.getSecondRelationship();
 
-            if (entity != null || useRelationObjectToMapToDto()) {
+            if (entity != null) {
 
                 return secondRelationshipToEntity(entity);
             }
