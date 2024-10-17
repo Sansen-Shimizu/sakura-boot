@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -264,7 +265,17 @@ public abstract class AbstractBasicMapper1RelationshipAnyToMany<
 
             if (getMapper() == null && getRelationalDtoType() != null) {
 
-                return getRelationalDtoType().cast(relationalEntity);
+                final Object relation;
+
+                if (relationalEntity instanceof final HibernateProxy proxy) {
+
+                    relation = proxy.getHibernateLazyInitializer()
+                        .getImplementation();
+                } else {
+
+                    relation = relationalEntity;
+                }
+                return getRelationalDtoType().cast(relation);
             }
             return getMapper().toDto(relationalEntity);
         }).filter(Objects::nonNull).collect(Collectors.toUnmodifiableSet());
