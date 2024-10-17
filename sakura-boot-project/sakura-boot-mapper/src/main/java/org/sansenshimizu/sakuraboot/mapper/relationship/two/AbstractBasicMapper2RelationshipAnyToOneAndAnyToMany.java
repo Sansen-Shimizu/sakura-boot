@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -321,7 +322,17 @@ public abstract
             if (getSecondMapper() == null
                 && getSecondRelationalDtoType() != null) {
 
-                return getSecondRelationalDtoType().cast(relationalEntity);
+                final Object relation;
+
+                if (relationalEntity instanceof final HibernateProxy proxy) {
+
+                    relation = proxy.getHibernateLazyInitializer()
+                        .getImplementation();
+                } else {
+
+                    relation = relationalEntity;
+                }
+                return getSecondRelationalDtoType().cast(relation);
             }
             return getSecondMapper().toDto(relationalEntity);
         }).filter(Objects::nonNull).collect(Collectors.toUnmodifiableSet());

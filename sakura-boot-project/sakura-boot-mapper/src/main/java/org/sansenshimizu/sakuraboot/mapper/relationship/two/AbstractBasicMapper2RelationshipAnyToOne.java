@@ -18,6 +18,7 @@ package org.sansenshimizu.sakuraboot.mapper.relationship.two;
 
 import java.io.Serializable;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -289,7 +290,17 @@ public abstract class AbstractBasicMapper2RelationshipAnyToOne<
 
         if (secondMapper == null && secondRelationalDtoType != null) {
 
-            return secondRelationalDtoType.cast(relationalEntity);
+            final Object relation;
+
+            if (relationalEntity instanceof final HibernateProxy proxy) {
+
+                relation
+                    = proxy.getHibernateLazyInitializer().getImplementation();
+            } else {
+
+                relation = relationalEntity;
+            }
+            return secondRelationalDtoType.cast(relation);
         }
 
         if (secondMapper != null) {
