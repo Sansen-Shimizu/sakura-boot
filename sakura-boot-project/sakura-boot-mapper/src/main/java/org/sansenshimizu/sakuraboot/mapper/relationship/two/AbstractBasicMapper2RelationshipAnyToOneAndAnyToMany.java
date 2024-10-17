@@ -234,8 +234,7 @@ public abstract
 
             final Set<D3> entities = dto.getRelationships();
 
-            if ((entities != null && !entities.isEmpty())
-                || useRelationObjectToMapToDto()) {
+            if ((entities != null && !entities.isEmpty())) {
 
                 return secondRelationshipFromDto(entities);
             }

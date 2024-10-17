@@ -180,8 +180,7 @@ public abstract class AbstractBasicMapper1RelationshipAnyToMany<
 
             final Set<D2> entities = dto.getRelationships();
 
-            if ((entities != null && !entities.isEmpty())
-                || useRelationObjectToMapToDto()) {
+            if ((entities != null && !entities.isEmpty())) {
 
                 return relationshipFromDto(entities);
             }
