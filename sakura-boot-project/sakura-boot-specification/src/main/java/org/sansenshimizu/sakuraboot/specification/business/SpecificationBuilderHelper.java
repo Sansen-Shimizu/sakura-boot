@@ -112,16 +112,17 @@ public class SpecificationBuilderHelper {
                 actualAttribute = entityManager.getMetamodel()
                     .embeddable(entityClass)
                     .getAttribute(field.getName());
+
+                if (!(filterField instanceof Filter)
+                    && actualAttribute != null) {
+
+                    return getFilterWithAttribute(entityClass, filterField,
+                        actualAttribute);
+                }
             } else {
 
                 return List.of();
             }
-        }
-
-        if (!(filterField instanceof Filter) && actualAttribute != null) {
-
-            return getFilterWithAttribute(entityClass, filterField,
-                actualAttribute);
         }
 
         return List.of(Pair.of(filterField, actualAttribute));

@@ -21,9 +21,9 @@ import java.io.Serializable;
 import lombok.Builder;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.TextFilter;
+import org.sansenshimizu.sakuraboot.specification.presentation.filters.TextFilterImpl;
 
 @Builder(toBuilder = true)
 public record AddressFilter(
-    @Nullable TextFilter street, @Nullable TextFilter city,
-    @Nullable TextFilter country) implements Serializable {}
+    @Nullable TextFilterImpl street, @Nullable TextFilterImpl city,
+    @Nullable TextFilterImpl country) implements Serializable {}

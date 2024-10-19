@@ -55,7 +55,7 @@ public class HobbyFilter extends AbstractBasicFilter<UUIDFilter> {
     private final UUIDFilterImpl id;
 
     @Nullable
-    private final FederationFilter federation;
+    private final FederationFilter federations;
 
     @Nullable
     private final TextFilterImpl name;
@@ -71,7 +71,7 @@ public class HobbyFilter extends AbstractBasicFilter<UUIDFilter> {
         final List<Pair<String, Object>> list) {
 
         super.listFieldsForToString(list);
-        list.add(Pair.of("federation", getFederation()));
+        list.add(Pair.of("federations", getFederations()));
         list.add(Pair.of("name", getName()));
         list.add(Pair.of("participationRate", getParticipationRate()));
         list.add(Pair.of("lastUpdated", getLastUpdated()));

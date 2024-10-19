@@ -53,7 +53,7 @@ public class HobbyFilter extends AbstractBasicFilter<NumberFilter<Long>> {
     private final NumberFilterImpl<Long> id;
 
     @Nullable
-    private final FederationFilter federation;
+    private final FederationFilter federations;
 
     @Nullable
     private final TextFilterImpl name;
@@ -63,7 +63,7 @@ public class HobbyFilter extends AbstractBasicFilter<NumberFilter<Long>> {
         final List<Pair<String, Object>> list) {
 
         super.listFieldsForToString(list);
-        list.add(Pair.of("federation", getFederation()));
+        list.add(Pair.of("federations", getFederations()));
         list.add(Pair.of("name", getName()));
         return list;
     }
