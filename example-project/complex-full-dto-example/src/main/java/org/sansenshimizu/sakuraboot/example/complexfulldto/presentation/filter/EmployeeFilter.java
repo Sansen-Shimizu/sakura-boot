@@ -56,7 +56,7 @@ public class EmployeeFilter extends AbstractBasicFilter<NumberFilter<Long>> {
     private final DepartmentFilter department;
 
     @Nullable
-    private final HobbyFilter hobby;
+    private final HobbyFilter hobbies;
 
     @Nullable
     private final TextFilterImpl name;
@@ -67,7 +67,7 @@ public class EmployeeFilter extends AbstractBasicFilter<NumberFilter<Long>> {
 
         super.listFieldsForToString(list);
         list.add(Pair.of("department", getDepartment()));
-        list.add(Pair.of("hobby", getHobby()));
+        list.add(Pair.of("hobbies", getHobbies()));
         list.add(Pair.of("name", getName()));
         return list;
     }

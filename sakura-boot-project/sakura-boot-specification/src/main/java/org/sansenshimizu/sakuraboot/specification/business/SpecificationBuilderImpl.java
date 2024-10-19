@@ -29,6 +29,8 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.ListAttribute;
+import jakarta.persistence.metamodel.PluralAttribute;
+import jakarta.persistence.metamodel.SetAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -83,6 +85,12 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.TextF
 @Component
 public class SpecificationBuilderImpl<D extends DataPresentation<?>>
     implements SpecificationBuilder<D> {
+
+    /**
+     * The error message when an unsupported attribute type is used.
+     */
+    private static final String UNSUPPORTED_ATTRIBUTE_TYPE
+        = "Unsupported attribute type: ";
 
     /**
      * The list of the different specification that will be used to construct
@@ -215,8 +223,19 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
     private void createSpecificationForRelationship(
         final Object filter, final List<Attribute<?, ?>> attributes) {
 
-        final Class<?> relationshipClass
-            = attributes.get(attributes.size() - 1).getJavaType();
+        final Class<?> relationshipClass;
+
+        final Attribute<?, ?> attribute = attributes.get(attributes.size() - 1);
+
+        if (attribute.isCollection()) {
+
+            relationshipClass
+                = ((PluralAttribute<?, ?, ?>) attribute).getElementType()
+                    .getJavaType();
+        } else {
+
+            relationshipClass = attribute.getJavaType();
+        }
         helper.getFilterWithAttribute(relationshipClass, filter)
             .forEach((final Pair<Object, Attribute<?, ?>> pair) -> {
 
@@ -237,11 +256,8 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
         }
 
         final Iterator<Attribute<?, ?>> it = attributes.iterator();
-        @SuppressWarnings("unchecked")
-        final SingularAttribute<D, Y> attribute
-            = (SingularAttribute<D, Y>) it.next();
         final Function<Root<D>, Join<D, Y>> join
-            = createAttributeFunctionForRelationship(attribute);
+            = createAttributeFunctionForRelationship(it.next());
         return createAttributeFunctionRecursive(join, it);
     }
 
@@ -261,12 +277,9 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
             return root -> parentJoin.apply(root).get(castAttribute);
         } else {
 
-            @SuppressWarnings("unchecked")
-            final SingularAttribute<Y, Z> castAttribute
-                = (SingularAttribute<Y, Z>) attribute;
             final Function<Root<D>, Join<Y, Z>> currentJoin
                 = createAttributeFunctionForNestedRelationship(parentJoin,
-                    castAttribute);
+                    attribute);
             return createAttributeFunctionRecursive(currentJoin, it);
         }
     }
@@ -284,11 +297,8 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
         }
 
         final Iterator<Attribute<?, ?>> it = attributes.iterator();
-        @SuppressWarnings("unchecked")
-        final SingularAttribute<D, Y> attribute
-            = (SingularAttribute<D, Y>) it.next();
         final Function<Root<D>, Join<D, Y>> join
-            = createAttributeFunctionForRelationship(attribute);
+            = createAttributeFunctionForRelationship(it.next());
         return createListAttributeFunctionRecursive(join, it);
     }
 
@@ -308,30 +318,58 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
             return root -> parentJoin.apply(root).get(castAttribute);
         } else {
 
-            @SuppressWarnings("unchecked")
-            final SingularAttribute<Y, Z> castAttribute
-                = (SingularAttribute<Y, Z>) attribute;
             final Function<Root<D>, Join<Y, Z>> currentJoin
                 = createAttributeFunctionForNestedRelationship(parentJoin,
-                    castAttribute);
+                    attribute);
             return createListAttributeFunctionRecursive(currentJoin, it);
         }
     }
 
     private <
         Y> Function<Root<D>, Join<D, Y>> createAttributeFunctionForRelationship(
-            final SingularAttribute<D, Y> attribute) {
+            final Attribute<?, ?> attribute) {
 
-        return root -> root.join(attribute, JoinType.LEFT);
+        if (!attribute.isCollection()) {
+
+            @SuppressWarnings("unchecked")
+            final SingularAttribute<D, Y> singularAttribute
+                = (SingularAttribute<D, Y>) attribute;
+            return root -> root.join(singularAttribute, JoinType.LEFT);
+        }
+
+        if (attribute instanceof SetAttribute<?, ?>) {
+
+            @SuppressWarnings("unchecked")
+            final SetAttribute<D, Y> setAttribute
+                = (SetAttribute<D, Y>) attribute;
+            return root -> root.join(setAttribute, JoinType.LEFT);
+        }
+        throw new RuntimeException(UNSUPPORTED_ATTRIBUTE_TYPE + attribute);
     }
 
     private <
         X, Y, Z> Function<Root<D>, Join<Y, Z>>
         createAttributeFunctionForNestedRelationship(
             final Function<Root<D>, Join<X, Y>> join,
-            final SingularAttribute<Y, Z> attribute) {
+            final Attribute<?, ?> attribute) {
 
-        return root -> join.apply(root).join(attribute, JoinType.LEFT);
+        if (!attribute.isCollection()) {
+
+            @SuppressWarnings("unchecked")
+            final SingularAttribute<Y, Z> singularAttribute
+                = (SingularAttribute<Y, Z>) attribute;
+            return root -> join.apply(root)
+                .join(singularAttribute, JoinType.LEFT);
+        }
+
+        if (attribute instanceof SetAttribute<?, ?>) {
+
+            @SuppressWarnings("unchecked")
+            final SetAttribute<Y, Z> setAttribute
+                = (SetAttribute<Y, Z>) attribute;
+            return root -> join.apply(root).join(setAttribute, JoinType.LEFT);
+        }
+        throw new RuntimeException(UNSUPPORTED_ATTRIBUTE_TYPE + attribute);
     }
 
     /**
