@@ -27,11 +27,14 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-    - name: Install Antora
-      run: npm i antora
+    - name: Install for UI project
+      working-directory: ./docs/antora-ui-sakura-boot
+      run: npm i
     - name: Generate UI
       working-directory: ./docs/antora-ui-sakura-boot
       run: npx gulp bundle
+    - name: Install Antora
+      run: npm i antora
     - name: Generate Site
       working-directory: ./docs
       run: npx antora antora-playbook.yml
