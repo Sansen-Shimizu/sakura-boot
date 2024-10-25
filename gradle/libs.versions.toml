@@ -1,9 +1,11 @@
 [versions]
 # GRADLE PLUGIN VERSION
+antora = "1.0.0"
 classpath-collision-detector = "1.0.0"
 cyclonedx-gradle-plugin = "1.8.2"
 dependency-analysis-gradle-plugin = "1.32.0"
 jvm-dependency-conflict-resolution = "2.1.1"
+node = "7.1.0"
 spotless-plugin-gradle = "6.25.0"
 
 # DEPENDENCY VERSION
@@ -18,10 +20,12 @@ swagger = "2.2.22"
 
 [libraries]
 # GRADLE PLUGIN
+antora = { module = "org.antora:gradle-antora-plugin", version.ref = "antora" }
 classpath-collision-detector = { module = "io.fuchs.gradle.classpath-collision-detector:classpath-collision-detector", version.ref = "classpath-collision-detector" }
 cyclonedx-gradle-plugin = { module = "org.cyclonedx:cyclonedx-gradle-plugin", version.ref = "cyclonedx-gradle-plugin" }
 dependency-analysis-gradle-plugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analysis-gradle-plugin" }
 jvm-dependency-conflict-resolution = { module = "org.gradlex:jvm-dependency-conflict-resolution", version.ref = "jvm-dependency-conflict-resolution" }
+node = { module = "com.github.node-gradle:gradle-node-plugin", version.ref = "node" }
 spotless-plugin-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless-plugin-gradle" }
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
 
@@ -114,6 +118,8 @@ dependency-lombok = { id = "org.sansenshimizu.gradle.dependency.lombok" }
 dependency-lombok-test = { id = "org.sansenshimizu.gradle.dependency.lombok-test" }
 dependency-spring-boot-development = { id = "org.sansenshimizu.gradle.dependency.spring-boot-development" }
 
+feature-antora = { id = "org.sansenshimizu.gradle.feature.antora" }
+feature-antora-ui = { id = "org.sansenshimizu.gradle.feature.antora-ui" }
 feature-compile-java = { id = "org.sansenshimizu.gradle.feature.compile-java" }
 feature-javadoc = { id = "org.sansenshimizu.gradle.feature.javadoc" }
 feature-publish = { id = "org.sansenshimizu.gradle.feature.publish" }

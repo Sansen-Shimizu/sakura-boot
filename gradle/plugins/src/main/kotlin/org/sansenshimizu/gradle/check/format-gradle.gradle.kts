@@ -7,6 +7,8 @@ plugins {
     id("org.sansenshimizu.gradle.base.lifecycle")
 }
 
+repositories.mavenCentral()
+
 spotless.kotlinGradle {
     ktfmt().kotlinlangStyle().configure { it.setMaxWidth(80) }
     addStep(SortDependenciesStep.create())
