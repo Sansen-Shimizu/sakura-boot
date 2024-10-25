@@ -21,11 +21,14 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,10 @@ import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
 import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
 import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
 import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
+import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
 
 /**
  * The service interface for patchById operation.
@@ -169,6 +176,8 @@ public interface PatchByIdService<E extends DataPresentation<I>,
                     () -> new NotFoundException(getEntityClass(), dataId));
         }
 
+        initializeProxy(data);
+
         final Map<String, Object> entityMap
             = getObjectMapper().convertValue(data, new TypeReference<>() {});
 
@@ -198,6 +207,55 @@ public interface PatchByIdService<E extends DataPresentation<I>,
         }
 
         return getRepository().save(entity);
+    }
+
+    private static <
+        I extends Comparable<? super I> & Serializable> void
+        initializeProxy(final DataPresentation<I> data) {
+
+        if (data instanceof final DataPresentation1RelationshipAnyToOne<?,
+            ?> relationshipAnyToOne
+            && relationshipAnyToOne
+                .getRelationship() instanceof final HibernateProxy proxy) {
+
+            Hibernate.initialize(proxy);
+        }
+
+        if (data instanceof final DataPresentation1RelationshipAnyToMany<?,
+            ?> relationshipAnyToMany) {
+
+            final Set<?> relationships
+                = relationshipAnyToMany.getRelationships();
+
+            if (relationships != null) {
+
+                relationships.stream()
+                    .filter(HibernateProxy.class::isInstance)
+                    .forEach(Hibernate::initialize);
+            }
+        }
+
+        if (data instanceof final DataPresentation2RelationshipAnyToOne<?, ?,
+            ?> relationshipAnyToOne
+            && relationshipAnyToOne
+                .getSecondRelationship() instanceof final HibernateProxy proxy) {
+
+            Hibernate.initialize(proxy);
+        }
+
+        if (data instanceof final DataPresentation2RelationshipAnyToMany<?, ?,
+            ?> relationshipAnyToMany) {
+
+            final Set<?> relationships
+                = relationshipAnyToMany.getSecondRelationships();
+
+            if (relationships != null) {
+
+                relationships.stream()
+                    .filter(HibernateProxy.class::isInstance)
+                    .forEach(Hibernate::initialize);
+            }
+        }
     }
 
     private I getId(final DataPresentation<I> data, @Nullable final I id) {

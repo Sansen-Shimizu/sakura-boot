@@ -2,7 +2,7 @@ plugins { alias(libs.plugins.component.framework) }
 
 description =
     "Framework to simplify the creation of a spring boot application. " +
-        "The basic module api."
+            "The basic module api."
 
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description
@@ -24,6 +24,7 @@ dependencies {
     api(libs.spring.web)
     api(libs.springdoc.openapi.starter.common)
     api(libs.swagger.annotations.jakarta)
+    implementation(libs.hibernate.core)
     implementation(libs.jackson.core)
     implementation(libs.spring.webmvc)
 }
