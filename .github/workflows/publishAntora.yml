@@ -29,6 +29,8 @@ jobs:
         node-version: '18'
     - name: Install Antora
       run: npm i antora
+    - name: Generate UI
+      run: npx gulp bundle --gulpfile docs/antora-ui-sakura-boot/gulpfile.js
     - name: Generate Site
       run: npx antora docs/antora-playbook.yml
     - name: Upload Artifacts
