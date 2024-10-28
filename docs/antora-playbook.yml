@@ -12,9 +12,3 @@ ui:
   bundle:
     url: ./antora-ui-sakura-boot/build/ui-bundle.zip
     snapshot: true
-  supplemental_files:
-    - path: ui.yml
-      contents: |
-        static_files:
-        - .nojekyll
-    - path: .nojekyll
