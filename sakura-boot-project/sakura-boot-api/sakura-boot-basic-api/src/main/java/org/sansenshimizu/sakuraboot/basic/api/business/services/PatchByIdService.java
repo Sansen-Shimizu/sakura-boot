@@ -17,6 +17,8 @@
 package org.sansenshimizu.sakuraboot.basic.api.business.services;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -170,10 +172,16 @@ public interface PatchByIdService<E extends DataPresentation<I>,
         final Map<String, Object> entityMap
             = getObjectMapper().convertValue(data, new TypeReference<>() {});
 
-        final Map<String, Object> objectMapNonNullValues = entityMap.entrySet()
-            .stream()
-            .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        final Map<String,
+            Object> objectMapNonNullValues = entityMap.entrySet()
+                .stream()
+                .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
+                .filter(entityEntry -> Arrays
+                    .stream(getEntityClass().getDeclaredFields())
+                    .map(Field::getName)
+                    .anyMatch(entityEntry.getKey()::equals))
+                .collect(
+                    Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         // MUST remove the null value manually because
         // setSerializationInclusion(Include.NON_NULL)
         // don't work with the @NotNull field.

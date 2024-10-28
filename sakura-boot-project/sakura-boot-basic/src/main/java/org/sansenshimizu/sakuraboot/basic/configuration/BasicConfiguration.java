@@ -16,7 +16,10 @@
 
 package org.sansenshimizu.sakuraboot.basic.configuration;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -32,4 +35,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement(order = Ordered.HIGHEST_PRECEDENCE)
 @AutoConfigurationPackage(basePackages = "org.sansenshimizu.sakuraboot")
-public class BasicConfiguration {}
+public class BasicConfiguration {
+
+    /**
+     * Bean to add the {@link Hibernate5JakartaModule} to the object mapper.
+     * It will handle the Hibernate proxies.
+     *
+     * @return The {@link Hibernate5JakartaModule}.
+     */
+    @Bean
+    protected Module module() {
+
+        return new Hibernate5JakartaModule();
+    }
+}
