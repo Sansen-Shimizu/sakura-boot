@@ -172,6 +172,7 @@ boot].
 * https://github.com/springdoc[Spring doc]
 * https://github.com/projectlombok/lombok[Lombok]
 * https://github.com/jjohannes/gradle-project-setup-howto/tree/spring_boot[Gradle best practice]
+* https://antora.org/[Antora]
 
 == Contact Information
 
