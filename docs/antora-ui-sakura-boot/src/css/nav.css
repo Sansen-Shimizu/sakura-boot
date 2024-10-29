@@ -282,8 +282,8 @@
 }
 
 .nav-panel-explore .component .is-current a {
-  background: var(--nav-heading-font-color);
-  color: var(--nav-secondary-background);
+  background: var(--color-sakura);
+  color: inherit;
   font-weight: var(--body-font-weight-bold);
   opacity: 1;
 }

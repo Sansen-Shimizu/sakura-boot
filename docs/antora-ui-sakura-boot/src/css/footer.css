@@ -27,6 +27,10 @@ footer.footer {
 
 .footer-column h3 {
   margin-bottom: 10px;
+  color: var(--color-sakura);
+  background-color: var(--color-jet-80);
+  border-radius: 20px;
+  text-align: center;
 }
 
 .footer-column ul {
