@@ -18,6 +18,7 @@ output:
   dir: ./build/site
   destinations:
     - provider: archive
+      path: ./build/site/site.zip
 antora:
   extensions:
     - require: '@antora/lunr-extension'
