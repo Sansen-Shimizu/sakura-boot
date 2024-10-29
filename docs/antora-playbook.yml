@@ -14,6 +14,10 @@ ui:
   bundle:
     url: ./antora-ui-sakura-boot/build/ui-bundle.zip
     snapshot: true
+output:
+  dir: ./build/site
+  destinations:
+    - provider: archive
 antora:
   extensions:
     - require: '@antora/lunr-extension'
