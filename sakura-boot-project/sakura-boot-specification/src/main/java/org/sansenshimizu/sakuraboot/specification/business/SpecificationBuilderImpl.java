@@ -251,14 +251,17 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
 
             @SuppressWarnings("unchecked")
             final SingularAttribute<? super D, T> attribute
-                = (SingularAttribute<? super D, T>) attributes.get(0);
+                = (SingularAttribute<? super D, T>) attributes.remove(0);
             return root -> root.get(attribute);
         }
 
         final Iterator<Attribute<?, ?>> it = attributes.iterator();
         final Function<Root<D>, Join<D, Y>> join
             = createAttributeFunctionForRelationship(it.next());
-        return createAttributeFunctionRecursive(join, it);
+        final Function<Root<D>, Expression<T>> result
+            = createAttributeFunctionRecursive(join, it);
+        attributes.clear();
+        return result;
     }
 
     private <
@@ -292,14 +295,17 @@ public class SpecificationBuilderImpl<D extends DataPresentation<?>>
 
             @SuppressWarnings("unchecked")
             final ListAttribute<D, T> attribute
-                = (ListAttribute<D, T>) attributes.get(0);
+                = (ListAttribute<D, T>) attributes.remove(0);
             return root -> root.get(attribute);
         }
 
         final Iterator<Attribute<?, ?>> it = attributes.iterator();
         final Function<Root<D>, Join<D, Y>> join
             = createAttributeFunctionForRelationship(it.next());
-        return createListAttributeFunctionRecursive(join, it);
+        final Function<Root<D>, Expression<List<T>>> result
+            = createListAttributeFunctionRecursive(join, it);
+        attributes.clear();
+        return result;
     }
 
     private <
