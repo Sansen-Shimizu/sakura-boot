@@ -38,10 +38,13 @@ jobs:
       - name: Generate Site
         working-directory: ./docs
         run: npx antora antora-playbook.yml
+      - name: Copy index.html to the build directory
+        working-directory: ./docs
+        run: cp index.html build/
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/build/site
+          path: docs/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

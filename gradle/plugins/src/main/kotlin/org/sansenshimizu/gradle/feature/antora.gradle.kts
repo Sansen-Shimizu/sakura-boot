@@ -11,4 +11,10 @@ antora {
 
 tasks.named("antora") {
     group = "documentation"
+    finalizedBy("addStaticIndex")
+}
+
+tasks.register<Copy>("addStaticIndex") {
+    from(file("$projectDir/index.html"))
+    into(layout.buildDirectory)
 }

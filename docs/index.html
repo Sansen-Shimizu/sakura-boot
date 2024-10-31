@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sakura Boot - Framework on top of spring-boot that helps create back-ends.">
+    <meta name="keywords"
+          content="Sakura Boot, Spring Boot, open source, framework, Java, API, Rest API, Back-End, Gradle">
+    <meta name="author" content="Malcolm Rozé">
+    <title>Sakura Boot</title>
+    <link rel="stylesheet" href="documentation/_/css/site.css">
+    <link rel="icon" href="documentation/_/img/favicon.ico" type="image/x-icon">
+</head>
+<style>
+    body {
+        background-color: #333333;
+        color: #fff;
+    }
+    a img {
+        height: 3rem;
+    }
+    a.navbar-item img {
+        height: 3.5rem;
+    }
+    .navbar-menu {
+        background-color: #191919;
+    }
+    .navbar-item {
+        color: #fff;
+    }
+    .navbar-menu a.navbar-item:hover {
+        background-color: #000;
+    }
+    main {
+        margin-top: 33vh;
+        padding: 40px;
+    }
+    main div {
+        padding: 20px;
+        text-align: center;
+    }
+    main h1 {
+        font-size: 4rem;
+        color: #ffb7c5;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    main p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #c2c2c2;
+    }
+    .flower-container {
+        position: relative;
+        display: inline-block;
+    }
+    .o-letter {
+        display: inline-block;
+        font-size: 1em;
+        position: relative;
+        z-index: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .flower {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 57%;
+        left: 50%;
+        background-image: url('documentation/_/img/sakura-flower.png');
+        background-size: cover;
+        background-position: center;
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        z-index: 2;
+        transition: all 0.3s ease-in-out;
+    }
+    footer.footer {
+        background-color: #4f4f4f;
+        color: #fff;
+    }
+    footer.footer a {
+        color: #ffb7c5;
+    }
+    @media (max-width: 768px) {
+        main {
+            padding: 20px;
+        }
+        main h1 {
+            font-size: 2rem;
+        }
+        main p {
+            font-size: 1rem;
+        }
+    }
+</style>
+<body>
+<header class="header">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://sakuraboot.sansenshimizu.org">
+                <img src="documentation/_/img/logo.png" alt="Sakura Boot logo">
+            </a>
+
+            <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false"
+                    aria-label="Toggle main menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div id="topbar-nav" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" href="documentation/index.html">
+                    Documentation
+                </a>
+                <a class="navbar-item" href="https://github.com/Sansen-Shimizu/sakura-boot" target="_blank">
+                    <img class="navbar-item" src="documentation/_/img/github-white.svg" alt="github logo">
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div>
+        <h1><span id="s-letter">S</span>akura B<span class="flower-container">
+                <span class="o-letter">o</span>
+                <span class="flower"></span>
+            </span><span class="flower-container">
+                <span class="o-letter">o</span>
+                <span class="flower"></span>
+            </span>t</h1>
+        <p>Sakura Boot is an open-source framework on top of spring-boot that helps create back-ends.</p>
+    </div>
+</main>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <h3>Useful Links</h3>
+            <ul>
+                <li><a href="documentation/index.html">Documentation</a></li>
+                <li><a href="https://github.com/Sansen-Shimizu/sakura-boot" target="_blank">GitHub Repository</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Project Information</h3>
+            <ul>
+                <li><p>Copyright &copy; 2023–2024 Sakura boot — All rights reserved.</p></li>
+                <li><p>Sakura boot is licensed under the Apache 2.0 License.
+                    <a href="https://www.apache.org/licenses/LICENSE-2.0">View license details.</a></p></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="mailto:malcolm@sansenshimizu.com">malcolm@sansenshimizu.com</a></li>
+                <li><a href="https://sansen-shimizu.co.jp/">Sansen Shimizu</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+<script src="documentation/_/js/site.js"></script>
+<script>
+    document.addEventListener("scroll", function () {
+        const scrollPosition = window.scrollY;
+        const flowerElements = document.querySelectorAll('.flower');
+        const oLetters = document.querySelectorAll('.o-letter');
+
+        const scaleFactor = 1 + scrollPosition / 250;
+        const opacityFactor = scrollPosition / 150;
+
+        flowerElements.forEach((flower, index) => {
+            const scale = Math.min(scaleFactor, 2);
+            const opacity = Math.min(opacityFactor, 1);
+
+            flower.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            flower.style.opacity = opacity;
+
+            if (opacity > 0.8) {
+                oLetters[index].style.opacity = 0;
+            } else {
+                oLetters[index].style.opacity = 1;
+            }
+        });
+    });
+</script>
+</html>
+
