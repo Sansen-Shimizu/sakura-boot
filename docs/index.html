@@ -50,30 +50,39 @@
         line-height: 1.6;
         color: #c2c2c2;
     }
-    .flower-container {
+    .river-container, .flower-container {
         position: relative;
         display: inline-block;
     }
-    .o-letter {
+    .s-letter, .o-letter {
         display: inline-block;
         font-size: 1em;
         position: relative;
         z-index: 1;
         transition: opacity 0.3s ease-in-out;
     }
-    .flower {
+    .river, .flower {
         position: absolute;
-        width: 20px;
-        height: 20px;
-        top: 57%;
-        left: 50%;
-        background-image: url('documentation/_/img/sakura-flower.png');
         background-size: cover;
         background-position: center;
         transform: translate(-50%, -50%) scale(0);
         opacity: 0;
         z-index: 2;
         transition: all 0.3s ease-in-out;
+    }
+    .flower {
+        width: 20px;
+        height: 20px;
+        top: 57%;
+        left: 50%;
+        background-image: url('documentation/_/img/sakura-flower.png');
+    }
+    .river {
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        left: 50%;
+        background-image: url('documentation/_/img/river.png');
     }
     footer.footer {
         background-color: #4f4f4f;
@@ -128,7 +137,10 @@
 </header>
 <main>
     <div>
-        <h1><span id="s-letter">S</span>akura B<span class="flower-container">
+        <h1><span class="river-container">
+                <span class="s-letter">S</span>
+                <span class="river"></span>
+            </span>akura B<span class="flower-container">
                 <span class="o-letter">o</span>
                 <span class="flower"></span>
             </span><span class="flower-container">
@@ -169,7 +181,9 @@
 <script>
     document.addEventListener("scroll", function () {
         const scrollPosition = window.scrollY;
+        const riverElement = document.querySelector('.river');
         const flowerElements = document.querySelectorAll('.flower');
+        const sLetter = document.querySelector('.s-letter');
         const oLetters = document.querySelectorAll('.o-letter');
 
         const scaleFactor = 1 + scrollPosition / 250;
@@ -188,6 +202,18 @@
                 oLetters[index].style.opacity = 1;
             }
         });
+
+        const scale = Math.min(scaleFactor, 2);
+        const opacity = Math.min(opacityFactor, 1);
+
+        riverElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        riverElement.style.opacity = opacity;
+
+        if (opacity > 0.4) {
+            sLetter.style.opacity = 0;
+        } else {
+            sLetter.style.opacity = 1;
+        }
     });
 </script>
 </html>
