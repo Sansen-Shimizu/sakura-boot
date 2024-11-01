@@ -14,7 +14,11 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="{{{relativize site.homeUrl}}}">Home</a>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://www.javadoc.io/doc/org.sansenshimizu.sakuraboot" target="_blank">Javadoc</a>
+          </span>
+        </div>
         <div class="navbar-item search hide-for-print">
           <div id="search-field" class="field">
             <input id="search-input" type="text" placeholder="Search the docs"{{#if page.home}} autofocus{{/if}}>
