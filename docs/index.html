@@ -32,22 +32,27 @@
         background-color: #000;
     }
     main {
-        margin-top: 33vh;
         padding: 40px;
     }
-    main div {
+    .intro {
         padding: 20px;
         text-align: center;
+        margin-top: 33vh;
+        margin-bottom: 15vh;
     }
-    main h1 {
-        font-size: 4rem;
+    .intro h1 {
+        font-size: 6rem;
         color: #ffb7c5;
         margin-bottom: 20px;
         font-weight: bold;
+        white-space: nowrap;
     }
-    main p {
-        font-size: 1.2rem;
-        line-height: 1.6;
+    .intro h1 br {
+        display: none;
+    }
+    .intro p {
+        font-size: 1.4rem;
+        line-height: 1.8;
         color: #c2c2c2;
     }
     .river-container, .flower-container {
@@ -71,18 +76,87 @@
         transition: all 0.3s ease-in-out;
     }
     .flower {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         top: 57%;
         left: 50%;
         background-image: url('documentation/_/img/sakura-flower.png');
     }
     .river {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         top: 50%;
         left: 50%;
         background-image: url('documentation/_/img/river.png');
+    }
+    .content {
+        display: block !important;
+        padding: 20px;
+        margin-bottom: 15vh;
+    }
+    .left-content {
+        margin-right: 30vw;
+    }
+    .right-content {
+        margin-left: 30vw;
+        text-align: end;
+    }
+    .center-content {
+        text-align: center;
+    }
+    .content h2 {
+        font-size: 2rem;
+        color: #ffb7c5;
+        margin-bottom: 20px;
+    }
+    .content a {
+        color: #3aabb6;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .content p {
+        font-size: 1.2rem;
+        line-height: 1.5;
+        letter-spacing: 0.03rem;
+        text-align: justify;
+        color: #e4e4e4;
+    }
+    .center-content p {
+        text-align: center;
+    }
+    .java-content, .other-content {
+        display: none;
+    }
+    .who {
+        background-color: #191919;
+        border-radius: 5px;
+        border: 4px solid #ffb7c5;
+        box-shadow: -3px 4px 12px 0px #f7d2d969;
+        padding: 0 0 15px 0;
+    }
+    .who-buttons {
+        display: flex;
+        border-bottom: 4px solid #ffb7c5;
+    }
+    .who-buttons button {
+        background-color: #3aabb6;
+        color: #000;
+        flex-grow: 1;
+        border: 2px solid #ffb7c5;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    .who-buttons button:hover {
+        background-color: #0056b3;
+        transform: scale(1.01);
+    }
+    .spring-boot-content, .java-content, .other-content {
+        border-radius: 5px;
+        padding: 15px;
+    }
+    .who-content h3 {
+        color: #fff;
     }
     footer.footer {
         background-color: #4f4f4f;
@@ -95,20 +169,34 @@
         main {
             padding: 20px;
         }
-        main h1 {
-            font-size: 2rem;
+        .intro h1 {
+            font-size: 4rem;
         }
-        main p {
-            font-size: 1rem;
+        .intro p {
+            font-size: 1.2rem;
         }
         .flower {
-            width: 10px;
-            height: 10px;
-            top: 54%;
-        }
-        .river {
             width: 20px;
             height: 20px;
+            top: 57%;
+        }
+        .river {
+            width: 40px;
+            height: 40px;
+        }
+        .left-content {
+            margin-right: 5vw;
+        }
+        .right-content {
+            margin-left: 5vw;
+        }
+        .who-buttons {
+            flex-direction: column;
+        }
+        @media (max-width: 450px) {
+            .intro h1 br {
+                display: block;
+            }
         }
     }
 </style>
@@ -140,18 +228,97 @@
     </nav>
 </header>
 <main>
-    <div>
+    <div class="intro">
         <h1><span class="river-container">
                 <span class="s-letter">S</span>
                 <span class="river"></span>
-            </span>akura B<span class="flower-container">
+            </span>akura <br>B<span class="flower-container">
                 <span class="o-letter">o</span>
                 <span class="flower"></span>
             </span><span class="flower-container">
                 <span class="o-letter">o</span>
                 <span class="flower"></span>
             </span>t</h1>
-        <p>Sakura Boot is an open-source framework on top of spring-boot that helps create back-ends.</p>
+        <p>Open-source framework on top of spring-boot that helps create back-ends.</p>
+    </div>
+    <div class="left-content content">
+        <h2>What is Sakura Boot?</h2>
+        <p>Sakura Boot is an open-source framework.</p>
+        <p>This framework, built on top of Spring Boot, is designed to speed up the development of robust backends.</p>
+        <p>It ensures adherence to best practices while allowing a high degree of customization.</p>
+        <p>The framework is structured using a modular architecture, making it easy to add or remove features based on
+            the project’s specific needs.</p>
+    </div>
+    <div class="right-content content">
+        <h2>Why Sakura Boot?</h2>
+        <p>First, the name Sakura Boot is named to reflect its foundation on Spring Boot, while "Sakura"
+            symbolizing the brief cherry blossoms season in Japan,
+            this highlights the framework’s focus on rapid and efficient backend development.</p>
+        <p>While Spring Boot speeds up the development process, developers still require extensive knowledge, must
+            ensure adherence to best practices, and often write repetitive code for each project.</p>
+        <p>By using built-in configurations and pre-defined templates, this framework significantly reduces
+            development time.</p>
+        <p>It also ensures that the code adheres to best practices, reducing the risk of common mistakes.</p>
+        <p>Developers can start with a quick, functional application and then gradually add custom logic or
+            additional libraries as required.</p>
+        <p>Spring Boot follows the principle of convention over configuration, Sakura Boot extends it with
+            convention over code.</p>
+    </div>
+    <div class="left-content content">
+        <h2>Who should use Sakura Boot?</h2>
+        <div class="who">
+            <div class="who-buttons">
+                <button onclick="changeWho('spring-boot')">Spring Boot developers</button>
+                <button onclick="changeWho('java')">Java developers</button>
+                <button onclick="changeWho('other')">Other developers</button>
+            </div>
+            <div class="who-content">
+                <div class="spring-boot-content">
+                    <h3>Spring Boot developers</h3>
+                    <p>Spring Boot developers can use Sakura Boot as a starting point for their projects.</p>
+                    <p>First, create a new project using the necessary modules.
+                        After that, start adding features or replacing existing ones.</p>
+                    <p>No need to write the same repetitive code over and over again.
+                        Start with a simple production-ready back-end.</p>
+                    <p>Perfect for quick proof-of-concepts, prototyping, creating multiple common projects, or rapid
+                        development of new projects.</p>
+                </div>
+                <div class="java-content">
+                    <h3>Java developers</h3>
+                    <p>Java developers can use Sakura Boot as a starting point for their projects.</p>
+                    <p>First, create a new project using the necessary modules.
+                        After that, start adding features or replacing existing ones.</p>
+                    <p>Even without any experience with Spring Boot, it is possible to create a simple production-ready
+                        back-end.
+                        Also ensures that the code adheres to the best practices and avoids common mistakes.</p>
+                    <p>Perfect for quick proof-of-concepts, prototyping, creating multiple common projects, learning,
+                        or rapid development of new projects.</p>
+                </div>
+                <div class="other-content">
+                    <h3>Other developers</h3>
+                    <p>For back-end developers who don’t have any experience with Spring Boot or java, for front-end
+                        developers, or for those who just want to learn how to use Spring Boot, it is possible to
+                        create a simple production-ready back-end.</p>
+                    <p>First, Create a new project using the necessary modules.
+                        Then, follow the documentation to start with a simple back-end.</p>
+                    <p>Even without any experience with Spring Boot, it is possible to create a simple production-ready
+                        back-end.
+                        Also ensures that the code adheres to the best practices and avoids common mistakes.</p>
+                    <p>Perfect for quick prototyping, learning, or development of a first Spring Boot project.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center-content content">
+        <h2>How to use Sakura Boot?</h2>
+        <p>The <a href="documentation/index.html">documentation</a> explains in detail how to use Sakura Boot and the
+            different modules.</p>
+        <p>The <a href="documentation/sakura-boot/latest/quickstart">quickstart page</a> provides a step-by-step guide
+            to install and create a new project.
+        </p>
+        <p>The <a href="https://www.javadoc.io/doc/org.sansenshimizu.sakuraboot">Javadoc</a> provides detailed
+            descriptions for all interfaces, classes, methods, and fields with examples.</p>
+        <p>The source code is available on <a href="https://github.com/Sansen-Shimizu/sakura-boot">GitHub</a>.</p>
     </div>
 </main>
 <footer class="footer">
@@ -221,6 +388,15 @@
             sLetter.style.opacity = 1;
         }
     });
+
+    function changeWho(who) {
+        const allWhoContent = document.querySelectorAll('.who-content > div');
+        allWhoContent.forEach((whoContent) => {
+            whoContent.style.display = 'none';
+        });
+        const whoContent = document.querySelector('.' + who + '-content');
+        whoContent.style.display = 'block';
+    }
 </script>
 </html>
 
