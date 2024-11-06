@@ -1,0 +1,816 @@
+= Quickstart
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot quickstart page documentation
+
+The quickstart documentation will demonstrate how to install and use Sakura Boot to create a simple rest API application.
+
+== Prerequisites
+
+See xref:requirements.adoc[] for prerequisites.
+
+== Project structure
+
+Multiple structures are possible when working with Sakura Boot. +
+For this quickstart rest API project, the structure is as follows:
+
+[listing]
+----
+📂 project <.>
+  📂 src <.>
+    📂 main
+        📂 java <.>
+            📂 com.example.demo <.>
+                📂 business <.>
+                    📄 SimpleDto.java
+                    📄 SimpleMapper.java
+                    📄 SimpleService.java
+                📂 persistence <.>
+                    📄 SimpleEntity.java
+                    📄 SimpleRepository.java
+                📂 presentation <.>
+                    📄 SimpleController.java
+                    📄 SimpleFilter.java
+                    📄 SimpleModel.java
+                    📄 SimpleModelAssembler.java
+                📄 DemoApplication.java <.>
+        📂 resources <.>
+            📄 application.properties
+            📄 application.yml
+  📄 build.gradle.kts <.>
+  📄 settings.gradle.kts <.>
+  📄 pom.xml <.>
+  📄 docker-compose.yml <.>
+----
+
+<.> The root directory of the project.
+<.> Contains the source code of the project.
+<.> Contains the java code.
+<.> The java code must be in the package com.example.demo (replace the actual package name).
+<.> The business layer of the application (here the services, mappers, and DTOs).
+<.> The persistence layer of the application (here the entities and repositories).
+<.> The presentation layer of the application (here the controllers, filters, and models).
+<.> The application entry point.
+<.> Contains the resources configuration files.
+<.> The build file (for Gradle).
+<.> The settings file (for Gradle).
+<.> The pom file (for Maven).
+<.> The docker compose file (optional).
+
+IMPORTANT: To initialize a Spring Boot application, go to https://start.spring.io/[window=_blank].
+From there, it will be easier to create a new project.
+
+== Installation
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+* With Maven:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+* With Gradle:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:{release-version}")
+----
+
+TIP: Maven is recommended for developers who never use both Maven and Gradle.
+
+Here is a simple pom.xml file that includes the predefined all module starter with lombok, spring boot devtools, and spring boot docker compose:
+
+[,xml,subs=+attributes]
+.pom.xml
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>{spring-version}</version>
+    <relativePath/>
+  </parent>
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>demo</name>
+  <description>Demo project for Sakura Boot</description>
+  <properties>
+    <java.version>{java-version}</java.version>
+  </properties>
+  <dependencies>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+        <version>{release-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-jpamodelgen</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-processor</artifactId>
+        <version>{mapstruct-version}</version>
+        <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.0</version>
+            <configuration>
+                <source>{java-version}</source>
+                <target>{java-version}</target>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.hibernate.orm</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                    </path>
+                    <path>
+                        <groupId>org.mapstruct</groupId>
+                        <artifactId>mapstruct-processor</artifactId>
+                        <version>{mapstruct-version}</version>
+                    </path>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>
+----
+
+Here is an equivalent simple build.gradle.kts.
+
+[,kotlin,subs=+attributes]
+.build.gradle.kts
+----
+plugins {
+  java
+  id("org.springframework.boot") version "{spring-version}"
+  id("io.spring.dependency-management") version "1.1.6"
+}
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of({java-version})
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom(configurations.annotationProcessor.get())
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:{release-version}")
+  compileOnly("org.projectlombok:lombok")
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
+  developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+  annotationProcessor("org.projectlombok:lombok")
+  annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
+  annotationProcessor("org.mapstruct:mapstruct-processor:{mapstruct-version}")
+}
+----
+
+== Configuration
+
+The configuration of the project, like any Spring Boot application, is done in the application.properties (or application.yml) file.
+
+The Spring Boot properties can be configured in this file with the new Sakura Boot properties.
+
+Here is an example of an application.properties file.
+
+[,properties]
+.application.properties
+----
+# SPRING
+spring.application.name = demo
+spring.threads.virtual.enabled = true
+# activate virtual threads
+
+# APPLICATION INFORMATION (Sakura Boot properties for openapi module)
+application.info.name = demo
+application.info.version = 1.0.0
+
+# SPRING DOC
+springdoc.api-docs.path = /api-docs
+springdoc.swagger-ui.path = /swagger-docs.html
+springdoc.swagger-ui.operationsSorter = method
+springdoc.remove-broken-reference-definitions = false
+
+# Controller
+server.servlet.context-path = /api
+
+# Cache
+sakuraboot.cache.active_L2_cache = true
+# Sakura Boot property to activate L2 cache
+spring.jpa.properties.hibernate.cache.use_second_level_cache = true
+
+# Database
+spring.jpa.open-in-view = false
+spring.datasource.url = jdbc:postgresql://postgres:5432/database
+spring.datasource.username = sa
+spring.datasource.password = password
+
+# LOG
+logging.file.path = ./log/
+logging.file.name = ${logging.file.path}${spring.application.name}.log
+
+# Debug
+spring.jpa.hibernate.ddl-auto = create-drop
+#spring.jpa.show-sql = true
+#sakuraboot.exception.showStackTrace = true
+#logging.level.com.example.demo = DEBUG
+#logging.level.org.sansenshimizu.sakuraboot = DEBUG
+#logging.level.root = warn
+----
+
+Those properties are all optional or with a default value. +
+But it can be a good start for any application. +
+The Sakura Boot properties work with their related modules.
+If the module is not used by the application, it can be removed.
+
+IMPORTANT: For a production-ready application, remove the spring.jpa.hibernate.ddl-auto property.
+
+== Create the application
+
+The next part is to write the application code. +
+The application will use UUID as the primary key of the entity.
+It is possible to use any other primary key (e.g., Long, String, etc).
+
+=== Application class
+
+First, the DemoApplication.java will be the same as any Spring Boot application.
+
+[,java]
+.DemoApplication.java
+----
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(final String[] args) {
+
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+----
+
+=== Entity
+
+Then, the entity in SimpleEntity.java will contain all the information that needs to be stored in the database.
+
+TIP: An entity is equivalent to one table in the database.
+
+[,java]
+.SimpleEntity.java
+----
+package com.example.demo.persistence;
+
+import java.io.Serial;
+import java.util.List;
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
+
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SimpleEntity extends AbstractBasicEntity<UUID> {
+
+    @Serial
+    private static final long serialVersionUID = 412728107151504660L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
+    private UUID id;
+
+    private String name;
+
+    @Override
+    protected List<Pair<String, Object>> listFieldsForToString(
+        final List<Pair<String, Object>> list) {
+
+        super.listFieldsForToString(list);
+        list.add(Pair.of("name", getName()));
+        return list;
+    }
+
+    // No arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Getter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(toBuilder = true)
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+----
+
+IMPORTANT: Lombok can help reduce the boilerplate code but needs to be used carefully. see xref:lombok.adoc[]
+
+=== Repository
+
+The repository in SimpleRepository.java will be very similar to a Spring Boot repository.
+
+[,java]
+.SimpleRepository.java
+----
+package com.example.demo.persistence;
+
+import java.util.UUID;
+
+import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
+
+public interface SimpleRepository extends CriteriaRepository<SimpleEntity, UUID> {}
+----
+
+WARNING: Here the repository uses the CriteriaRepository interface.
+If the filtering support is not needed, use the org.sansenshimizu.sakuraboot.basic.api.persistence.BasicRepository interface instead.
+
+=== Service
+
+The service in SimpleService.java can change based on the modules that are used.
+
+Here is an example of the service that uses all the modules.
+
+[,java]
+.SimpleService.java
+----
+package com.example.demo.business;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+
+import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
+import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
+import org.sansenshimizu.sakuraboot.log.api.Loggable;
+import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
+import org.sansenshimizu.sakuraboot.specification.api.business.CriteriaService;
+import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+
+import com.example.demo.persistence.SimpleEntity;
+import com.example.demo.persistence.SimpleRepository;
+import com.example.demo.presentation.SimpleFilter;
+
+@Service
+public class SimpleService
+    implements CriteriaService<SimpleEntity, UUID, SimpleFilter>, Cacheable,
+    Mappable<Simple, SimpleDto>, Loggable {
+
+    private final SimpleRepository repository;
+
+    private final ObjectMapper objectMapper;
+
+    private final SpecificationBuilder<Simple> specificationBuilder;
+
+    private final CachingUtil cachingUtil;
+
+    private final SimpleMapper mapper;
+
+    @Override
+    public Class<Simple> getEntityClass() {
+
+        return Simple.class;
+    }
+
+    @Override
+    public String[] getCacheNames() {
+
+        return new String[] {
+            "Simple"
+        };
+    }
+
+    @Override
+    public Class<SimpleDto> getDtoClass() {
+
+        return SimpleDto.class;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+Here is an example of the service that doesn’t use modules.
+
+[,java]
+.SimpleService.java
+----
+package com.example.demo.business;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+
+import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
+
+import com.example.demo.persistence.SimpleEntity;
+import com.example.demo.persistence.SimpleRepository;
+import com.example.demo.presentation.SimpleFilter;
+
+@Service
+public class SimpleService implements BasicService<SimpleEntity, UUID> {
+
+    private final SimpleRepository repository;
+
+    private final ObjectMapper objectMapper;
+
+    @Override
+    public Class<Simple> getEntityClass() {
+
+        return Simple.class;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Getter
+@RequiredArgsConstructor
+@Service
+----
+
+=== Controller
+
+The controller in SimpleController.java can change based on the modules that are used.
+
+Here is an example of the controller that uses all the modules.
+
+[,java]
+.SimpleController.java
+----
+package com.example.demo.presentation;
+
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.log.api.Loggable;
+import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaController;
+
+import com.example.demo.business.SimpleDto;
+import com.example.demo.business.SimpleService;
+import com.example.demo.persistence.SimpleEntity;
+
+@RestController
+@RequestMapping("/simples")
+public class SimpleController
+    implements CriteriaController<SimpleEntity, UUID, SimpleDto, SimpleFilter>,
+    Hypermedia<SimpleDto, SimpleModelAssembler>, Loggable {
+
+    private final SimpleService service;
+
+    private final SimpleModelAssembler modelAssembler;
+
+    public Class<SimpleDto> getDataClass() {
+
+        return SimpleDto.class;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+Here is an example of the controller that doesn’t use modules.
+
+[,java]
+.SimpleController.java
+----
+package com.example.demo.presentation;
+
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.sansenshimizu.sakuraboot.basic.api.presentation.BasicController;
+
+import com.example.demo.business.SimpleService;
+import com.example.demo.persistence.SimpleEntity;
+
+@RestController
+@RequestMapping("/simples")
+public class SimpleController
+    implements BasicController<SimpleEntity, UUID, SimpleEntity> {
+
+    private final SimpleService service;
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Getter
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/simples")
+----
+
+=== Modules
+
+For an application without modules or that contains only Logging and/or Caching, it is already finished!
+
+For an application with Filtering, Mapping, or Hypermedia, follow the next step.
+
+==== Filtering
+
+An application with filtering needs a filter file, it will be the SimpleFilter.java.
+
+Here is an example of the filter file.
+
+[,java]
+.SimpleFilter.java
+----
+package com.example.demo.presentation;
+
+import java.io.Serial;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.NumberFilter;
+import org.sansenshimizu.sakuraboot.specification.presentation.AbstractBasicFilter;
+import org.sansenshimizu.sakuraboot.specification.presentation.filters.NumberFilterImpl;
+import org.sansenshimizu.sakuraboot.specification.presentation.filters.TextFilterImpl;
+
+public class SimpleFilter extends AbstractBasicFilter<NumberFilter<UUID>> {
+
+    @Serial
+    private static final long serialVersionUID = 6855588215573683251L;
+
+    private final Boolean distinct;
+
+    private final Boolean inclusive;
+
+    private final NumberFilterImpl<Long> id;
+
+    private final TextFilterImpl name;
+
+    @Override
+    protected List<Pair<String, Object>> listFieldsForToString(
+        final List<Pair<String, Object>> list) {
+
+        super.listFieldsForToString(list);
+        list.add(Pair.of("name", getName()));
+        return list;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Builder(toBuilder = true)
+@RequiredArgsConstructor
+@Getter
+@EqualsAndHashCode(callSuper = true)
+----
+
+And add ``@EqualsAndHashCode.Exclude`` to the first three fields of the class.
+
+==== Mapping
+
+An application with mapping needs a DTO and a mapper file, it will be the SimpleDto.java and SimpleMapper.java.
+
+Here is an example of the DTO file.
+
+[,java]
+.SimpleDto.java
+----
+package com.example.demo.business;
+
+import java.io.Serial;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
+
+public class SimpleDto extends AbstractBasicDto<UUID> {
+
+    @Serial
+    private static final long serialVersionUID = 2152253389776242470L;
+
+    private final Long id;
+
+    private final String name;
+
+    @Override
+    protected List<Pair<String, Object>> listFieldsForToString(
+        final List<Pair<String, Object>> list) {
+
+        super.listFieldsForToString(list);
+        list.add(Pair.of("name", getName()));
+        return list;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Builder(toBuilder = true)
+@Jacksonized
+@Getter
+----
+
+Here is an example of the mapper file.
+
+[,java]
+.SimpleMapper.java
+----
+package com.example.demo.business;
+
+import org.mapstruct.Mapper;
+
+import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
+
+import com.example.demo.persistence.SimpleEntity;
+
+@Mapper(config = BasicMapper.class)
+public interface SimpleMapper extends BasicMapper<SimpleEntity, SimpleDto> {}
+----
+
+==== Hypermedia
+
+An application with hypermedia needs a model and model assembler file, it will be the SimpleModel.java and SimpleModelAssembler.java.
+
+WARNING: In this quickstart example, the hypermedia uses the DTO, if the application doesn’t use the Mapping module, then it is possible to replace the DTO by the entity.
+
+Here is an example of the model file.
+
+[,java]
+.SimpleModel.java
+----
+package com.example.demo.presentation;
+
+import java.io.Serial;
+
+import org.springframework.hateoas.server.core.Relation;
+
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModel;
+
+import com.example.demo.business.SimpleDto;
+
+@Relation(collectionRelation = "simples")
+public class SimpleModel extends AbstractBasicModel<SimpleDto> {
+
+    @Serial
+    private static final long serialVersionUID = 8417617898954960134L;
+
+    public SimpleModel(final SimpleDto data) {
+
+        super(data);
+    }
+}
+----
+
+Here is an example of the model assembler file.
+
+[,java]
+.SimpleModelAssembler.java
+----
+package com.example.demo.presentation;
+
+import java.util.function.Function;
+
+import org.springframework.stereotype.Component;
+
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
+
+import com.example.demo.business.CompanyDto;
+
+@Component
+public class SimpleModelAssembler
+    extends AbstractBasicModelAssembler<SimpleDto, SimpleModel> {
+
+    protected SimpleModelAssembler() {
+
+        super(SimpleController.class, SimpleModel.class, "simples");
+    }
+
+    @Override
+    protected Function<SimpleDto, SimpleModel> instantiateModel() {
+
+        return SimpleModel::new;
+    }
+}
+----
+
+The simple application with all the modules is now ready to be used.
+
+== Usage
+
+The quickstart documentation will be updated soon.

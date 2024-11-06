@@ -1,0 +1,4 @@
+= Examples
+:description: Sakura boot examples
+
+The example documentation will be updated soon.

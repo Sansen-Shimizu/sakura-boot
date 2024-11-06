@@ -1,0 +1,17 @@
+= Lombok
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot lombok page documentation
+
+https://projectlombok.org/[Lombok,window=_blank] is a great library for code generation.
+It works perfectly with Sakura Boot and can remove a lot of boilerplate code.
+Simple class that inherits from default Sakura Boot behavior and use lombok can be created with just a few lines of code.
+
+== Warning
+
+Every lombok annotation can’t be used in every case.
+
+For example, an entity mustn’t use the @Data annotation. +
+See this https://stackoverflow.com/a/75182787[StackOverflow answer,window=_blank] for more details.
+
+For any lombok annotations that are used, it must be verified that no problem will occur. +
+The getter, constructor, and builder annotation are generally safe to use.

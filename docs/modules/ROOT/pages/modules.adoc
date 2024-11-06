@@ -1,0 +1,4 @@
+= Modules
+:description: Sakura boot modules
+
+The module documentation will be updated soon.

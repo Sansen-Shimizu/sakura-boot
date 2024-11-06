@@ -1,0 +1,4 @@
+= Installation
+:description: Sakura boot installation
+
+The installation documentation will be updated soon.

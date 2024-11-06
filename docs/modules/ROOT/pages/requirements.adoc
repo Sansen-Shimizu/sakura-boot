@@ -1,0 +1,10 @@
+= Requirements
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot requirements page documentation
+
+Because Sakura Boot uses Spring Boot, the following https://docs.spring.io/spring-boot/system-requirements.html[requirements,window=_blank] are required.
+
+== Java version
+
+The only requirement difference is the Java version.
+Sakura Boot requires *Java {java-version}* or higher.

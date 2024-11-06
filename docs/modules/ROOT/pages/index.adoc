@@ -1,4 +1,33 @@
 = Sakura Boot
-:description: Sakura boot
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot main page documentation
 
-The documentation will be updated soon.
+[discrete]
+=== Fast, modular, extensible, and simple development
+
+Sakura Boot is an open-source framework. +
+This framework, built on top of Spring Boot, is designed to speed up the development of robust backends. +
+It ensures adherence to best practices while allowing a high degree of customization. +
+The framework is structured using a modular architecture, making it easy to add or remove features based on the project’s specific needs.
+
+== Convention over code
+
+Spring Boot is known for its https://en.wikipedia.org/wiki/Convention_over_configuration[convention over configuration] principle. +
+While the framework follows the same principle, it extends it with https://en.wikipedia.org/wiki/Convention_over_code[Convention over code] principle. +
+It is possible to create a simple application without writing any methods (except for getters and constructors). +
+Then, gradually add custom logic or modify the default behavior if necessary. +
+
+The framework can help developers who’re already familiar with Spring Boot or not to speed up the development for proof-of-concept, prototype, and single or multiple applications while ensuring that the code adheres to best practices.
+
+For more information, see the https://sakuraboot.sansenshimizu.org[Sakura Boot] main page. +
+For more information on Spring Boot, see https://spring.io/projects/spring-boot[window=_blank].
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+The documentation follows the same structure as the framework and is organized using modules, see xref:modules.adoc[].
+
+For example on different use cases, see xref:examples.adoc[].
