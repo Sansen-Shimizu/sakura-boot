@@ -148,7 +148,7 @@ For more fine-grained control over dependencies, import directly from each modul
 == Documentation
 
 The project documentation is located in the link:./docs/[documentation] folder, and available at
-https://sansenshimizu.org/sakuraboot/documentation.
+https://sakuraboot.sansenshimizu.org/documentation.
 
 All the classes are well-documented with Javadoc and example.
 
