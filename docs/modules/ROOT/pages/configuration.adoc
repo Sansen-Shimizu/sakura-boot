@@ -1,0 +1,4 @@
+= Configuration
+:description: Sakura boot configuration
+
+The configuration documentation will be updated soon.

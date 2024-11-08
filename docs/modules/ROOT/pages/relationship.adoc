@@ -1,0 +1,4 @@
+= Relationship
+:description: Sakura boot relationship
+
+The relationship documentation will be updated soon.

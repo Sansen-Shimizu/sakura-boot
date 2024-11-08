@@ -307,7 +307,7 @@ But it can be a good start for any application. +
 The Sakura Boot properties work with their related modules.
 If the module is not used by the application, it can be removed.
 
-IMPORTANT: For a production-ready application, remove the spring.jpa.hibernate.ddl-auto property.
+CAUTION: For a production-ready application, remove the spring.jpa.hibernate.ddl-auto property.
 
 == Create the application
 
@@ -336,7 +336,7 @@ public class DemoApplication {
 
 Then, the entity in SimpleEntity.java will contain all the information that needs to be stored in the database.
 
-TIP: An entity is equivalent to one table in the database.
+NOTE: An entity is equivalent to one table in the database.
 
 [,java]
 .SimpleEntity.java
@@ -398,7 +398,7 @@ For lombok users, add the annotation on top of the class:
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 ----
 
-IMPORTANT: Lombok can help reduce the boilerplate code but needs to be used carefully. see xref:lombok.adoc[]
+CAUTION: Lombok can help reduce the boilerplate code but needs to be used carefully. see xref:lombok.adoc[]
 
 === Repository
 
@@ -813,4 +813,127 @@ The simple application with all the modules is now ready to be used.
 
 == Usage
 
-The quickstart documentation will be updated soon.
+=== Execute the application
+
+To run the application, execute the following command on a terminal in a root directory of the project:
+
+For Gradle:
+
+[]
+----
+./gradlew bootRun
+----
+
+For Maven:
+
+[]
+----
+./mvnw spring-boot:run
+----
+
+=== Use the application
+
+After running the application, it will be available at localhost. +
+Because the property server.servlet.context-path is set to /api, the application will be available at http://localhost:8080/api.
+
+For this application the simple entity is available at http://localhost:8080/api/simples.
+
+The application will support the common http methods (POST, GET, PUT, PATCH, DELETE). +
+Example of usage:
+
+.application usage
+[#responsive-table]
+|===
+|Method |Url |Body
+
+|POST
+|http://localhost:8080/api/simples
+|{"name": "demo"}
+
+|GET
+|http://localhost:8080/api/simples
+|
+
+|GET by id
+|http://localhost:8080/api/simples/+{id}+
+|
+
+|PUT by id
+|http://localhost:8080/api/simples/+{id}+
+|{"id": id, "name": "demo"}
+
+|PATCH by id
+|http://localhost:8080/api/simples/+{id}+
+|{"id": id, "name": "demo"}
+
+|DELETE by id
+|http://localhost:8080/api/simples/+{id}+
+|
+|===
+
+=== Docker
+
+If the application uses spring-boot-docker-compose, the file docker-compose.yml is necessary in the root directory of the project.
+It needs to contain at least the database container.
+
+Here is an example of the docker compose file:
+
+[,yaml]
+.docker-compose.yml
+----
+services:
+  database:
+    image: 'postgres:alpine'
+    container_name: demo-postgres
+    ports:
+      - '5432'
+    environment:
+      - 'POSTGRES_USER=sa'
+      - 'POSTGRES_DB=database'
+      - 'POSTGRES_PASSWORD=password'
+----
+
+TIP: This file is only used to run the application locally.
+
+To build the docker image, execute the following command on a terminal in a root directory of the project:
+
+For Gradle:
+
+[]
+----
+./gradlew bootBuildImage
+----
+
+For Maven:
+
+[]
+
+----
+./mvnw spring-boot:build-image
+----
+
+== Next steps
+
+For more information on how to build and run a Spring Boot application, see https://spring.io/guides/gs/spring-boot[here,window=_blank].
+
+For more information about the spring-boot-docker-compose for local development with docker support, see https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose[here,window=_blank].
+
+The quickstart application creates only one entity.
+The next could be to add more entities with the necessary fields.
+For each new entity follow the same steps.
+
+When building an application with different entities, it is possible to create relations between them. +
+For more information, see the xref:relationship.adoc[] section.
+
+When building an application, it is important to also create tests. +
+Sakura Boot provides a test framework that can be used to test the application.
+It supports unit tests, integration tests, and functional tests. +
+For more information, see the xref:testing.adoc[] section.
+
+To customize the configuration for the application requirements, see the xref:configuration.adoc[] section.
+
+The quickstart application uses no module or all of them, but in a real application it can be more complex than that.
+For example, all entities don’t need caching. +
+To learn more about all the different modules, see the xref:modules.adoc[] section.
+
+If the quickstart section is not sufficient, other examples are available at the xref:examples.adoc[] section.

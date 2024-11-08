@@ -1,6 +1,5 @@
 name: sakura-boot
-version: 0.1.x
-display_version: 'latest'
+version: 'latest'
 title: Sakura Boot
 asciidoc:
   attributes:

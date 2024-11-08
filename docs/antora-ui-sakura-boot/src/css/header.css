@@ -181,7 +181,7 @@ body {
   background-color: var(--navbar-menu-border-color);
   border: none;
   height: 1px;
-  margin: 0.25rem 0;
+  margin: 0.25rem 1rem;
 }
 
 .navbar .button {
