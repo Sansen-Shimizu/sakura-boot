@@ -17,13 +17,11 @@
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter;
 
 import java.io.Serial;
-import java.util.List;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.UUIDFilter;
@@ -65,16 +63,4 @@ public class FederationFilter extends AbstractBasicFilter<UUIDFilter> {
 
     @Nullable
     private final DateFilterImpl createdDate;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("address", getAddress()));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("capacity", getCapacity()));
-        list.add(Pair.of("createdDate", getCreatedDate()));
-        return list;
-    }
 }

@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.persistence;
 
-import java.util.List;
-
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.ManagerTestUtil;
@@ -28,10 +26,4 @@ import org.sansenshimizu.sakuraboot.test.basic.persistence.AbstractBasicEntityTe
 public class ManagerTest extends AbstractBasicEntityTest<Manager, Long> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "name");
-    }
 }

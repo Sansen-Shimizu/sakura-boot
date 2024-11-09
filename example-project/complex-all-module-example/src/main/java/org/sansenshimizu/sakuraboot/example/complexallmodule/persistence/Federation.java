@@ -19,7 +19,6 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 import java.io.Serial;
 import java.time.OffsetDateTime;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,7 +35,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
@@ -94,17 +92,5 @@ public class Federation
     public Set<Hobby> getRelationships() {
 
         return getHobbies();
-    }
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("address", getAddress()));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("capacity", getCapacity()));
-        list.add(Pair.of("createdDate", getCreatedDate()));
-        return list;
     }
 }

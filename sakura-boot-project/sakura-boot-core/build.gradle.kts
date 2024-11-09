@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.sakuraBootLogApi)
     implementation(libs.commons.lang3)
     implementation(libs.hibernate.core)
+    implementation(libs.jakarta.persistence.api)
     implementation(libs.spring.context)
     implementation(libs.spring.expression)
     implementation(libs.spring.jcl)

@@ -19,7 +19,6 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 import java.io.Serial;
 import java.time.Instant;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToMany;
@@ -128,17 +126,5 @@ public class HobbyDto
             return null;
         }
         return Collections.unmodifiableSet(secondRelationshipsId);
-    }
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("federations", getFederations()));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("participationRate", getParticipationRate()));
-        list.add(Pair.of("lastUpdated", getLastUpdated()));
-        return list;
     }
 }

@@ -16,7 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
-import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -29,10 +28,4 @@ import org.sansenshimizu.sakuraboot.test.basic.persistence.AbstractBasicEntityTe
 public class FederationTest extends AbstractBasicEntityTest<Federation, UUID> {
 
     private final FederationTestUtil util = new FederationTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "name");
-    }
 }

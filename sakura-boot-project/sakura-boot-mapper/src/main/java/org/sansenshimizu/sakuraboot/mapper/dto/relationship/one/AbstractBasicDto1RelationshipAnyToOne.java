@@ -18,12 +18,10 @@ package org.sansenshimizu.sakuraboot.mapper.dto.relationship.one;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.one.BasicDto1RelationshipAnyToOne;
@@ -113,13 +111,4 @@ public abstract class AbstractBasicDto1RelationshipAnyToOne<
 
     @Serial
     private static final long serialVersionUID = 5295256691794493156L;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("relationshipId", getRelationshipId()));
-        return list;
-    }
 }

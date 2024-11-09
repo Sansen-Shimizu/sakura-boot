@@ -16,19 +16,10 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter;
 
-import java.util.List;
-
 import org.sansenshimizu.sakuraboot.test.specification.presentation.AbstractBasicFilterTest;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 public class FederationFilterTest
-    extends AbstractBasicFilterTest<FederationFilter> {
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("distinct", "inclusive", "id", "name");
-    }
-}
+    extends AbstractBasicFilterTest<FederationFilter> {}

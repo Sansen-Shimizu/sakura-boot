@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.FederationTestUtil;
@@ -31,10 +29,4 @@ public class FederationDtoTest
     extends AbstractBasicDtoTest<FederationDto, Long> {
 
     private final FederationTestUtil util = new FederationTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "name");
-    }
 }

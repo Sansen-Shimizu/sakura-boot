@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.HobbyTestUtil;
@@ -30,10 +28,4 @@ import org.sansenshimizu.sakuraboot.test.mapper.dto.AbstractBasicDtoTest;
 public class HobbyDtoTest extends AbstractBasicDtoTest<HobbyDto, Long> {
 
     private final HobbyTestUtil util = new HobbyTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "federations", "name");
-    }
 }

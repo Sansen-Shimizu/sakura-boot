@@ -18,7 +18,6 @@ package org.sansenshimizu.sakuraboot.example.basic.persistence;
 
 import java.io.Serial;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -39,7 +38,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany;
@@ -105,16 +103,5 @@ public class Employee
     public Set<Hobby> getRelationships() {
 
         return getHobbies();
-    }
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("department", getDepartment()));
-        list.add(Pair.of("hobbies", getHobbies()));
-        list.add(Pair.of("name", getName()));
-        return list;
     }
 }

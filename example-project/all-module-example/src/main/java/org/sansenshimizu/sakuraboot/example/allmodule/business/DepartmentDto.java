@@ -17,7 +17,6 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.business;
 
 import java.io.Serial;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto1RelationshipAnyToOne;
@@ -58,15 +56,5 @@ public class DepartmentDto
     public CompanyDto getRelationship() {
 
         return getCompany();
-    }
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("company", getCompany()));
-        list.add(Pair.of("name", getName()));
-        return list;
     }
 }

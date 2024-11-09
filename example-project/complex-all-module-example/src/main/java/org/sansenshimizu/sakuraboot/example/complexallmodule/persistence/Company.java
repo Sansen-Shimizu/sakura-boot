@@ -18,7 +18,6 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
 import java.io.Serial;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -33,7 +32,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
@@ -66,15 +64,4 @@ public class Company extends AbstractBasicEntity<UUID> {
 
     @Nullable
     private LocalDate createdDate;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("address", getAddress()));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("createdDate", getCreatedDate()));
-        return list;
-    }
 }

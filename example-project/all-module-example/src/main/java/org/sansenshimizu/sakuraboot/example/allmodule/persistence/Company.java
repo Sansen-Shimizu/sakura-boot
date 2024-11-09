@@ -17,7 +17,6 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.persistence;
 
 import java.io.Serial;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +29,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
@@ -56,13 +54,4 @@ public class Company extends AbstractBasicEntity<Long> {
 
     @Nullable
     private String name;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("name", getName()));
-        return list;
-    }
 }

@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.util;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -315,6 +316,26 @@ class ToStringUtilTest {
             List.of(Pair.of(FIELD_COLLECTION_NAME, FIELD_BIG_COLLECTION_VALUE),
                 Pair.of(FIELD_ARRAY_NAME, FIELD_BIG_ARRAY_VALUE)),
             4);
+
+        // THEN
+        assertThat(result).isEqualTo(expectedResult);
+    }
+
+    @Test
+    @DisplayName("GIVEN a ToStringUtil,"
+        + " WHEN calling getListFieldsForToString,"
+        + " THEN the result should be equal to the expected value")
+    final void testGetListFieldsForToString() {
+
+        // GIVEN
+        final int id = 1;
+        final List<Pair<String, Object>> expectedResult
+            = List.of(Pair.of("id", id));
+
+        // WHEN
+        final List<Pair<String, Object>> result = ToStringUtils
+            .getListFieldsForToString(new SimpleHibernateProxyForTest(id),
+                new ArrayList<>(), List.of());
 
         // THEN
         assertThat(result).isEqualTo(expectedResult);

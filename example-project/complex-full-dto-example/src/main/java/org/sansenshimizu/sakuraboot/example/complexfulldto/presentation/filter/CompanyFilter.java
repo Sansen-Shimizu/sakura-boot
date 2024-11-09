@@ -17,13 +17,11 @@
 package org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter;
 
 import java.io.Serial;
-import java.util.List;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.NumberFilter;
@@ -57,14 +55,4 @@ public class CompanyFilter extends AbstractBasicFilter<NumberFilter<Long>> {
 
     @Nullable
     private final TextFilterImpl name;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("address", getAddress()));
-        list.add(Pair.of("name", getName()));
-        return list;
-    }
 }
