@@ -6,7 +6,7 @@ plugins {
 
 description =
     "Framework to simplify the creation of a spring boot application. " +
-            "The mapper functionalities."
+        "The mapper functionalities."
 
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description

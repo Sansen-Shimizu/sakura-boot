@@ -131,10 +131,19 @@ public abstract class AbstractBasicFilter<F extends Filter>
     protected List<Pair<String, Object>> listFieldsForToString(
         final List<Pair<String, Object>> list) {
 
-        list.add(Pair.of("distinct", getDistinct()));
-        list.add(Pair.of("inclusive", getInclusive()));
-        list.add(Pair.of("id", getId()));
-        return list;
+        return ToStringUtils.getListFieldsForToString(this, list,
+            excludedFieldsForToString());
+    }
+
+    /**
+     * The list of fields that need to be excluded in the {@link #toString()}
+     * method.
+     *
+     * @return The list of fields to exclude.
+     */
+    protected List<String> excludedFieldsForToString() {
+
+        return List.of();
     }
 
     @Override

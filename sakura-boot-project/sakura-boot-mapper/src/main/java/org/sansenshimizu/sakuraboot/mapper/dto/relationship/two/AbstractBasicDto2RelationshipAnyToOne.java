@@ -18,12 +18,10 @@ package org.sansenshimizu.sakuraboot.mapper.dto.relationship.two;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.two.BasicDto2RelationshipAnyToOne;
@@ -132,13 +130,4 @@ public abstract class AbstractBasicDto2RelationshipAnyToOne<
 
     @Serial
     private static final long serialVersionUID = 6649611505217682082L;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("secondRelationshipId", getSecondRelationshipId()));
-        return list;
-    }
 }

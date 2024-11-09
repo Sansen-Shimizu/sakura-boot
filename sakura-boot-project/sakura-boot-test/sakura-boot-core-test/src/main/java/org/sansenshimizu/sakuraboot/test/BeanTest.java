@@ -21,6 +21,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +32,8 @@ import org.junit.jupiter.api.condition.DisabledIf;
 import org.springframework.lang.Nullable;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
+
+import org.sansenshimizu.sakuraboot.util.ToStringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -481,7 +484,9 @@ public interface BeanTest<T> {
 
             ReflectionUtils.doWithFields(bean.getClass(),
                 field -> testToStringHelper(bean, field.getName(), toString),
-                field -> !SERIAL_VERSION_UID.equals(field.getName()));
+                field -> !SERIAL_VERSION_UID.equals(field.getName())
+                    && !Modifier.isStatic(field.getModifiers())
+                    && ToStringUtils.isNotRelationWithMappedBy(field));
         } else {
 
             includeFieldsToString().forEach(

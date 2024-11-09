@@ -17,13 +17,11 @@
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter;
 
 import java.io.Serial;
-import java.util.List;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.specification.api.presentation.filters.UUIDFilter;
@@ -58,14 +56,4 @@ public class ManagerFilter extends AbstractBasicFilter<UUIDFilter> {
 
     @Nullable
     private final TimeFilterImpl lastLoginTime;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("lastLoginTime", getLastLoginTime()));
-        return list;
-    }
 }

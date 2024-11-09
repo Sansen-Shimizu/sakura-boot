@@ -20,7 +20,6 @@ import java.io.Serial;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,7 +40,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -123,20 +121,5 @@ public class Employee
     public Set<Hobby> getRelationships() {
 
         return getHobbies();
-    }
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("department", getDepartment()));
-        list.add(Pair.of("hobbies", getHobbies()));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("age", getAge()));
-        list.add(Pair.of("gender", getGender()));
-        list.add(Pair.of("image", getImage()));
-        list.add(Pair.of("hiredDate", getHiredDate()));
-        return list;
     }
 }

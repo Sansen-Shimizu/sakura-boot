@@ -16,7 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -31,10 +30,4 @@ import org.sansenshimizu.sakuraboot.test.mapper.dto.AbstractBasicDtoTest;
 public class ManagerDtoTest extends AbstractBasicDtoTest<ManagerDto, UUID> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "name");
-    }
 }

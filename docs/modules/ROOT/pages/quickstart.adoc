@@ -373,15 +373,6 @@ public class SimpleEntity extends AbstractBasicEntity<UUID> {
 
     private String name;
 
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("name", getName()));
-        return list;
-    }
-
     // No arg constructor, getters, etc. if lombok is not used.
 }
 ----
@@ -651,15 +642,6 @@ public class SimpleFilter extends AbstractBasicFilter<NumberFilter<UUID>> {
 
     private final TextFilterImpl name;
 
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("name", getName()));
-        return list;
-    }
-
     // Required arg constructor, getters, etc. if lombok is not used.
 }
 ----
@@ -703,15 +685,6 @@ public class SimpleDto extends AbstractBasicDto<UUID> {
     private final Long id;
 
     private final String name;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("name", getName()));
-        return list;
-    }
 
     // Required arg constructor, getters, etc. if lombok is not used.
 }

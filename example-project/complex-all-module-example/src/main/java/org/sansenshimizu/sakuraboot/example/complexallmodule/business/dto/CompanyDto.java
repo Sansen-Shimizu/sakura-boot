@@ -18,13 +18,11 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 
 import java.io.Serial;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Address;
@@ -49,15 +47,4 @@ public class CompanyDto extends AbstractBasicDto<UUID> {
 
     @Nullable
     private final LocalDate createdDate;
-
-    @Override
-    protected List<Pair<String, Object>> listFieldsForToString(
-        final List<Pair<String, Object>> list) {
-
-        super.listFieldsForToString(list);
-        list.add(Pair.of("address", address));
-        list.add(Pair.of("name", getName()));
-        list.add(Pair.of("createdDate", getCreatedDate()));
-        return list;
-    }
 }

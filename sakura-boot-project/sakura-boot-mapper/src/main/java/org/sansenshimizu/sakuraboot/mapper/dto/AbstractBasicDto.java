@@ -177,14 +177,25 @@ public abstract class AbstractBasicDto<
     protected List<Pair<String, Object>> listFieldsForToString(
         final List<Pair<String, Object>> list) {
 
-        list.add(Pair.of("id", getId()));
-        return list;
+        return ToStringUtils.getListFieldsForToString(this, list,
+            excludedFieldsForToString());
+    }
+
+    /**
+     * The list of fields that need to be excluded in the {@link #toString()}
+     * method.
+     *
+     * @return The list of fields to exclude.
+     */
+    protected List<String> excludedFieldsForToString() {
+
+        return List.of();
     }
 
     @Override
     public String toString() {
 
-        return ToStringUtils.toStringPrintNullFields(getClass().getSimpleName(),
+        return ToStringUtils.toString(getClass().getSimpleName(),
             listFieldsForToString(new ArrayList<>()));
     }
 }

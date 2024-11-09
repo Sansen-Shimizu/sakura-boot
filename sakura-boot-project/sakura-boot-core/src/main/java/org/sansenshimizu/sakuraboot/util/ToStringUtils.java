@@ -16,11 +16,18 @@
 
 package org.sansenshimizu.sakuraboot.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
@@ -230,5 +237,71 @@ public class ToStringUtils {
 
             return Objects.requireNonNullElse(object, "null").toString();
         }
+    }
+
+    /**
+     * Helper method to get the list of fields for toString.
+     * Only get the fields present in the class and not in the superclass.
+     *
+     * @param  object         The object to get the list of fields.
+     * @param  list           The list of fields to print.
+     * @param  excludedFields The list of fields to exclude
+     * @return                The list of fields for toString.
+     */
+    public List<Pair<String, Object>> getListFieldsForToString(
+        final Object object, final List<Pair<String, Object>> list,
+        final Collection<String> excludedFields) {
+
+        list.addAll(Arrays.stream(object.getClass().getDeclaredFields())
+            .filter(field -> !excludedFields.contains(field.getName()))
+            .filter(field -> !Modifier.isStatic(field.getModifiers()))
+            .filter(ToStringUtils::isNotRelationWithMappedBy)
+            .map((final Field field) -> {
+
+                try {
+
+                    field.setAccessible(true);
+                    return Pair.of(field.getName(), field.get(object));
+                } catch (final IllegalAccessException e) {
+
+                    throw new RuntimeException(e);
+                }
+            })
+            .toList());
+        return list;
+    }
+
+    /**
+     * Util method to check if a field is not a relation with mappedBy
+     * attribute in the mapping annotation.
+     * Help to not include this field in the toString.
+     *
+     * @param  field The field to check.
+     * @return       True if the field is not a relation with mappedBy
+     *               attribute, false otherwise.
+     */
+    public boolean isNotRelationWithMappedBy(final Field field) {
+
+        return isNotOneToOneWithMappedBy(field)
+            && isNotOneToManyWithMappedBy(field)
+            && isNotManyToManyWithMappedBy(field);
+    }
+
+    private boolean isNotOneToOneWithMappedBy(final Field field) {
+
+        return !(field.isAnnotationPresent(OneToOne.class)
+            && !"".equals(field.getAnnotation(OneToOne.class).mappedBy()));
+    }
+
+    private boolean isNotOneToManyWithMappedBy(final Field field) {
+
+        return !(field.isAnnotationPresent(OneToMany.class)
+            && !"".equals(field.getAnnotation(OneToMany.class).mappedBy()));
+    }
+
+    private boolean isNotManyToManyWithMappedBy(final Field field) {
+
+        return !(field.isAnnotationPresent(ManyToMany.class)
+            && !"".equals(field.getAnnotation(ManyToMany.class).mappedBy()));
     }
 }

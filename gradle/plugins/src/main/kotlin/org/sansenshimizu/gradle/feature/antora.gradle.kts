@@ -5,9 +5,7 @@ plugins {
     id("com.github.node-gradle.node")
 }
 
-antora {
-    packages.put("@antora/lunr-extension", "latest")
-}
+antora { packages.put("@antora/lunr-extension", "latest") }
 
 tasks.named("antora") {
     group = "documentation"

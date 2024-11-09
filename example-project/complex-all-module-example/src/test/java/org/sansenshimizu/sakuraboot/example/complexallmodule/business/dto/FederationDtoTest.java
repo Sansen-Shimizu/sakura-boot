@@ -16,7 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -32,10 +31,4 @@ public class FederationDtoTest
     extends AbstractBasicDtoTest<FederationDto, UUID> {
 
     private final FederationTestUtil util = new FederationTestUtil();
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("id", "name");
-    }
 }

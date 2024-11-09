@@ -16,18 +16,9 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter;
 
-import java.util.List;
-
 import org.sansenshimizu.sakuraboot.test.specification.presentation.AbstractBasicFilterTest;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
-public class ManagerFilterTest extends AbstractBasicFilterTest<ManagerFilter> {
-
-    @Override
-    public List<String> includeFieldsToString() {
-
-        return List.of("distinct", "inclusive", "id", "name");
-    }
-}
+public class ManagerFilterTest extends AbstractBasicFilterTest<ManagerFilter> {}
