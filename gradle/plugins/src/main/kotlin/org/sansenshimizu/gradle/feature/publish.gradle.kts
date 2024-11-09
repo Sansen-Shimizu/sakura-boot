@@ -14,7 +14,7 @@ publishing {
         pom {
             name = project.name
             inceptionYear = "2024"
-            url = "https://github.com/Sansen-Shimizu/sakura-boot"
+            url = "https://sakuraboot.sansenshimizu.org"
 
             licenses {
                 license {
