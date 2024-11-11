@@ -74,6 +74,12 @@
   font-weight: var(--alt-heading-font-weight);
 }
 
+.doc h5:not(.discrete) {
+  font-size: 0.9rem;
+  font-weight: var(--alt-heading-font-weight);
+  text-decoration: underline;
+}
+
 .doc h1 .anchor,
 .doc h2 .anchor,
 .doc h3 .anchor,
