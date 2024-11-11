@@ -9,20 +9,8 @@ content:
       branches: [ HEAD, '0.*', '!0.1.x' ]
       start_paths:
         - docs
-        - sakura-boot-project/sakura-boot-basic/docs
-        - sakura-boot-project/sakura-boot-cache/docs
-        - sakura-boot-project/sakura-boot-hypermedia/docs
-        - sakura-boot-project/sakura-boot-log/docs
-        - sakura-boot-project/sakura-boot-mapper/docs
-        - sakura-boot-project/sakura-boot-openapi/docs
-        - sakura-boot-project/sakura-boot-specification/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-basic-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-cache-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-functional-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-hypermedia-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-integration-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-mapper-test/docs
-        - sakura-boot-project/sakura-boot-test/sakura-boot-specification-test/docs
+        - sakura-boot-project/*/docs
+        - sakura-boot-project/sakura-boot-test/*/docs
 runtime:
   fetch: true
 ui:
