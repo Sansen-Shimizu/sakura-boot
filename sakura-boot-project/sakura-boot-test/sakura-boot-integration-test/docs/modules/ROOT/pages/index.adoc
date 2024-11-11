@@ -1,0 +1,8 @@
+= Sakura Boot — integration test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — integration test module — main page documentation
+
+[discrete]
+=== Integration testing the application
+
+The documentation will be updated soon.

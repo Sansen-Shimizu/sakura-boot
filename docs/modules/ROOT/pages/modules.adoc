@@ -1,4 +1,40 @@
 = Modules
-:description: Sakura boot modules
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot modules page documentation
 
-The module documentation will be updated soon.
+Sakura Boot is a modular framework. +
+Each module helps for a specific use case.
+
+All the modules of the framework are listed below.
+
+== Main modules
+
+=== xref:sakura-boot-basic::index.adoc[]
+
+=== xref:sakura-boot-cache::index.adoc[]
+
+=== xref:sakura-boot-hypermedia::index.adoc[]
+
+=== xref:sakura-boot-log::index.adoc[]
+
+=== xref:sakura-boot-mapper::index.adoc[]
+
+=== xref:sakura-boot-openapi::index.adoc[]
+
+=== xref:sakura-boot-specification::index.adoc[]
+
+== Test modules
+
+=== xref:sakura-boot-basic-test::index.adoc[]
+
+=== xref:sakura-boot-cache-test::index.adoc[]
+
+=== xref:sakura-boot-functional-test::index.adoc[]
+
+=== xref:sakura-boot-hypermedia-test::index.adoc[]
+
+=== xref:sakura-boot-integration-test::index.adoc[]
+
+=== xref:sakura-boot-mapper-test::index.adoc[]
+
+=== xref:sakura-boot-specification-test::index.adoc[]

@@ -1,0 +1,8 @@
+= Sakura Boot — mapper — test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — mapper test module — main page documentation
+
+[discrete]
+=== Testing the mapper features
+
+The documentation will be updated soon.

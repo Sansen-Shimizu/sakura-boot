@@ -1,0 +1,8 @@
+= Sakura Boot — cache — test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — cache test module — main page documentation
+
+[discrete]
+=== Testing the cache features
+
+The documentation will be updated soon.

@@ -1,0 +1,8 @@
+= Sakura Boot — specification
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — specification module — main page documentation
+
+[discrete]
+=== Filter all the entity fields in seconds.
+
+The documentation will be updated soon.

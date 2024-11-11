@@ -1,0 +1,4 @@
+= Configuration
+:description: Sakura boot — hypermedia module — configuration
+
+The configuration documentation will be updated soon.

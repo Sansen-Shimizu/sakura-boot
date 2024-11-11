@@ -1,0 +1,8 @@
+= Sakura Boot — functional test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — functional test module — main page documentation
+
+[discrete]
+=== Functional testing the application
+
+The documentation will be updated soon.

@@ -1,0 +1,8 @@
+= Sakura Boot — basic — test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — basic test module — main page documentation
+
+[discrete]
+=== Testing the basic features
+
+The documentation will be updated soon.

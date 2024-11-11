@@ -1,0 +1,4 @@
+= Configuration
+:description: Sakura boot — mapper module — configuration
+
+The configuration documentation will be updated soon.

@@ -1,0 +1,4 @@
+= Configuration
+:description: Sakura boot — cache test module — configuration
+
+The configuration documentation will be updated soon.

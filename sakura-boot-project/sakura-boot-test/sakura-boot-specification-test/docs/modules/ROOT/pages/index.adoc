@@ -1,0 +1,8 @@
+= Sakura Boot — specification — test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — specification test module — main page documentation
+
+[discrete]
+=== Testing the specification features
+
+The documentation will be updated soon.

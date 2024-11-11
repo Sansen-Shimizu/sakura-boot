@@ -1,0 +1,8 @@
+= Sakura Boot — hypermedia — test
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — hypermedia test module — main page documentation
+
+[discrete]
+=== Testing the hypermedia features
+
+The documentation will be updated soon.

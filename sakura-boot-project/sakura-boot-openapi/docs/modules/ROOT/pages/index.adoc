@@ -1,0 +1,8 @@
+= Sakura Boot — openapi
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — openapi module — main page documentation
+
+[discrete]
+=== More than documentation for rest API.
+
+The documentation will be updated soon.

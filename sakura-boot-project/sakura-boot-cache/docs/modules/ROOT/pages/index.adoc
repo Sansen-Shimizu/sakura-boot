@@ -1,0 +1,8 @@
+= Sakura Boot — cache
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — cache module — main page documentation
+
+[discrete]
+=== The cache will speed up the application
+
+The documentation will be updated soon.

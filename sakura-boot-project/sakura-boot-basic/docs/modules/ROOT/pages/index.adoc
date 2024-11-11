@@ -1,0 +1,8 @@
+= Sakura Boot — basic
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — basic module — main page documentation
+
+[discrete]
+=== The basic but essential features
+
+The documentation will be updated soon.

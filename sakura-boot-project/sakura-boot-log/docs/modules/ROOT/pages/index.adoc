@@ -1,0 +1,8 @@
+= Sakura Boot — log
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — log module — main page documentation
+
+[discrete]
+=== Simplify the logging for any application
+
+The documentation will be updated soon.

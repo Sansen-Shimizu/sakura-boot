@@ -1,0 +1,5 @@
+= Installation
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — cache module — installation page documentation
+
+The installation documentation will be updated soon.

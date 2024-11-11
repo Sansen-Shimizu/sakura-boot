@@ -1,0 +1,8 @@
+= Sakura Boot — hypermedia
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — hypermedia module — main page documentation
+
+[discrete]
+=== Simplify the API consumption by following rest conventions.
+
+The documentation will be updated soon.

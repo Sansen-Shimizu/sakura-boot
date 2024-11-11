@@ -1,0 +1,4 @@
+= Testing
+:description: Sakura boot — basic module — testing
+
+The testing documentation will be updated soon.

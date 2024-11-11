@@ -1,0 +1,5 @@
+= Quickstart
+Malcolm Rozé <malcolm@sansenshimizu.com>
+:description: Sakura Boot — functional test module — quickstart page documentation
+
+The quickstart documentation will be updated soon.
