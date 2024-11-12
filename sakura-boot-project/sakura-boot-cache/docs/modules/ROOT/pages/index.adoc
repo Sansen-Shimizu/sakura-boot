@@ -5,4 +5,25 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === The cache will speed up the application
 
-The documentation will be updated soon.
+The cache module helps to integrate the hibernate second-level cache with the spring cache in a simple way.
+
+== Convention over code
+
+For all the classes inherited from the cache module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, to enable the cache for a basic service class, it is only necessary to implement the Cacheable interface and provide a CacheUtil class.
+The module gives a default CacheUtil that can be used and automatically configure the cache configuration.
+
+TIP: Lombok can be used to help reduce the boilerplate code and remove a lot of necessary code but needs to be used carefully, see
+xref:sakura-boot::lombok.adoc[]
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the cache module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

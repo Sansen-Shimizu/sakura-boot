@@ -5,4 +5,19 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === Simplify the logging for any application
 
-The documentation will be updated soon.
+The log module can be used to simplify the logging of any method.
+
+== Convention over code
+
+For all the classes inherited from the log module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, to log all the methods of a basic service or controller class, it is only necessary to implement the Loggable interface.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the log module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

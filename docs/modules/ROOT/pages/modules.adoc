@@ -4,6 +4,7 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 
 Sakura Boot is a modular framework. +
 Each module helps for a specific use case.
+There are all independents and can be used independently of each other or combined.
 
 All the modules of the framework are listed below.
 
@@ -11,19 +12,38 @@ All the modules of the framework are listed below.
 
 === xref:sakura-boot-basic::index.adoc[]
 
+The basic module helps create basic classes (e.g., entities, repositories, services, controllers) for any API.
+
 === xref:sakura-boot-cache::index.adoc[]
+
+The cache module helps to integrate the hibernate second-level cache with the spring cache in a simple way.
 
 === xref:sakura-boot-hypermedia::index.adoc[]
 
+The hypermedia module helps to create hypermedia links for the rest API.
+
 === xref:sakura-boot-log::index.adoc[]
+
+The log module can be used to simplify the logging of any method.
 
 === xref:sakura-boot-mapper::index.adoc[]
 
+The mapper module helps to create mappers and convert between entities and DTOs.
+
 === xref:sakura-boot-openapi::index.adoc[]
+
+The openapi module creates openapi documentation for the entire application.
 
 === xref:sakura-boot-specification::index.adoc[]
 
+The specification module helps to filter all the entity fields in a request.
+
 == Test modules
+
+The test modules are used to unit test the different modules and can be a great start to test the new implemented features.
+
+The functional test module helps to test the entire application.
+And the integration test module helps to test the different layers of the application.
 
 === xref:sakura-boot-basic-test::index.adoc[]
 

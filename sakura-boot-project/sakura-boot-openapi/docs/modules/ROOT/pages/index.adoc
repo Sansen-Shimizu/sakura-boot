@@ -5,4 +5,20 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === More than documentation for rest API.
 
-The documentation will be updated soon.
+The openapi module creates openapi documentation for the entire application.
+
+== Convention over code
+
+The openapi module only contains a configuration file and annotation that can be used in the controller to create additional documentation.
+
+For example, to add documentation to a basic controller class, it is only necessary to add the module in the dependencies.
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the openapi module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

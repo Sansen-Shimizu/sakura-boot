@@ -5,4 +5,26 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === Filter all the entity fields in seconds.
 
-The documentation will be updated soon.
+The specification module helps to filter all the entity fields in a request.
+
+== Convention over code
+
+For all the classes inherited from the specification module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, to add filtering to an entity, it is only necessary to implement the CriteriaService and the CriteriaController interfaces for the service and controller respectively.
+Also, provide the SpecificationBuilder in the service class and create the filter bean class that contains the fields to be filtered.
+The specification module contains a default SpecificationBuilder that can be used.
+
+TIP: Lombok can be used to help reduce the boilerplate code and remove a lot of necessary code but needs to be used carefully, see
+xref:sakura-boot::lombok.adoc[]
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the specification module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

@@ -5,4 +5,28 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === Conversion between entity and DTO
 
-The documentation will be updated soon.
+The mapper module helps to create mappers and convert between entities and DTOs.
+
+== Convention over code
+
+For all the classes inherited from the mapper module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, to add automatic conversion between entities and DTOs on a basic service, it is only necessary to implement the Mapper interface.
+And provide the mapper.
+The mapper can be easily created using the BasicMapper interface.
+
+TIP: Mapstruct is recommended for this module, but it can be used with or without any mapper framework.
+
+TIP: Lombok can be used to help reduce the boilerplate code and remove a lot of necessary code but needs to be used carefully, see
+xref:sakura-boot::lombok.adoc[]
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the mapper module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

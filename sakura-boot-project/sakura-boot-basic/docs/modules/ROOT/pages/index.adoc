@@ -5,4 +5,25 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === The basic but essential features
 
-The documentation will be updated soon.
+The basic module helps create basic classes (e.g., entities, repositories, services, controllers) for any API.
+
+== Convention over code
+
+For all the classes inherited from the basic module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, the entity abstract class defined the equals, hashCode, and toString methods.
+And the service and controller interface defined all the CRUD basic methods.
+
+TIP: Lombok can be used to help reduce the boilerplate code and remove a lot of necessary code but needs to be used carefully, see
+xref:sakura-boot::lombok.adoc[]
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the basic module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].

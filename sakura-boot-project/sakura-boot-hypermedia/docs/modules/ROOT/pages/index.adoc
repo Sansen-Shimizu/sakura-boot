@@ -5,4 +5,26 @@ Malcolm Rozé <malcolm@sansenshimizu.com>
 [discrete]
 === Simplify the API consumption by following rest conventions.
 
-The documentation will be updated soon.
+The hypermedia module helps to create hypermedia links for the rest API.
+
+== Convention over code
+
+For all the classes inherited from the hypermedia module class or interface, only a few lines of code are required.
+All the defaults are defined in the module class itself.
+
+For example, to add hypermedia links to a basic controller class, it is only necessary to implement the Hypermedia interface.
+And provide a ModelAssembler.
+Two other simple classes are needed, the ModelAssembler and the Model class.
+
+TIP: Lombok can be used to help reduce the boilerplate code and remove a lot of necessary code but needs to be used carefully, see
+xref:sakura-boot::lombok.adoc[]
+
+It is possible to add custom logic or modify the default behavior if necessary.
+
+== Getting started
+
+For new users of the framework the xref:quickstart.adoc[] page will help create a simple application using the hypermedia module.
+
+For more details on the installation instructions, see xref:installation.adoc[].
+
+To see all the different modules, go to xref:sakura-boot::modules.adoc[].
