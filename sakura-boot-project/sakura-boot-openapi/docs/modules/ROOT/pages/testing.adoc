@@ -1,4 +1,0 @@
-= Testing
-:description: Sakura boot — openapi module — testing
-
-The testing documentation will be updated soon.

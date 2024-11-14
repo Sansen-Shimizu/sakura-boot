@@ -45,7 +45,7 @@ For this quickstart rest API project, the structure is as follows:
 <.> The root directory of the project.
 <.> Contains the source code of the project.
 <.> Contains the java code.
-<.> The java code must be in the package com.example.demo (replace the actual package name).
+<.> The java code must be in the package com.example.demo (replace to the actual package name).
 <.> The business layer of the application (here the services, mappers, and DTOs).
 <.> The persistence layer of the application (here the entities and repositories).
 <.> The presentation layer of the application (here the controllers, filters, and models).
@@ -446,7 +446,7 @@ public class SimpleService
 
     private final ObjectMapper objectMapper;
 
-    private final SpecificationBuilder<Simple> specificationBuilder;
+    private final SpecificationBuilder<SimpleEntity> specificationBuilder;
 
     private final CachingUtil cachingUtil;
 
@@ -763,7 +763,7 @@ import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
-import com.example.demo.business.CompanyDto;
+import com.example.demo.business.SimpleDto;
 
 @Component
 public class SimpleModelAssembler
@@ -828,19 +828,19 @@ Example of usage:
 |
 
 |GET by id
-|http://localhost:8080/api/simples/+{id}+
+|http://localhost:8080/api/simples/id
 |
 
 |PUT by id
-|http://localhost:8080/api/simples/+{id}+
+|http://localhost:8080/api/simples/id
 |{"id": id, "name": "demo"}
 
 |PATCH by id
-|http://localhost:8080/api/simples/+{id}+
+|http://localhost:8080/api/simples/id
 |{"id": id, "name": "demo"}
 
 |DELETE by id
-|http://localhost:8080/api/simples/+{id}+
+|http://localhost:8080/api/simples/id
 |
 |===
 
@@ -892,7 +892,7 @@ For more information on how to build and run a Spring Boot application, see http
 For more information about the spring-boot-docker-compose for local development with docker support, see https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose[here,window=_blank].
 
 The quickstart application creates only one entity.
-The next could be to add more entities with the necessary fields.
+The next step could be to add more entities with the necessary fields.
 For each new entity follow the same steps.
 
 When building an application with different entities, it is possible to create relations between them. +

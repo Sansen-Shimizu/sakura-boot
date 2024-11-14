@@ -2,4 +2,247 @@
 Malcolm Rozé <malcolm@sansenshimizu.com>
 :description: Sakura Boot — specification module — installation page documentation
 
-The installation documentation will be updated soon.
+The installation documentation will explain all the different possibilities to install the Sakura Boot specification module to build an application using filtering.
+
+== Prerequisites
+
+See xref:sakura-boot::requirements.adoc[] for prerequisites.
+
+== Maven
+
+TIP: Maven is recommended for developers who never use both Maven and Gradle.
+
+=== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+=== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+This includes all the modules of sakura boot.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-all-module</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+=== Test dependencies
+
+The test dependencies are available for unit tests, integration tests, and functional tests. +
+Integration and functional tests are available both with predefined starter and custom starter.
+There is no predefined starter for unit test.
+
+==== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+===== Functional tests
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, and a runtime postgresql test container.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module-functional-test</artifactId>
+    <version>{release-version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+===== Integration tests
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, and a runtime h2 in-memory database.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module-integration-test</artifactId>
+    <version>{release-version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+==== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+===== Functional tests
+
+This includes all the modules of sakura boot.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-all-module-functional-test</artifactId>
+    <version>{release-version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+===== Integration tests
+
+This includes all the modules of sakura boot.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-all-module-integration-test</artifactId>
+    <version>{release-version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+===== Unit tests
+
+This includes all the modules of sakura boot.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-all-module-unit-test</artifactId>
+    <version>{release-version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+=== Customisation
+
+For more fine-grained control over dependencies, import directly from the specification module and don’t use starters:
+
+This includes the specification module with the core and the basic module of sakura boot and only necessary dependencies (e.g., spring-core, jakarta-persistence-api, etc).
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-specification</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+And for the test modules, the different artifactId are the following:
+
+* sakura-boot-specification-test
+* sakura-boot-integration-test
+* sakura-boot-functional-test
+
+== Gradle
+
+=== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:{release-version}")
+----
+
+=== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+This includes all the modules of sakura boot.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-all-module:{release-version}")
+----
+
+=== Test dependencies
+
+The test dependencies are available for unit tests, integration tests, and functional tests. +
+Integration and functional tests are available both with predefined starter and custom starter.
+There is no predefined starter for unit test.
+
+==== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+===== Functional tests
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, and a runtime postgresql test container.
+
+[,kotlin,subs=+attributes]
+----
+functionalTestImplementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module-functional-test:{release-version}")
+----
+
+===== Integration tests
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, and a runtime h2 in-memory database.
+
+[,kotlin,subs=+attributes]
+----
+integrationTestImplementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module-integration-test:{release-version}")
+----
+
+==== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+===== Functional tests
+
+This includes all the modules of sakura boot.
+
+[,kotlin,subs=+attributes]
+----
+functionalTestImplementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-all-module-functional-test:{release-version}")
+----
+
+===== Integration tests
+
+This includes all the modules of sakura boot.
+
+[,kotlin,subs=+attributes]
+----
+integrationTestImplementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-all-module-integration-test:{release-version}")
+----
+
+===== Unit tests
+
+This includes all the modules of sakura boot.
+
+[,kotlin,subs=+attributes]
+----
+testImplementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module-unit-test:{release-version}")
+----
+
+=== Customisation
+
+For more fine-grained control over dependencies, import directly from the specification module and don’t use starters:
+
+This includes the specification module with the core and the basic module of sakura boot and only necessary dependencies (e .g., spring-core, jakarta-persistence-api, etc).
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-specification:{release-version}")
+----
+
+And for the test modules, the different artifactId are the following:
+
+* sakura-boot-specification-test
+* sakura-boot-integration-test
+* sakura-boot-functional-test

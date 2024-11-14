@@ -6,4 +6,5 @@
 * xref:configuration.adoc[]
 * xref:modules.adoc[]
 * xref:examples.adoc[]
+* xref:reflection.adoc[]
 * xref:lombok.adoc[]

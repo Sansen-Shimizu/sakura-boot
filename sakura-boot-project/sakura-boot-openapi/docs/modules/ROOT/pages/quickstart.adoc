@@ -2,4 +2,281 @@
 Malcolm Rozé <malcolm@sansenshimizu.com>
 :description: Sakura Boot — openapi module — quickstart page documentation
 
-The quickstart documentation will be updated soon.
+The quickstart documentation will demonstrate how to install and use Sakura Boot with the openapi module to create a simple API application with documentation.
+
+== Prerequisites
+
+See xref:sakura-boot::requirements.adoc[] for prerequisites.
+
+== Base application
+
+If a base application is needed before this quickstart, see the xref:sakura-boot-basic::quickstart.adoc[basic quickstart] section.
+
+== Project structure
+
+The project structure is the same as the basic module quickstart.
+
+IMPORTANT: To initialize a Spring Boot application, go to https://start.spring.io/[window=_blank].
+From there, it will be easier to create a new project.
+
+== Installation
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+* With Maven:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+And the openapi module for the second dependency.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+    <version>{release-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-openapi</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+* With Gradle:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+And the openapi module for the second dependency.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-openapi:{release-version}")
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:{release-version}")
+----
+
+TIP: Maven is recommended for developers who never use both Maven and Gradle.
+
+Here is a simple pom.xml file that includes the predefined basic module starter and the openapi module with lombok, spring boot devtools, and spring boot docker compose:
+
+[,xml,subs=+attributes]
+.pom.xml
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>{spring-version}</version>
+    <relativePath/>
+  </parent>
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>demo</name>
+  <description>Demo project for Sakura Boot</description>
+  <properties>
+    <java.version>{java-version}</java.version>
+  </properties>
+  <dependencies>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+        <version>{release-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-openapi</artifactId>
+        <version>{release-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.0</version>
+            <configuration>
+                <source>{java-version}</source>
+                <target>{java-version}</target>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>
+----
+
+Here is an equivalent simple build.gradle.kts.
+
+[,kotlin,subs=+attributes]
+.build.gradle.kts
+----
+plugins {
+  java
+  id("org.springframework.boot") version "{spring-version}"
+  id("io.spring.dependency-management") version "1.1.6"
+}
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of({java-version})
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom(configurations.annotationProcessor.get())
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+  implementation("org.sansenshimizu.sakuraboot:sakura-boot-openapi:{release-version}")
+  compileOnly("org.projectlombok:lombok")
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
+  developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+  annotationProcessor("org.projectlombok:lombok")
+}
+----
+
+== Configuration
+
+The configuration of the project, like any Spring Boot application, is done in the application.properties (or application.yml) file.
+
+The Spring Boot properties can be configured in this file with the new Sakura Boot properties.
+
+Here is an example of an application.properties file.
+
+[,properties]
+.application.properties
+----
+# SPRING
+spring.application.name = demo
+spring.threads.virtual.enabled = true
+# activate virtual threads
+
+# APPLICATION INFORMATION (Sakura Boot properties for openapi module)
+application.info.name = demo
+application.info.version = 1.0.0
+
+# SPRING DOC
+springdoc.api-docs.path = /api-docs
+springdoc.swagger-ui.path = /swagger-docs.html
+springdoc.swagger-ui.operationsSorter = method
+springdoc.remove-broken-reference-definitions = false
+
+# Controller
+server.servlet.context-path = /api
+
+# Cache
+spring.jpa.properties.hibernate.cache.use_second_level_cache = true
+
+# Database
+spring.jpa.open-in-view = false
+spring.datasource.url = jdbc:postgresql://postgres:5432/database
+spring.datasource.username = sa
+spring.datasource.password = password
+
+# LOG
+logging.file.path = ./log/
+logging.file.name = ${logging.file.path}${spring.application.name}.log
+
+# Debug
+spring.jpa.hibernate.ddl-auto = create-drop
+#spring.jpa.show-sql = true
+#sakuraboot.exception.showStackTrace = true
+#logging.level.com.example.demo = DEBUG
+#logging.level.org.sansenshimizu.sakuraboot = DEBUG
+#logging.level.root = warn
+----
+
+Those properties are all optional or with a default value. +
+But it can be a good start for any application. +
+The Sakura Boot properties work with their related modules.
+If the module is not used by the application, it can be removed.
+
+CAUTION: For a production-ready application, remove the spring.jpa.hibernate.ddl-auto property.
+
+== Create the application
+
+To create the application, it is the same as the xref:sakura-boot-basic::quickstart.adoc#_create_the_application[basic
+ quickstart] section.
+
+== Usage
+
+The usage is the same as the xref:sakura-boot-basic::quickstart.adoc#_usage[basic quickstart] section.
+
+Additionally, to access the Swagger UI, go to http://localhost:8080/swagger-docs.html.
+The link can be changed by the property springdoc.swagger-ui.path in the configuration file.
+
+== Next steps
+
+For more information on how to build and run a Spring Boot application, see https://spring.io/guides/gs/spring-boot[here,window=_blank].
+
+For more information about the spring-boot-docker-compose for local development with docker support, see https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose[here,window=_blank].
+
+To customize the configuration for the application requirements, see the xref:configuration.adoc[] section.
+
+If the quickstart section is not sufficient, other examples are available at the xref:sakura-boot::examples.adoc[] section.

@@ -1,4 +1,3 @@
 * xref:quickstart.adoc[]
 * xref:installation.adoc[]
-* xref:testing.adoc[]
 * xref:configuration.adoc[]

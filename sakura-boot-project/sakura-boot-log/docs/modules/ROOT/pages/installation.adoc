@@ -2,4 +2,92 @@
 Malcolm Rozé <malcolm@sansenshimizu.com>
 :description: Sakura Boot — log module — installation page documentation
 
-The installation documentation will be updated soon.
+The installation documentation will explain all the different possibilities to install the Sakura Boot log module to build an application with logging facilities.
+
+== Prerequisites
+
+See xref:sakura-boot::requirements.adoc[] for prerequisites.
+
+== Maven
+
+TIP: Maven is recommended for developers who never use both Maven and Gradle.
+
+=== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+=== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+This includes only the basic functionalities of sakura boot.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-basic</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+=== Customisation
+
+For more fine-grained control over dependencies, import directly from the log module and don’t use starters:
+
+This includes the log module with the core of sakura boot and only necessary dependencies (e.g., spring-core, etc).
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-log</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+== Gradle
+
+=== Predefined dependencies
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+----
+
+=== Custom dependencies
+
+To install with custom dependencies, add one starter to the project dependencies:
+
+This includes only the basic functionalities of sakura boot.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-basic:{release-version}")
+----
+
+=== Customisation
+
+For more fine-grained control over dependencies, import directly from the log module and don’t use starters:
+
+This includes the log module with the core of sakura boot and only necessary dependencies (e.g., spring-core, etc).
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-log:{release-version}")
+----

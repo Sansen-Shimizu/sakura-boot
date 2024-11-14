@@ -2,4 +2,404 @@
 Malcolm Rozé <malcolm@sansenshimizu.com>
 :description: Sakura Boot — hypermedia module — quickstart page documentation
 
-The quickstart documentation will be updated soon.
+The quickstart documentation will demonstrate how to install and use Sakura Boot with the hypermedia module to create a simple rest API application with links.
+
+== Prerequisites
+
+See xref:sakura-boot::requirements.adoc[] for prerequisites.
+
+== Base application
+
+If a base application is needed before this quickstart, see the xref:sakura-boot-basic::quickstart.adoc[basic quickstart] section.
+
+== Project structure
+
+Multiple structures are possible when working with Sakura Boot. +
+For this quickstart API project, the structure is as follows:
+
+[listing]
+----
+📂 project <.>
+  📂 src <.>
+    📂 main
+        📂 java <.>
+            📂 com.example.demo <.>
+                📂 business <.>
+                    📄 SimpleService.java
+                📂 persistence <.>
+                    📄 SimpleEntity.java
+                    📄 SimpleRepository.java
+                📂 presentation <.>
+                    📄 SimpleController.java
+                    📄 SimpleModel.java
+                    📄 SimpleModelAssembler.java
+                📄 DemoApplication.java <.>
+        📂 resources <.>
+            📄 application.properties
+            📄 application.yml
+  📄 build.gradle.kts <.>
+  📄 settings.gradle.kts <.>
+  📄 pom.xml <.>
+  📄 docker-compose.yml <.>
+----
+
+<.> The root directory of the project.
+<.> Contains the source code of the project.
+<.> Contains the java code.
+<.> The java code must be in the package com.example.demo (replace to the actual package name).
+<.> The business layer of the application (here the services).
+<.> The persistence layer of the application (here the entities and repositories).
+<.> The presentation layer of the application (here the controllers and models).
+<.> The application entry point.
+<.> Contains the resources configuration files.
+<.> The build file (for Gradle).
+<.> The settings file (for Gradle).
+<.> The pom file (for Maven).
+<.> The docker compose file (optional).
+
+IMPORTANT: To initialize a Spring Boot application, go to https://start.spring.io/[window=_blank].
+From there, it will be easier to create a new project.
+
+== Installation
+
+To install with predefined dependencies for a production-ready application, add one starter to the project dependencies:
+
+* With Maven:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+And the hypermedia module for the second dependency.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+    <version>{release-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-hypermedia</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.sansenshimizu.sakuraboot</groupId>
+    <artifactId>sakura-boot-starter-predefined-all-module</artifactId>
+    <version>{release-version}</version>
+</dependency>
+----
+
+* With Gradle:
+
+This includes the basic functionalities of sakura boot, the necessary spring boot starter, and a runtime postgresql.
+And the hypermedia module for the second dependency.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-hypermedia:{release-version}")
+----
+
+This includes all the modules of sakura boot, the necessary spring boot starter, mapstruct, ehcache3 as cache provider, and a runtime postgresql.
+
+[,kotlin,subs=+attributes]
+----
+implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-all-module:{release-version}")
+----
+
+TIP: Maven is recommended for developers who never use both Maven and Gradle.
+
+Here is a simple pom.xml file that includes the predefined basic module starter and the hypermedia module with lombok, spring boot devtools, and spring boot docker compose:
+
+[,xml,subs=+attributes]
+.pom.xml
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>{spring-version}</version>
+    <relativePath/>
+  </parent>
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>demo</name>
+  <description>Demo project for Sakura Boot</description>
+  <properties>
+    <java.version>{java-version}</java.version>
+  </properties>
+  <dependencies>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-starter-predefined-basic</artifactId>
+        <version>{release-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.sansenshimizu.sakuraboot</groupId>
+        <artifactId>sakura-boot-hypermedia</artifactId>
+        <version>{release-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.0</version>
+            <configuration>
+                <source>{java-version}</source>
+                <target>{java-version}</target>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>
+----
+
+Here is an equivalent simple build.gradle.kts.
+
+[,kotlin,subs=+attributes]
+.build.gradle.kts
+----
+plugins {
+  java
+  id("org.springframework.boot") version "{spring-version}"
+  id("io.spring.dependency-management") version "1.1.6"
+}
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of({java-version})
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom(configurations.annotationProcessor.get())
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation("org.sansenshimizu.sakuraboot:sakura-boot-starter-predefined-basic:{release-version}")
+  implementation("org.sansenshimizu.sakuraboot:sakura-boot-hypermedia:{release-version}")
+  compileOnly("org.projectlombok:lombok")
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
+  developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+  annotationProcessor("org.projectlombok:lombok")
+}
+----
+
+== Configuration
+
+The configuration of the project is the same as the xref:sakura-boot-basic::quickstart.adoc#_configuration[basic
+quickstart] section.
+
+CAUTION: For a production-ready application, remove the spring.jpa.hibernate.ddl-auto property.
+
+== Create the application
+
+The next part is to write the application code. +
+The application will use UUID as the primary key of the entity.
+It is possible to use any other primary key (e.g., Long, String, etc).
+
+Again, if a base application is needed before this quickstart, see the xref:sakura-boot-basic::quickstart.adoc[basic
+quickstart] section.
+
+=== Controller
+
+The controller in SimpleController.java can change based on the modules that are used.
+
+Here is an example of the controller that uses the hypermedia module.
+
+[,java]
+.SimpleController.java
+----
+package com.example.demo.presentation;
+
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.sansenshimizu.sakuraboot.basic.api.presentation.BasicController;
+import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+
+import com.example.demo.business.SimpleService;
+import com.example.demo.persistence.SimpleEntity;
+
+@RestController
+@RequestMapping("/simples")
+public class SimpleController
+    implements BasicController<SimpleEntity, UUID, SimpleEntity>,
+    Hypermedia<SimpleEntity, SimpleModelAssembler> {
+
+    private final SimpleService service;
+
+    private final SimpleModelAssembler modelAssembler;
+
+    public Class<SimpleEntity> getDataClass() {
+
+        return SimpleEntity.class;
+    }
+
+    // Required arg constructor, getters, etc. if lombok is not used.
+}
+----
+
+For lombok users, add the annotation on top of the class:
+
+[,java]
+----
+@Getter
+@RequiredArgsConstructor
+@Service
+----
+
+==== Hypermedia
+
+An application with hypermedia needs a model and model assembler file, it will be the SimpleModel.java and SimpleModelAssembler.java.
+
+WARNING: In this quickstart example, the hypermedia uses the entity, if the application uses the Mapping module, then it is possible to replace the entity by the DTO.
+
+Here is an example of the model file.
+
+[,java]
+.SimpleModel.java
+----
+package com.example.demo.presentation;
+
+import java.io.Serial;
+
+import org.springframework.hateoas.server.core.Relation;
+
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModel;
+
+import com.example.demo.persistence.SimpleEntity;
+
+@Relation(collectionRelation = "simples")
+public class SimpleModel extends AbstractBasicModel<SimpleEntity> {
+
+    @Serial
+    private static final long serialVersionUID = 8417617898954960134L;
+
+    public SimpleModel(final SimpleEntity data) {
+
+        super(data);
+    }
+}
+----
+
+Here is an example of the model assembler file.
+
+[,java]
+.SimpleModelAssembler.java
+----
+package com.example.demo.presentation;
+
+import java.util.function.Function;
+
+import org.springframework.stereotype.Component;
+
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
+
+import com.example.demo.persistence.SimpleEntity;
+
+@Component
+public class SimpleModelAssembler
+    extends AbstractBasicModelAssembler<SimpleEntity, SimpleModel> {
+
+    protected SimpleModelAssembler() {
+
+        super(SimpleController.class, SimpleModel.class, "simples");
+    }
+
+    @Override
+    protected Function<SimpleEntity, SimpleModel> instantiateModel() {
+
+        return SimpleModel::new;
+    }
+}
+----
+
+The simple application with the hypermedia module is now ready to be used.
+
+== Usage
+
+The usage is the same as the xref:sakura-boot-basic::quickstart.adoc#_usage[basic quickstart] section.
+
+But now in the return body links will be present to help navigate through the rest API application.
+
+== Next steps
+
+For more information on how to build and run a Spring Boot application, see https://spring.io/guides/gs/spring-boot[here,window=_blank].
+
+For more information about the spring-boot-docker-compose for local development with docker support, see https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose[here,window=_blank].
+
+The quickstart application creates only one entity.
+The next step could be to add more entities with the necessary fields.
+For each new entity follow the same steps.
+
+When building an application with different entities, it is possible to create relations between them. +
+For more information, see the xref:sakura-boot::relationship.adoc[] section.
+
+When building an application, it is important to also create tests. +
+Sakura Boot provides a test framework that can be used to test the application.
+It supports unit tests, integration tests, and functional tests. +
+For more information, see the xref:testing.adoc[] section.
+
+To customize the configuration for the application requirements, see the xref:configuration.adoc[] section.
+
+If the quickstart section is not sufficient, other examples are available at the xref:sakura-boot::examples.adoc[] section.
