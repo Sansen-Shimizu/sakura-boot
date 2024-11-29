@@ -3,7 +3,7 @@
 antora = "1.0.0"
 classpath-collision-detector = "1.0.0"
 cyclonedx-gradle-plugin = "1.8.2"
-dependency-analysis-gradle-plugin = "1.32.0"
+dependency-analysis-gradle-plugin = "2.1.1"
 jvm-dependency-conflict-resolution = "2.1.1"
 node = "7.1.0"
 spotless-plugin-gradle = "6.25.0"
