@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
 
-import org.sansenshimizu.sakuraboot.util.ToStringUtils;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -486,7 +486,7 @@ public interface BeanTest<T> {
                 field -> testToStringHelper(bean, field.getName(), toString),
                 field -> !SERIAL_VERSION_UID.equals(field.getName())
                     && !Modifier.isStatic(field.getModifiers())
-                    && ToStringUtils.isNotRelationWithMappedBy(field));
+                    && RelationshipUtils.isNotRelationWithMappedBy(field));
         } else {
 
             includeFieldsToString().forEach(

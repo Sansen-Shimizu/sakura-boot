@@ -21,22 +21,18 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class DepartmentDto
-    extends AbstractBasicDto2RelationshipAnyToOne<UUID, CompanyDto, UUID,
-        ManagerDto, UUID> {
+public class DepartmentDto extends AbstractBasicDto<UUID> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -48,17 +44,15 @@ public class DepartmentDto
     @Nullable
     private final CompanyDto company;
 
-    @JsonProperty("companyId")
     @Nullable
-    private final UUID relationshipId;
+    private final UUID companyId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
     private final ManagerDto manager;
 
-    @JsonProperty("managerId")
     @Nullable
-    private final UUID secondRelationshipId;
+    private final UUID managerId;
 
     @Nullable
     private final String name;
@@ -74,20 +68,4 @@ public class DepartmentDto
 
     @Nullable
     private final ZonedDateTime createdDate;
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public CompanyDto getRelationship() {
-
-        return getCompany();
-    }
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public ManagerDto getSecondRelationship() {
-
-        return getManager();
-    }
 }

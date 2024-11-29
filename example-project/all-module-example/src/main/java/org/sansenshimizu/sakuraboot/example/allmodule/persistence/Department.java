@@ -36,7 +36,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
@@ -44,8 +44,7 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractB
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Department
-    extends AbstractBasicEntity1RelationshipAnyToOne<Long, Company> {
+public class Department extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -64,11 +63,4 @@ public class Department
 
     @Nullable
     private String name;
-
-    @Override
-    @Nullable
-    public Company getRelationship() {
-
-        return getCompany();
-    }
 }

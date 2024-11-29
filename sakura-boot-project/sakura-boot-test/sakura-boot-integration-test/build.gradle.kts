@@ -19,7 +19,6 @@ dependencies {
     api(libs.spring.test)
     api(libs.spring.tx)
     implementation(libs.assertj.core)
-    implementation(libs.jakarta.persistence.api)
     implementation(libs.json.path)
     implementation(libs.mockito.core)
     implementation(libs.spring.boot.test)

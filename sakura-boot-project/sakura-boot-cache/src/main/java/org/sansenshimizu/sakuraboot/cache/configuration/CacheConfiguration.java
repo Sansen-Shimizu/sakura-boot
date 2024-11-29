@@ -55,6 +55,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.util.Pair;
 import org.springframework.lang.Nullable;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
+
 /**
  * The class CacheConfiguration create a {@link CacheManager} that can be
  * configured with {@link CachesSpecification}. The
@@ -73,19 +75,11 @@ import org.springframework.lang.Nullable;
     Caching.class, JCacheCacheManager.class
 })
 @ConditionalOnMissingBean(org.springframework.cache.CacheManager.class)
-@EnableConfigurationProperties(CachesSpecification.class)
+@EnableConfigurationProperties({
+    GlobalSpecification.class, CachesSpecification.class
+})
 @EnableCaching
 public class CacheConfiguration {
-
-    /**
-     * The string used to identify the persistence layer.
-     */
-    private static final String PERSISTENCE_STRING = "persistence";
-
-    /**
-     * The string used to identify the business layer.
-     */
-    private static final String BUSINESS_STRING = "business";
 
     /**
      * Creates a CacheManagerCustomizer that sets the transaction awareness of
@@ -106,6 +100,7 @@ public class CacheConfiguration {
      * Creates a JCache Cache Manager based on the provided specifications and
      * customizers.
      *
+     * @param  globalSpecification       the global specification
      * @param  cachesSpecificationHolder the specifications for caches
      * @param  cacheConfiguration        the cache configuration provider
      * @param  cacheManagerCustomizers   the customizers for the cache manager
@@ -117,6 +112,7 @@ public class CacheConfiguration {
     @ConditionalOnMissingBean
     /* @formatter:off */
     public <K, V> CacheManager jCacheCacheManager(
+        final GlobalSpecification globalSpecification,
         final CachesSpecification.CachesSpecificationHolder
             cachesSpecificationHolder,
         /* @formatter:on */
@@ -138,7 +134,8 @@ public class CacheConfiguration {
                 .forEach(cacheSpecification -> createCache(cacheConfiguration,
                     cacheSpecification, jCacheCacheManager,
                     cachesSpecification.activeL2Cache(),
-                    cachesSpecification.dtoPackage()));
+                    globalSpecification.entityPackage(),
+                    globalSpecification.dtoPackage()));
         }
 
         cacheManagerCustomizers.orderedStream()
@@ -151,7 +148,7 @@ public class CacheConfiguration {
             javax.cache.configuration.Configuration<K, V>> cacheConfiguration,
         final CachesSpecification.CacheSpecification cacheSpecification,
         final CacheManager jCacheCacheManager, final boolean activeL2Cache,
-        @Nullable final String dtoPackage) {
+        final String entityPackage, final String dtoPackage) {
 
         if (activeL2Cache) {
 
@@ -180,8 +177,8 @@ public class CacheConfiguration {
                 actualSpringCacheConfiguration = configuration;
             } else {
 
-                final CacheType cacheType
-                    = getCacheType(cacheSpecification, dtoPackage);
+                final CacheType cacheType = getCacheType(cacheSpecification,
+                    entityPackage, dtoPackage);
                 actualSpringCacheConfiguration = cacheConfiguration.getObject(
                     Pair.of(cacheType.keyType(), cacheType.valueType()));
             }
@@ -239,7 +236,7 @@ public class CacheConfiguration {
 
     private static CacheType getCacheType(
         final CachesSpecification.CacheSpecification cacheSpecification,
-        @Nullable final String dtoPackage) {
+        final String entityPackage, final String dtoPackage) {
 
         Class<?> keyType;
         Class<?> valueType;
@@ -253,21 +250,15 @@ public class CacheConfiguration {
             keyType = Serializable.class;
         }
 
-        if (dtoPackage != null) {
+        try {
 
-            try {
-
-                valueType = Class.forName(
-                    cacheSpecification.type()
-                        .getName()
-                        .replace(PERSISTENCE_STRING, dtoPackage)
-                        + "Dto",
-                    false, Thread.currentThread().getContextClassLoader());
-            } catch (final ClassNotFoundException e) {
-
-                valueType = cacheSpecification.type();
-            }
-        } else {
+            valueType = Class.forName(
+                cacheSpecification.type()
+                    .getName()
+                    .replace(entityPackage, dtoPackage)
+                    + "Dto",
+                false, Thread.currentThread().getContextClassLoader());
+        } catch (final ClassNotFoundException e) {
 
             valueType = cacheSpecification.type();
         }
@@ -290,6 +281,7 @@ public class CacheConfiguration {
      * EntityManager.
      *
      * @param  appContext          the ApplicationContext.
+     * @param  globalSpecification the {@link GlobalSpecification}.
      * @param  cachesSpecification the {@link CachesSpecification}.
      * @return                     a {@code CachesSpecificationHolder} based on
      *                             the retrieved entities
@@ -299,6 +291,7 @@ public class CacheConfiguration {
     public
         CachesSpecification.CachesSpecificationHolder cachesSpecificationHolder(
             final ApplicationContext appContext,
+            final GlobalSpecification globalSpecification,
             final CachesSpecification cachesSpecification) {
 
         final CachesSpecification actualCachesSpecification;
@@ -315,11 +308,10 @@ public class CacheConfiguration {
                 actualCachesSpecification = new CachesSpecification(
                     new EntityScanner(appContext).scan(Entity.class)
                         .stream()
-                        .map(CacheConfiguration::getCacheSpecification)
+                        .map(entity -> getCacheSpecification(entity,
+                            globalSpecification))
                         .toList(),
-                    cachesSpecification.activeL2Cache(),
-                    Objects.requireNonNullElse(cachesSpecification.dtoPackage(),
-                        BUSINESS_STRING));
+                    cachesSpecification.activeL2Cache());
             } catch (final ClassNotFoundException e) {
 
                 throw new BeanInstantiationException(
@@ -335,13 +327,14 @@ public class CacheConfiguration {
     }
 
     private static CachesSpecification.CacheSpecification getCacheSpecification(
-        final Class<?> entity) {
+        final Class<?> entity, final GlobalSpecification globalSpecification) {
 
         try {
 
-            final Class<?> serviceClass = Class.forName(
-                entity.getName().replace(PERSISTENCE_STRING, BUSINESS_STRING)
-                    + "Service");
+            final Class<?> serviceClass = Class.forName(entity.getName()
+                .replace(globalSpecification.entityPackage(),
+                    globalSpecification.servicePackage())
+                + "Service");
             final boolean activeSpringCache
                 = org.sansenshimizu.sakuraboot.cache.api.Cacheable.class
                     .isAssignableFrom(serviceClass);

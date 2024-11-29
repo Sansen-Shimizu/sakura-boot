@@ -22,11 +22,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -36,9 +31,9 @@ import org.springframework.util.ReflectionUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.SuperRepository;
-import org.sansenshimizu.sakuraboot.test.DataCreatorHelper;
 import org.sansenshimizu.sakuraboot.test.SuperIT;
 import org.sansenshimizu.sakuraboot.test.SuperITUtil;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -144,27 +139,7 @@ public interface BasicRepositoryIT<E extends DataPresentation<I>,
                         assertThat(data.getId()).isNotNull();
                     }
                 }
-            }, BasicRepositoryIT::isRelationship);
-    }
-
-    private static boolean isRelationship(final Field field) {
-
-        return isAnyToOneRelationship(field) || isAnyToManyRelationship(field);
-    }
-
-    private static boolean isAnyToOneRelationship(final Field field) {
-
-        return (field.isAnnotationPresent(OneToOne.class)
-            && "".equals(field.getAnnotation(OneToOne.class).mappedBy()))
-            || field.isAnnotationPresent(ManyToOne.class);
-    }
-
-    private static boolean isAnyToManyRelationship(final Field field) {
-
-        return (field.isAnnotationPresent(OneToMany.class)
-            && "".equals(field.getAnnotation(OneToMany.class).mappedBy()))
-            || (field.isAnnotationPresent(ManyToMany.class)
-                && "".equals(field.getAnnotation(ManyToMany.class).mappedBy()));
+            }, RelationshipUtils::isRelationshipExcludeMappedBy);
     }
 
     @Test
@@ -230,10 +205,8 @@ public interface BasicRepositoryIT<E extends DataPresentation<I>,
         // GIVEN
         final E saveEntity = createAndSaveEntity();
         final I id = saveEntity.getId();
-        final DataCreatorHelper.EntityIds savedEntityIds
-            = DataCreatorHelper.getIdsFromEntity(saveEntity);
         final E otherCreatedEntity
-            = getUtil().getDifferentEntityWithId(savedEntityIds);
+            = getUtil().getDifferentEntityWithId(saveEntity);
 
         // WHEN
         final E updatedEntity = getRepository().save(otherCreatedEntity);

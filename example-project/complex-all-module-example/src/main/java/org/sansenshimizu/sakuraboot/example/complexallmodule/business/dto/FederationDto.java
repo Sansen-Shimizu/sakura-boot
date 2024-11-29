@@ -22,22 +22,19 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Address;
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto1RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class FederationDto
-    extends AbstractBasicDto1RelationshipAnyToMany<UUID, HobbyDto, UUID> {
+public class FederationDto extends AbstractBasicDto<UUID> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
@@ -49,9 +46,8 @@ public class FederationDto
     @Nullable
     private final Set<HobbyDto> hobbies;
 
-    @JsonProperty("hobbiesId")
     @Nullable
-    private final Set<UUID> relationshipsId;
+    private final Set<UUID> hobbiesId;
 
     @Nullable
     private final Address address;
@@ -75,22 +71,13 @@ public class FederationDto
         return Collections.unmodifiableSet(hobbies);
     }
 
-    @Override
-    @JsonIgnore
     @Nullable
-    public Set<HobbyDto> getRelationships() {
+    public Set<UUID> getHobbiesId() {
 
-        return getHobbies();
-    }
-
-    @Override
-    @Nullable
-    public Set<UUID> getRelationshipsId() {
-
-        if (relationshipsId == null) {
+        if (hobbiesId == null) {
 
             return null;
         }
-        return Collections.unmodifiableSet(relationshipsId);
+        return Collections.unmodifiableSet(hobbiesId);
     }
 }

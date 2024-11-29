@@ -33,15 +33,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class Manager
-    extends AbstractBasicEntity1RelationshipAnyToOne<Long, Department> {
+public class Manager extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -4869852242794893140L;
@@ -59,12 +58,4 @@ public class Manager
 
     @Nullable
     private String name;
-
-    @Override
-    @Nullable
-    @JsonIgnore
-    public Department getRelationship() {
-
-        return getDepartment();
-    }
 }

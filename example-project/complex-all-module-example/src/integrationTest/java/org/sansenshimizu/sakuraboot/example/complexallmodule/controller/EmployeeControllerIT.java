@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.EmployeeService;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employee;
@@ -46,7 +47,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 @WebMvcTest(EmployeeController.class)
 @Import({
     EmployeeModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class EmployeeControllerIT
     implements

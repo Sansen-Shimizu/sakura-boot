@@ -17,27 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class HobbyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<HobbyModelAssembler, Hobby> {
-
-    @Override
-    protected String getPath() {
-
-        return "hobbies";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "employees";
-    }
-
-    @Override
-    protected String getSecondRelationshipName() {
-
-        return "federations";
-    }
-}
+    implements BasicModelAssemblerTest<HobbyModelAssembler, Hobby> {}

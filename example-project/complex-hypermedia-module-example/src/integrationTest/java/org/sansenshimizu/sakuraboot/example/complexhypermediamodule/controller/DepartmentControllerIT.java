@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.DepartmentService;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.DepartmentController;
@@ -42,7 +43,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.Hyper
 @WebMvcTest(DepartmentController.class)
 @Import({
     DepartmentModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class DepartmentControllerIT
     implements BasicControllerIT<Department, Long, Department>,

@@ -16,116 +16,50 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper;
 
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.EmployeeDto;
+import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.HobbyDto;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Department;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.DepartmentRepository;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Employee;
+import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Federation;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.HobbyRepository;
+import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.relationship.two.AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany;
 
-@Getter
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractEmployeeMapper
-    extends AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany<Employee,
-        EmployeeDto, Department, DepartmentDto, Long, Hobby, HobbyDto, Long> {
+    extends AbstractBasicMapperForRelationship<Employee, EmployeeDto> {
 
+    @Override
     @Nullable
-    private DepartmentRepository repository;
+    @Mapping(target = "department.manager.department", ignore = true)
+    public abstract Employee toEntity(@Nullable EmployeeDto dto);
 
-    @Nullable
-    private HobbyRepository secondRepository;
+    @Mapping(target = "employees", ignore = true)
+    public abstract Hobby hobbyDtoToHobby(HobbyDto hobbyDto);
 
-    @Nullable
-    private AbstractDepartmentMapper mapper;
+    @Mapping(target = "hobbies", ignore = true)
+    public abstract
+        Federation federationDtoToFederation(FederationDto federationDto);
 
+    @Override
     @Nullable
-    private AbstractHobbyMapper secondMapper;
+    @Mapping(target = "department.manager.department", ignore = true)
+    public abstract EmployeeDto toDto(@Nullable Employee entity);
+
+    @Mapping(target = "employees", ignore = true)
+    public abstract HobbyDto hobbyToHobbyDto(Hobby hobby);
+
+    @Mapping(target = "hobbies", ignore = true)
+    public abstract
+        FederationDto federationToFederationDto(Federation federation);
 
     @Override
     public boolean useRelationObjectToMapToDto() {
 
         return true;
     }
-
-    public Class<Long> getRelationalIdType() {
-
-        return Long.class;
-    }
-
-    public Class<Long> getSecondRelationalIdType() {
-
-        return Long.class;
-    }
-
-    @Autowired
-    public void setRepository(final DepartmentRepository repository) {
-
-        this.repository = repository;
-    }
-
-    @Autowired
-    public void setSecondRepository(final HobbyRepository secondRepository) {
-
-        this.secondRepository = secondRepository;
-    }
-
-    @Autowired
-    public void setMapper(final AbstractDepartmentMapper mapper) {
-
-        this.mapper = mapper;
-    }
-
-    @Autowired
-    public void setSecondMapper(final AbstractHobbyMapper secondMapper) {
-
-        this.secondMapper = secondMapper;
-    }
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "department",
-        source = "dto",
-        qualifiedBy = RelationshipFromDto.class)
-    @Mapping(
-        target = "hobbies",
-        source = "dto",
-        qualifiedBy = SecondRelationshipFromDto.class)
-    public abstract Employee toEntity(@Nullable EmployeeDto dto);
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "department",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipId",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithId.class)
-    @Mapping(
-        target = "hobbies",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipsId",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithId.class)
-    public abstract EmployeeDto toDto(@Nullable Employee entity);
 }

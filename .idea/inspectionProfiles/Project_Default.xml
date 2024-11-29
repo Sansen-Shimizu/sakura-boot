@@ -236,6 +236,7 @@
           <item value="org.aspectj.lang.annotation.Around" />
           <item value="org.sansenshimizu.sakuraboot.mapper.relationship.one.annotations.RelationshipFromEntityWithEntity" />
           <item value="org.sansenshimizu.sakuraboot.mapper.relationship.one.annotations.RelationshipFromEntityWithId" />
+          <item value="org.springframework.beans.factory.annotation.Autowired" />
         </value>
       </option>
       <option name="onlyWarnIfContainingClassImplementsAnInterface" value="true" />

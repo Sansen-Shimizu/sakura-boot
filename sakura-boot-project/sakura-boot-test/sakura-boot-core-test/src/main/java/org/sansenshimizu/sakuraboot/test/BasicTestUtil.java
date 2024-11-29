@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.test;
 import java.io.Serializable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 
 /**
  * The interface for all the utility test function. This interface provides
@@ -77,6 +78,69 @@ public interface BasicTestUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperTestUtil<I> {
 
     /**
+     * Get the {@link GlobalSpecification} that will help to test
+     * relationship.
+     *
+     * @return The {@link GlobalSpecification}.
+     */
+    default GlobalSpecification getGlobalSpecification() {
+
+        return new GlobalSpecification(getEntityPackageName(),
+            getServicePackageName(), getDtoPackageName(),
+            getMapperPackageName(), getControllerPackageName());
+    }
+
+    /**
+     * Get the entity package name.
+     *
+     * @return The entity package name.
+     */
+    default String getEntityPackageName() {
+
+        return "persistence";
+    }
+
+    /**
+     * Get the service package name.
+     *
+     * @return The service package name.
+     */
+    default String getServicePackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the DTO package name.
+     *
+     * @return The DTO package name.
+     */
+    default String getDtoPackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the mapper package name.
+     *
+     * @return The mapper package name.
+     */
+    default String getMapperPackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the controller package name.
+     *
+     * @return The controller package name.
+     */
+    default String getControllerPackageName() {
+
+        return "presentation";
+    }
+
+    /**
      * Get the entity class.
      *
      * @return The entity class.
@@ -94,7 +158,8 @@ public interface BasicTestUtil<E extends DataPresentation<I>,
      */
     default E getEntityWithoutId() {
 
-        return DataCreatorHelper.getDataWithoutId(getEntityClass());
+        return DataCreatorHelper.getDataWithoutId(getEntityClass(),
+            getGlobalSpecification());
     }
 
     /**

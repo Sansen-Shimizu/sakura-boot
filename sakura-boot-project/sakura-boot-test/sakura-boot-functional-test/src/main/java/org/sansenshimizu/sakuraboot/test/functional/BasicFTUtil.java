@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.test.SuperITUtil;
 
 /**
@@ -41,12 +42,25 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  *
  * <pre>
  * &#064;Component
- * public class YourITUtil //
+ * public class YourFTUtil //
  *     implements BasicFTUtil&lt;YourEntity, YourIdType&gt; {
  *
+ *     private final GlobalSpecification globalSpecification;
+ *
+ *     &#064;Autowired
+ *     public YourFTUtil(final GlobalSpecification globalSpecification) {
+ *
+ *         this.globalSpecification = globalSpecification;
+ *     }
+ *
  *     &#064;Override
- *     public Optional&lt;YourEntity&gt; createValidation
- *     ErrorEntity(YourIdType id) {
+ *     public GlobalSpecification getGlobalSpecification() {
+ *
+ *         return globalSpecification;
+ *     }
+ *
+ *     &#064;Override
+ *     public Optional&lt;YourEntity&gt; createValidationErrorEntity(YourIdType id) {
  *
  *         return YourEntity.builder().id(id).build();
  *         // If your class don't have a builder you can use the constructor
@@ -68,7 +82,6 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  * @see        SuperITUtil
  * @since      0.1.0
  */
-@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface BasicFTUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperITUtil<E, I> {
 
@@ -91,6 +104,39 @@ public interface BasicFTUtil<E extends DataPresentation<I>,
     default I getInvalidId() {
 
         return null;
+    }
+
+    @Override
+    GlobalSpecification getGlobalSpecification();
+
+    @Override
+    default String getEntityPackageName() {
+
+        return getGlobalSpecification().entityPackage();
+    }
+
+    @Override
+    default String getServicePackageName() {
+
+        return getGlobalSpecification().servicePackage();
+    }
+
+    @Override
+    default String getDtoPackageName() {
+
+        return getGlobalSpecification().dtoPackage();
+    }
+
+    @Override
+    default String getMapperPackageName() {
+
+        return getGlobalSpecification().mapperPackage();
+    }
+
+    @Override
+    default String getControllerPackageName() {
+
+        return getGlobalSpecification().controllerPackage();
     }
 
     /**

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyMapper;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Hobby;
@@ -33,11 +34,16 @@ public class HobbyFTUtil extends AbstractCommonUtil<Hobby, HobbyDto> {
 
     private final HobbyMapper mapper;
 
+    private final GlobalSpecification globalSpecification;
+
     @Autowired
-    HobbyFTUtil(final CacheManager cacheManager, final HobbyMapper mapper) {
+    HobbyFTUtil(
+        final CacheManager cacheManager, final HobbyMapper mapper,
+        final GlobalSpecification globalSpecification) {
 
         this.cacheManager = cacheManager;
         this.mapper = mapper;
+        this.globalSpecification = globalSpecification;
     }
 
     @Override

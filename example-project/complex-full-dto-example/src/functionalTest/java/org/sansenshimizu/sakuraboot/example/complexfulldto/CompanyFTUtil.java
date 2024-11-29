@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper.CompanyMapper;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Company;
@@ -33,11 +34,16 @@ public class CompanyFTUtil extends AbstractCommonUtil<Company, CompanyDto> {
 
     private final CompanyMapper mapper;
 
+    private final GlobalSpecification globalSpecification;
+
     @Autowired
-    CompanyFTUtil(final CacheManager cacheManager, final CompanyMapper mapper) {
+    CompanyFTUtil(
+        final CacheManager cacheManager, final CompanyMapper mapper,
+        final GlobalSpecification globalSpecification) {
 
         this.cacheManager = cacheManager;
         this.mapper = mapper;
+        this.globalSpecification = globalSpecification;
     }
 
     @Override

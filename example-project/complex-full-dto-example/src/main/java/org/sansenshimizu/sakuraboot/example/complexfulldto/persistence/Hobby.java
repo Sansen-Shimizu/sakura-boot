@@ -39,7 +39,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractBasicEntity2RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
@@ -47,9 +47,7 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractB
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Hobby
-    extends
-    AbstractBasicEntity2RelationshipAnyToMany<Long, Employee, Federation> {
+public class Hobby extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -7056599975876114239L;
@@ -60,9 +58,7 @@ public class Hobby
     @Nullable
     private Long id;
 
-    @ManyToMany(mappedBy = "hobbies", cascade = {
-        CascadeType.PERSIST, CascadeType.MERGE
-    })
+    @ManyToMany(mappedBy = "hobbies")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Nullable
     private Set<Employee> employees;
@@ -91,13 +87,6 @@ public class Hobby
         return Collections.unmodifiableSet(employees);
     }
 
-    @Override
-    @Nullable
-    public Set<Employee> getRelationships() {
-
-        return getEmployees();
-    }
-
     @Nullable
     public Set<Federation> getFederations() {
 
@@ -106,12 +95,5 @@ public class Hobby
             return null;
         }
         return Collections.unmodifiableSet(federations);
-    }
-
-    @Override
-    @Nullable
-    public Set<Federation> getSecondRelationships() {
-
-        return getFederations();
     }
 }

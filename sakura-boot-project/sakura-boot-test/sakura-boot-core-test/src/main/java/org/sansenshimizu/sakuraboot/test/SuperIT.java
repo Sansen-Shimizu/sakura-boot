@@ -40,7 +40,7 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * <pre>
  * public class YourIT implements SuperIT&lt;YourEntity, YourIdType&gt; {
  *
- *     private YourUtil util = new YourUtil();
+ *     private final YourUtil util = new YourUtil();
  *
  *     &#064;Override
  *     public YourUtil getUtil() {

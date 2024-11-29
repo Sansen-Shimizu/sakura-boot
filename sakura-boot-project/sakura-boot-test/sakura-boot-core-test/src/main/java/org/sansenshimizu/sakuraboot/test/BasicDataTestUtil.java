@@ -97,7 +97,8 @@ public interface BasicDataTestUtil<E extends DataPresentation<I>,
      */
     default D getDataWithoutId() {
 
-        return DataCreatorHelper.getDataWithoutId(getDataClass());
+        return DataCreatorHelper.getDataWithoutId(getDataClass(),
+            getGlobalSpecification());
     }
 
     /**

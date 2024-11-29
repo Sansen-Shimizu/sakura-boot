@@ -36,15 +36,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class Federation
-    extends AbstractBasicEntity1RelationshipAnyToMany<Long, Hobby> {
+public class Federation extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
@@ -75,13 +74,5 @@ public class Federation
             return null;
         }
         return Collections.unmodifiableSet(hobbies);
-    }
-
-    @Override
-    @Nullable
-    @JsonIgnore
-    public Set<Hobby> getRelationships() {
-
-        return getHobbies();
     }
 }

@@ -20,19 +20,20 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.EmployeeController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.two.AbstractBasicModelAssembler2Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class EmployeeModelAssembler
-    extends
-    AbstractBasicModelAssembler2Relationship<EmployeeDto, EmployeeModel> {
+    extends AbstractBasicModelAssembler<EmployeeDto, EmployeeModel> {
 
-    protected EmployeeModelAssembler() {
+    protected EmployeeModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(EmployeeController.class, EmployeeModel.class, "employees",
-            "departments", "hobbies");
+        super(EmployeeController.class, EmployeeModel.class,
+            globalSpecification);
     }
 
     @Override

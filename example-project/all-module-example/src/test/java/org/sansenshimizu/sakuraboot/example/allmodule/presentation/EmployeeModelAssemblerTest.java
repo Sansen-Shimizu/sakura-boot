@@ -17,28 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.business.EmployeeDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class EmployeeModelAssemblerTest
-    extends
-    AbstractBasicModelAssemblerTest<EmployeeModelAssembler, EmployeeDto> {
-
-    @Override
-    protected String getPath() {
-
-        return "employees";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "departments";
-    }
-
-    @Override
-    protected String getSecondRelationshipName() {
-
-        return "hobbies";
-    }
-}
+    implements BasicModelAssemblerTest<EmployeeModelAssembler, EmployeeDto> {}

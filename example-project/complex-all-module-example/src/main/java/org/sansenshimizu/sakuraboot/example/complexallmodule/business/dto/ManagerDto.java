@@ -20,21 +20,18 @@ import java.io.Serial;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class ManagerDto
-    extends AbstractBasicDto1RelationshipAnyToOne<UUID, DepartmentDto, UUID> {
+public class ManagerDto extends AbstractBasicDto<UUID> {
 
     @Serial
     private static final long serialVersionUID = -4869852242794893140L;
@@ -46,20 +43,12 @@ public class ManagerDto
     @Nullable
     private final DepartmentDto department;
 
-    @JsonProperty("departmentId")
     @Nullable
-    private final UUID relationshipId;
+    private final UUID departmentId;
 
     @Nullable
     private final String name;
 
     @Nullable
     private final LocalTime lastLoginTime;
-
-    @Override
-    @JsonIgnore
-    public DepartmentDto getRelationship() {
-
-        return getDepartment();
-    }
 }

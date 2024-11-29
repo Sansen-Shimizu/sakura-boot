@@ -17,27 +17,20 @@
 package org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.HobbyDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class HobbyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<HobbyModelAssembler, HobbyDto> {
+    implements BasicModelAssemblerTest<HobbyModelAssembler, HobbyDto> {
 
     @Override
-    protected String getPath() {
+    public String getDtoPackageName() {
 
-        return "hobbies";
+        return "business.dto";
     }
 
     @Override
-    protected String getRelationshipName() {
+    public String getMapperPackageName() {
 
-        return "employees";
-    }
-
-    @Override
-    protected String getSecondRelationshipName() {
-
-        return "federations";
+        return "business.mapper";
     }
 }

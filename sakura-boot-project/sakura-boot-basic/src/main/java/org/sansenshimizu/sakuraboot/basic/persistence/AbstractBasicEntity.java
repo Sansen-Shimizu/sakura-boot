@@ -35,6 +35,12 @@ import org.sansenshimizu.sakuraboot.util.ToStringUtils;
 
 /**
  * The abstract base class for all entities.
+ * It is possible to have relationships between entities.
+ * Unidirectional relation is recommended.
+ * Most of the time, bidirectional relations aren't necessary, and a
+ * unidirectional relationship is enough.
+ * Also, OneToMany relation is not recommended, and it can be made by a
+ * ManyToOne unidirectional relation if used with the specification module.
  * <p>
  * <b>Example:</b>
  * </p>
@@ -57,17 +63,41 @@ import org.sansenshimizu.sakuraboot.util.ToStringUtils;
  *     &#064;Column(nullable = false)
  *     private Long id;
  *
+ *     // For a One to One relationship
+ *     &#064;OneToOne(fetch = FetchType.LAZY, cascade = {
+ *         CascadeType.PERSIST, CascadeType.MERGE
+ *     })
+ *     private YourRelationalEntity relationship;
+ *
+ *     // For a Many to One relationship
+ *     &#064;ManyToOne(fetch = FetchType.LAZY, cascade = {
+ *         CascadeType.PERSIST, CascadeType.MERGE
+ *     })
+ *     private YourRelationalEntity relationship;
+ *
+ *     // For a Many to Many relationship
+ *     &#064;ManyToMany(cascade = {
+ *         CascadeType.PERSIST, CascadeType.MERGE
+ *     })
+ *     &#064;JoinTable(
+ *         name = "join_table",
+ *         joinColumns = @JoinColumn(name = "parent_id"),
+ *         inverseJoinColumns = @JoinColumn(name = "relational_id"))
+ *     &#064;Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+ *     private Set&lt;YourRelationalEntity&gt; relationships;
+ *
+ *     // Getter for a Many to Many relationship
+ *     public Set&lt;YourRelationalEntity&gt; getRelationships() {
+ *
+ *         if (relationships == null) {
+ *
+ *             return null;
+ *         }
+ *         return Collections.unmodifiableSet(relationships);
+ *     }
+ *
  *     YourEntity() {}
  *     // Need an empty package-private constructor for JPA.
- *
- *     &#064;Override
- *     protected List&lt;Pair&lt;String, Object&gt;&gt; listFieldsForToString(
- *         final List&lt;Pair&lt;String, Object&gt;&gt; list) {
- *
- *         super.listFieldsForToString(list);
- *         list.add(Pair.of("yourField", getYourField()));
- *         return list;
- *     }
  *     // Add your fields and getter method here ...
  * }
  * </pre>

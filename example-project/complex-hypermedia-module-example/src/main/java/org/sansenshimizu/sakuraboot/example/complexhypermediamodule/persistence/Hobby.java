@@ -38,16 +38,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractBasicEntity2RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class Hobby
-    extends
-    AbstractBasicEntity2RelationshipAnyToMany<Long, Employee, Federation> {
+public class Hobby extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -7056599975876114239L;
@@ -86,14 +84,6 @@ public class Hobby
         return Collections.unmodifiableSet(employees);
     }
 
-    @Override
-    @Nullable
-    @JsonIgnore
-    public Set<Employee> getRelationships() {
-
-        return getEmployees();
-    }
-
     @Nullable
     public Set<Federation> getFederations() {
 
@@ -102,13 +92,5 @@ public class Hobby
             return null;
         }
         return Collections.unmodifiableSet(federations);
-    }
-
-    @Override
-    @Nullable
-    @JsonIgnore
-    public Set<Federation> getSecondRelationships() {
-
-        return getFederations();
     }
 }

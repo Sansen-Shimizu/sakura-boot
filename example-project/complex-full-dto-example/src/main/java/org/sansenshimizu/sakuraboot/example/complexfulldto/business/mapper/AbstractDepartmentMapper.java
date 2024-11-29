@@ -16,116 +16,32 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper;
 
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.DepartmentDto;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.ManagerDto;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Company;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.CompanyRepository;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Department;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
-import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.ManagerRepository;
+import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.relationship.two.AbstractBasicMapper2RelationshipAnyToOne;
 
-@Getter
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractDepartmentMapper
-    extends AbstractBasicMapper2RelationshipAnyToOne<Department, DepartmentDto,
-        Company, CompanyDto, Long, Manager, ManagerDto, Long> {
+    extends AbstractBasicMapperForRelationship<Department, DepartmentDto> {
 
+    @Override
     @Nullable
-    private CompanyRepository repository;
+    @Mapping(target = "manager.department", ignore = true)
+    public abstract Department toEntity(@Nullable DepartmentDto dto);
 
+    @Override
     @Nullable
-    private ManagerRepository secondRepository;
-
-    @Nullable
-    private CompanyMapper mapper;
-
-    @Nullable
-    private AbstractManagerMapper secondMapper;
+    @Mapping(target = "manager.department", ignore = true)
+    public abstract DepartmentDto toDto(@Nullable Department entity);
 
     @Override
     public boolean useRelationObjectToMapToDto() {
 
         return true;
     }
-
-    public Class<Long> getRelationalIdType() {
-
-        return Long.class;
-    }
-
-    public Class<Long> getSecondRelationalIdType() {
-
-        return Long.class;
-    }
-
-    @Autowired
-    public void setRepository(final CompanyRepository repository) {
-
-        this.repository = repository;
-    }
-
-    @Autowired
-    public void setSecondRepository(final ManagerRepository secondRepository) {
-
-        this.secondRepository = secondRepository;
-    }
-
-    @Autowired
-    public void setMapper(final CompanyMapper mapper) {
-
-        this.mapper = mapper;
-    }
-
-    @Autowired
-    public void setSecondMapper(final AbstractManagerMapper secondMapper) {
-
-        this.secondMapper = secondMapper;
-    }
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "company",
-        source = "dto",
-        qualifiedBy = RelationshipFromDto.class)
-    @Mapping(
-        target = "manager",
-        source = "dto",
-        qualifiedBy = SecondRelationshipFromDto.class)
-    public abstract Department toEntity(@Nullable DepartmentDto dto);
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "company",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipId",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithId.class)
-    @Mapping(
-        target = "manager",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "secondRelationshipId",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithId.class)
-    public abstract DepartmentDto toDto(@Nullable Department entity);
 }

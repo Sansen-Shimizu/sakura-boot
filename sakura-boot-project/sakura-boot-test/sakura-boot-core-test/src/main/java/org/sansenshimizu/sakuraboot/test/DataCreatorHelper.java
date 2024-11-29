@@ -17,9 +17,9 @@
 package org.sansenshimizu.sakuraboot.test;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +27,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.one.BasicDto1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.one.BasicDto1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.two.BasicDto2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.two.BasicDto2RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.mapper.api.dto.relationship.two.BasicDto2RelationshipAnyToOneAndAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 /**
  * The data creator helper used to create all kinds of {@link DataPresentation}
@@ -70,337 +61,246 @@ public final class DataCreatorHelper {
     /**
      * Update id of the given {@link DataPresentation}.
      *
-     * @param  <D>  the type of the data.
-     * @param  <I>  the type of the id.
-     * @param  ids  the {@link EntityIds} used to update the id.
-     * @param  data the data to update.
-     * @return      the updated data.
+     * @param  <D>                 the type of the data.
+     * @param  <I>                 the type of the id.
+     * @param  dataForIds          The other data from which to get the
+     *                             ids.
+     * @param  data                the data to update.
+     * @param  globalSpecification The {@link GlobalSpecification}
+     *                             that will help for the relationships.
+     * @return                     the updated data.
      */
     public static <
         D extends DataPresentation<I>,
-        I extends Comparable<? super I> & Serializable> D
-        updateId(@Nullable final EntityIds ids, final D data) {
+        I extends Comparable<? super I> & Serializable> D updateId(
+            @Nullable final DataPresentation<I> dataForIds, final D data,
+            final GlobalSpecification globalSpecification) {
 
-        return updateId(ids, data, new ArrayList<>());
+        if (dataForIds == null) {
+
+            updateIdNull(data, new ArrayList<>(), globalSpecification);
+        } else {
+
+            updateIdDataNotNull(dataForIds, data, new ArrayList<>(),
+                globalSpecification);
+        }
+        return data;
     }
 
     private static <
         D extends DataPresentation<I>,
-        I extends Comparable<? super I> & Serializable> D updateId(
-            @Nullable final EntityIds ids, final D data,
-            final List<DataPresentation<?>> visited) {
+        I extends Comparable<? super I> & Serializable> void
+        updateIdDataNotNull(
+            final DataPresentation<?> dataForIds, final D data,
+            final List<DataPresentation<?>> visited,
+            final GlobalSpecification globalSpecification) {
 
         visited.add(data);
 
-        if (ids == null) {
+        final Field idField;
 
-            ReflectionTestUtils.setField(data, "id", null);
-        } else {
+        try {
 
-            ReflectionTestUtils.setField(data, "id", ids.id());
+            idField = data.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(data, dataForIds.getId());
+        } catch (final NoSuchFieldException | IllegalAccessException e) {
+
+            throw new RuntimeException(e);
         }
 
-        if (data instanceof final DataPresentation1RelationshipAnyToOne<?,
-            ?> dataRelationship) {
+        RelationshipUtils.doWithRelationFields(dataForIds,
+            (final Field field, final Object relationshipForIds) -> {
 
-            final DataPresentation<?> relationalEntity
-                = dataRelationship.getRelationship();
+                if (relationshipForIds instanceof final DataPresentation<
+                    ?> relationshipDataForIds) {
 
-            if (relationalEntity != null
-                && !visited.contains(relationalEntity)) {
+                    final DataPresentation<?> relationship;
 
-                if (ids == null) {
+                    try {
 
-                    updateId(null, relationalEntity, visited);
-                } else {
+                        final Field relationshipField
+                            = data.getClass().getDeclaredField(field.getName());
+                        relationshipField.setAccessible(true);
+                        relationship
+                            = (DataPresentation<?>) relationshipField.get(data);
+                    } catch (final NoSuchFieldException
+                        | IllegalAccessException e) {
 
-                    updateId(ids.relationalId(), relationalEntity, visited);
-                }
-            }
-
-            if (dataRelationship instanceof final BasicDto1RelationshipAnyToOne<
-                ?, ?, ?> dto) {
-
-                final Object value;
-
-                if (ids == null || ids.relationalId() == null) {
-
-                    value = null;
-                } else {
-
-                    value = ids.relationalId().id();
-                }
-                ReflectionTestUtils.setField(dto, "relationshipId", value);
-            }
-        }
-
-        final String relationshipsIdFieldName = "relationshipsId";
-
-        if (data instanceof final DataPresentation1RelationshipAnyToMany<?,
-            ?> dataRelationship) {
-
-            final Set<? extends DataPresentation<?>> relationalEntities
-                = dataRelationship.getRelationships();
-
-            if (relationalEntities != null) {
-
-                if (ids != null && ids.relationalIds().isEmpty()) {
-
-                    relationalEntities.stream()
-                        .filter(entity -> entity != null
-                            && !visited.contains(entity))
-                        .forEach((final DataPresentation<?> entity) -> {
-
-                            ReflectionTestUtils.setField(entity, "id", null);
-                            updateId(new EntityIds(), entity, visited);
-                        });
-                } else {
-
-                    if (ids != null
-                        && !relationalEntities.isEmpty()
-                        && relationalEntities.size()
-                            != ids.relationalIds().size()) {
-
-                        throw new IllegalArgumentException(
-                            """
-                            The number of relational entities is not equal to
-                            the number of relational ids.
-                            """);
+                        throw new RuntimeException(e);
                     }
 
-                    if (ids == null) {
+                    if (relationship != null
+                        && !visited.contains(relationship)) {
 
-                        relationalEntities.stream()
-                            .filter(entity -> entity != null
-                                && !visited.contains(entity))
-                            .forEach(entity -> updateId(null, entity, visited));
-                    } else {
+                        updateIdDataNotNull(relationshipDataForIds,
+                            relationship, visited, globalSpecification);
+                    }
 
-                        final Iterator<? extends DataPresentation<?>> it
-                            = relationalEntities.iterator();
-                        ids.relationalIds()
-                            .stream()
-                            .map(id -> Pair.of(id, it.next()))
-                            .filter(pair -> pair.getRight() != null
-                                && !visited.contains(pair.getRight()))
-                            .forEach(pair -> updateId(pair.getLeft(),
-                                pair.getRight(), visited));
+                    try {
+
+                        final Field relationIdField = data.getClass()
+                            .getDeclaredField(field.getName() + "Id");
+                        relationIdField.setAccessible(true);
+                        relationIdField.set(data,
+                            relationshipDataForIds.getId());
+                    } catch (final IllegalAccessException
+                        | NoSuchFieldException e) {
+
+                        return;
                     }
                 }
-            }
+            }, (final Field field, final Collection<?> relationshipsForIds) -> {
 
-            /*@formatter:off*/
-            if (dataRelationship
-                instanceof final BasicDto1RelationshipAnyToMany<?, ?, ?> dto) {
-                /*@formatter:on*/
+                final Iterator<?> relationships;
 
-                final Object value;
-                final Set<?> relationalEntitiesId = dto.getRelationshipsId();
+                try {
 
-                if (ids == null && relationalEntitiesId != null) {
+                    final Field relationshipField
+                        = data.getClass().getDeclaredField(field.getName());
+                    relationshipField.setAccessible(true);
+                    relationships = ((Iterable<?>) relationshipField.get(data))
+                        .iterator();
+                } catch (final NoSuchFieldException
+                    | IllegalAccessException e) {
 
-                    value = Stream.generate(() -> null)
-                        .limit(relationalEntitiesId.size())
-                        .collect(Collectors.toSet());
-                } else {
+                    throw new RuntimeException(e);
+                }
 
-                    if (ids != null) {
+                for (final Object relationshipForIds: relationshipsForIds) {
 
-                        value = ids.relationalIds()
-                            .stream()
-                            .map(EntityIds::id)
+                    if (relationshipForIds instanceof final DataPresentation<
+                        ?> relationshipDataForIds) {
+
+                        if (!relationships.hasNext()) {
+
+                            break;
+                        }
+                        final DataPresentation<?> relationship
+                            = (DataPresentation<?>) relationships.next();
+
+                        if (!visited.contains(relationship)) {
+
+                            updateIdDataNotNull(relationshipDataForIds,
+                                relationship, visited, globalSpecification);
+                        }
+                    }
+                }
+
+                try {
+
+                    final Field relationsIdField = data.getClass()
+                        .getDeclaredField(field.getName() + "Id");
+                    relationsIdField.setAccessible(true);
+                    relationsIdField.set(data,
+                        relationshipsForIds.stream()
+                            .filter(DataPresentation.class::isInstance)
+                            .map(DataPresentation.class::cast)
+                            .map(relationship -> relationship.getId())
                             .filter(Objects::nonNull)
-                            .collect(Collectors.toUnmodifiableSet());
-                    } else {
+                            .collect(Collectors.toUnmodifiableSet()));
+                } catch (final IllegalAccessException
+                    | NoSuchFieldException e) {
 
-                        value = null;
-                    }
+                    return;
                 }
-                ReflectionTestUtils.setField(dto, relationshipsIdFieldName,
-                    value);
-            }
+            }, globalSpecification);
+    }
+
+    private static <
+        D extends DataPresentation<I>,
+        I extends Comparable<? super I> & Serializable> void updateIdNull(
+            final D data, final List<DataPresentation<?>> visited,
+            final GlobalSpecification globalSpecification) {
+
+        visited.add(data);
+
+        final Field idField;
+
+        try {
+
+            idField = data.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(data, null);
+        } catch (final NoSuchFieldException | IllegalAccessException e) {
+
+            throw new RuntimeException(e);
         }
 
-        if (data instanceof final DataPresentation2RelationshipAnyToOne<?, ?,
-            ?> dataRelationship) {
+        RelationshipUtils.doWithRelationFields(data,
+            (final Field field, final Object relationship) -> {
 
-            final DataPresentation<?> relationalEntity
-                = dataRelationship.getSecondRelationship();
+                if (relationship instanceof final DataPresentation<
+                    ?> relationshipData) {
 
-            if (relationalEntity != null
-                && !visited.contains(relationalEntity)) {
+                    if (!visited.contains(relationshipData)) {
 
-                if (ids == null) {
-
-                    updateId(null, relationalEntity, visited);
-                } else {
-
-                    updateId(ids.secondRelationalId(), relationalEntity,
-                        visited);
-                }
-            }
-
-            if (dataRelationship instanceof final BasicDto2RelationshipAnyToOne<
-                ?, ?, ?, ?, ?> dto) {
-
-                final Object value;
-
-                if (ids != null) {
-
-                    final EntityIds entityIds = ids.secondRelationalId();
-
-                    if (entityIds != null) {
-
-                        value = entityIds.id();
-                    } else {
-
-                        value = null;
-                    }
-                } else {
-
-                    value = null;
-                }
-                ReflectionTestUtils.setField(dto, "secondRelationshipId",
-                    value);
-            }
-        }
-
-        if (data instanceof final DataPresentation2RelationshipAnyToMany<?, ?,
-            ?> dataRelationship) {
-
-            final Set<? extends DataPresentation<?>> secondRelationalEntities
-                = dataRelationship.getSecondRelationships();
-
-            if (secondRelationalEntities != null) {
-
-                if (ids != null && ids.secondRelationalIds().isEmpty()) {
-
-                    secondRelationalEntities.stream()
-                        .filter(entity -> entity != null
-                            && !visited.contains(entity))
-                        .forEach((final DataPresentation<?> entity) -> {
-
-                            ReflectionTestUtils.setField(entity, "id", null);
-                            updateId(new EntityIds(), entity, visited);
-                        });
-                } else {
-
-                    if (ids != null
-                        && !secondRelationalEntities.isEmpty()
-                        && secondRelationalEntities.size()
-                            != ids.secondRelationalIds().size()) {
-
-                        throw new IllegalArgumentException(
-                            """
-                            The number of second relational entities is not
-                            equal to the number of second relational ids.
-                            """);
+                        updateIdNull(relationshipData, visited,
+                            globalSpecification);
                     }
 
-                    if (ids == null) {
+                    try {
 
-                        secondRelationalEntities.stream()
-                            .filter(entity -> entity != null
-                                && !visited.contains(entity))
-                            .forEach(entity -> updateId(null, entity, visited));
-                    } else {
+                        final Field relationIdField = data.getClass()
+                            .getDeclaredField(
+                                relationshipData.getClass().getSimpleName()
+                                    + "Id");
+                        relationIdField.setAccessible(true);
+                        relationIdField.set(data, null);
+                    } catch (final IllegalAccessException
+                        | NoSuchFieldException e) {
 
-                        final Iterator<? extends DataPresentation<?>> it
-                            = secondRelationalEntities.iterator();
-                        ids.secondRelationalIds()
-                            .stream()
-                            .map(id -> Pair.of(id, it.next()))
-                            .filter(pair -> pair.getRight() != null
-                                && !visited.contains(pair.getRight()))
-                            .forEach(pair -> updateId(pair.getLeft(),
-                                pair.getRight(), visited));
+                        return;
                     }
                 }
-            }
+            }, (final Field field, final Collection<?> relationships) -> {
 
-            /*@formatter:off*/
-            if (dataRelationship
-                instanceof final BasicDto2RelationshipAnyToMany<?, ?, ?, ?, ?>
-                dto) {
-                /*@formatter:on*/
+                for (final Object relationship: relationships) {
 
-                final Object value;
-                final Set<?> secondRelationalEntitiesId
-                    = dto.getSecondRelationshipsId();
+                    if (relationship instanceof final DataPresentation<
+                        ?> relationshipData
+                        && !visited.contains(relationshipData)) {
 
-                if (ids == null && secondRelationalEntitiesId != null) {
-
-                    value = Stream.generate(() -> null)
-                        .limit(secondRelationalEntitiesId.size())
-                        .collect(Collectors.toSet());
-                } else {
-
-                    if (ids != null) {
-
-                        value = ids.secondRelationalIds()
-                            .stream()
-                            .map(EntityIds::id)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toUnmodifiableSet());
-                    } else {
-
-                        value = null;
+                        updateIdNull(relationshipData, visited,
+                            globalSpecification);
                     }
                 }
-                ReflectionTestUtils.setField(dto, "secondRelationshipsId",
-                    value);
-            }
-        }
 
-        /*@formatter:off*/
-        if (data instanceof final
-            BasicDto2RelationshipAnyToOneAndAnyToMany<?, ?, ?, ?, ?> dto) {
-            /*@formatter:on*/
+                try {
 
-            final Object value;
-            final Set<?> secondRelationalEntitiesId = dto.getRelationshipsId();
+                    final Field relationsIdField = data.getClass()
+                        .getDeclaredField(
+                            relationships.getClass().getSimpleName() + "Id");
+                    relationsIdField.setAccessible(true);
+                    relationsIdField.set(data, Set.of());
+                } catch (final IllegalAccessException
+                    | NoSuchFieldException e) {
 
-            if (ids == null && secondRelationalEntitiesId != null) {
-
-                value = Stream.generate(() -> null)
-                    .limit(secondRelationalEntitiesId.size())
-                    .collect(Collectors.toSet());
-            } else {
-
-                if (ids != null) {
-
-                    value = ids.relationalIds()
-                        .stream()
-                        .map(EntityIds::id)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toUnmodifiableSet());
-                } else {
-
-                    value = null;
+                    return;
                 }
-            }
-            ReflectionTestUtils.setField(dto, relationshipsIdFieldName, value);
-        }
-        return data;
+            }, globalSpecification);
     }
 
     /**
      * Get a data without id for the given data class.
      * Remove also the id from relationships.
      *
-     * @param  <D>       The type of the data.
-     * @param  <I>       The type of the id.
-     * @param  dataClass the data class of the data.
-     * @return           the data without id.
+     * @param  <D>                 The type of the data.
+     * @param  <I>                 The type of the id.
+     * @param  dataClass           the data class of the data.
+     * @param  globalSpecification The {@link GlobalSpecification}
+     *                             that will help for the relationships.
+     * @return                     the data without id.
      */
     public static <
         D extends DataPresentation<I>,
-        I extends Comparable<? super I> & Serializable> D
-        getDataWithoutId(final Class<D> dataClass) {
+        I extends Comparable<? super I> & Serializable> D getDataWithoutId(
+            final Class<D> dataClass,
+            final GlobalSpecification globalSpecification) {
 
         final D data
             = SerializationUtils.clone(getDataHolder(dataClass).data());
-        return updateId(null, data);
+        return updateId(null, data, globalSpecification);
     }
 
     /**
@@ -531,150 +431,6 @@ public final class DataCreatorHelper {
     }
 
     /**
-     * Retrieves the identifiers from the given {@link DataPresentation} entity.
-     *
-     * @param  entity the DataPresentation entity from which to retrieve the
-     *                identifiers.
-     * @return        an {@link EntityIds} object containing the identifiers of
-     *                the entity and its related entities.
-     */
-    public static EntityIds getIdsFromEntity(final DataPresentation<?> entity) {
-
-        return getIdsFromEntity(entity, new ArrayList<>());
-    }
-
-    private static EntityIds getIdsFromEntity(
-        final DataPresentation<?> entity,
-        final List<DataPresentation<?>> visited) {
-
-        visited.add(entity);
-        final Object id = entity.getId();
-        EntityIds relationalId = null;
-
-        if (entity instanceof final DataPresentation1RelationshipAnyToOne<?,
-            ?> entity1Relationship) {
-
-            final DataPresentation<?> relationalEntity
-                = entity1Relationship.getRelationship();
-
-            if (relationalEntity != null
-                && !visited.contains(relationalEntity)) {
-
-                relationalId = getIdsFromEntity(relationalEntity, visited);
-                /*@formatter:off*/
-            } else if (entity1Relationship
-                instanceof final BasicDto1RelationshipAnyToOne<?, ?, ?> dto) {
-                /*@formatter:on*/
-
-                relationalId = new EntityIds(dto.getRelationshipId(), null,
-                    Set.of(), null, Set.of());
-            }
-        }
-        final Set<EntityIds> relationalIds = new HashSet<>();
-
-        if (entity instanceof final DataPresentation1RelationshipAnyToMany<?,
-            ?> entity1Relationship) {
-
-            final Set<? extends DataPresentation<?>> relationalEntities
-                = entity1Relationship.getRelationships();
-
-            /*@formatter:off*/
-            if ((relationalEntities == null || relationalEntities.isEmpty())
-                && entity1Relationship
-                instanceof final BasicDto1RelationshipAnyToMany<?, ?, ?> dto) {
-                /*@formatter:on*/
-
-                final Set<?> relationalEntitiesId = dto.getRelationshipsId();
-
-                if (relationalEntitiesId != null) {
-
-                    relationalEntitiesId.stream()
-                        .map(entityId -> new EntityIds(entityId, null, Set.of(),
-                            null, Set.of()))
-                        .forEach(relationalIds::add);
-                }
-            } else {
-
-                if (relationalEntities != null) {
-
-                    relationalEntities.stream()
-                        .filter(relationalEntity -> relationalEntity != null
-                            && !visited.contains(relationalEntity))
-                        .map(relationalEntity -> getIdsFromEntity(
-                            relationalEntity, visited))
-                        .forEach(relationalIds::add);
-                }
-            }
-        }
-        EntityIds secondRelationalId = null;
-
-        if (entity instanceof final DataPresentation2RelationshipAnyToOne<?, ?,
-            ?> entity2Relationship) {
-
-            final DataPresentation<?> relationalEntity
-                = entity2Relationship.getSecondRelationship();
-
-            if (relationalEntity != null
-                && !visited.contains(relationalEntity)) {
-
-                secondRelationalId
-                    = getIdsFromEntity(relationalEntity, visited);
-                /*@formatter:off*/
-            } else if (entity2Relationship
-                instanceof final BasicDto2RelationshipAnyToOne<?, ?, ?, ?, ?>
-                dto) {
-                /*@formatter:on*/
-
-                secondRelationalId
-                    = new EntityIds(dto.getSecondRelationshipId(), null,
-                        Set.of(), null, Set.of());
-            }
-        }
-        final Set<EntityIds> secondRelationalIds = new HashSet<>();
-
-        if (entity instanceof final DataPresentation2RelationshipAnyToMany<?, ?,
-            ?> entity2Relationship) {
-
-            final Set<? extends DataPresentation<?>> secondRelationalEntities
-                = entity2Relationship.getSecondRelationships();
-
-            /*@formatter:off*/
-            if ((secondRelationalEntities == null
-                || secondRelationalEntities.isEmpty())
-                && entity2Relationship
-                instanceof final BasicDto2RelationshipAnyToMany<?, ?, ?, ?, ?>
-                dto) {
-                /*@formatter:on*/
-
-                final Set<?> secondRelationalEntitiesId
-                    = dto.getSecondRelationshipsId();
-
-                if (secondRelationalEntitiesId != null) {
-
-                    secondRelationalEntitiesId.stream()
-                        .map(entityId -> new EntityIds(entityId, null, Set.of(),
-                            null, Set.of()))
-                        .forEach(secondRelationalIds::add);
-                }
-            } else {
-
-                if (secondRelationalEntities != null) {
-
-                    secondRelationalEntities.stream()
-                        .filter(relationalEntity -> relationalEntity != null
-                            && !visited.contains(relationalEntity))
-                        .map(relationalEntity -> getIdsFromEntity(
-                            relationalEntity, visited))
-                        .forEach(secondRelationalIds::add);
-                }
-            }
-        }
-        return new EntityIds(id, relationalId,
-            Collections.unmodifiableSet(relationalIds), secondRelationalId,
-            Collections.unmodifiableSet(secondRelationalIds));
-    }
-
-    /**
      * A {@link DataPresentation} holder with two identical data, a different
      * data and a partial data.
      *
@@ -688,56 +444,4 @@ public final class DataCreatorHelper {
     public record DataHolder<D extends DataPresentation<
         I>, I extends Comparable<? super I> & Serializable>(
             D data, D secondData, D differentData, D partialData) {}
-
-    /**
-     * A record to hold the identifiers of different entities used in tests.
-     * This record is used to encapsulate the
-     * identifiers of the main entity, a related entity, and a second related
-     * entity.
-     *
-     * @param id                  The main entity identifier.
-     * @param relationalId        The related entity identifier.
-     * @param relationalIds       The related entity identifiers.
-     * @param secondRelationalId  The second related entity identifier.
-     * @param secondRelationalIds The second related entity identifiers.
-     */
-    public record EntityIds(
-        @Nullable Object id, @Nullable EntityIds relationalId,
-        Set<EntityIds> relationalIds, @Nullable EntityIds secondRelationalId,
-        Set<EntityIds> secondRelationalIds) {
-
-        /**
-         * Constructor for EntityIds class. Initializes all fields to their
-         * default values.
-         */
-        public EntityIds() {
-
-            this(null, null, Set.of(), null, Set.of());
-        }
-
-        /**
-         * Constructor for EntityIds class. Initializes all fields using the
-         * given EntityIds object.
-         *
-         * @param entityIds The EntityIds object to copy.
-         */
-        public EntityIds(final EntityIds entityIds) {
-
-            this(entityIds.id(), entityIds.relationalId(),
-                entityIds.relationalIds(), entityIds.secondRelationalId(),
-                entityIds.secondRelationalIds());
-        }
-
-        /**
-         * Constructor for EntityIds class. Initializes all fields using the
-         * given {@link DataPresentation} object.
-         *
-         * @param entity The DataPresentation entity from which to retrieve the
-         *               identifiers.
-         */
-        public EntityIds(final DataPresentation<?> entity) {
-
-            this(getIdsFromEntity(entity));
-        }
-    }
 }

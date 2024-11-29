@@ -20,7 +20,6 @@ import java.io.Serial;
 import java.util.Collections;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -38,7 +37,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
@@ -46,8 +45,7 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractB
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Federation
-    extends AbstractBasicEntity1RelationshipAnyToMany<Long, Hobby> {
+public class Federation extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
@@ -58,9 +56,7 @@ public class Federation
     @Nullable
     private Long id;
 
-    @ManyToMany(mappedBy = "federations", cascade = {
-        CascadeType.PERSIST, CascadeType.MERGE
-    })
+    @ManyToMany(mappedBy = "federations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Nullable
     private Set<Hobby> hobbies;
@@ -80,10 +76,5 @@ public class Federation
             return null;
         }
         return Collections.unmodifiableSet(hobbies);
-    }
-
-    public Set<Hobby> getRelationships() {
-
-        return getHobbies();
     }
 }

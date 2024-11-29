@@ -18,21 +18,18 @@ package org.sansenshimizu.sakuraboot.example.allmodule.business;
 
 import java.io.Serial;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class DepartmentDto
-    extends AbstractBasicDto1RelationshipAnyToOne<Long, CompanyDto, Long> {
+public class DepartmentDto extends AbstractBasicDto<Long> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -44,17 +41,9 @@ public class DepartmentDto
     @Nullable
     private final CompanyDto company;
 
-    @JsonProperty("companyId")
     @Nullable
-    private final Long relationshipId;
+    private final Long companyId;
 
     @Nullable
     private final String name;
-
-    @Override
-    @JsonIgnore
-    public CompanyDto getRelationship() {
-
-        return getCompany();
-    }
 }

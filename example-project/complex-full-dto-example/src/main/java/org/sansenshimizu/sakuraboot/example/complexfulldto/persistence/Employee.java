@@ -41,7 +41,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
@@ -49,9 +49,7 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractB
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Employee
-    extends AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany<Long,
-        Department, Hobby> {
+public class Employee extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -2636662559034440172L;
@@ -82,13 +80,6 @@ public class Employee
     @Nullable
     private String name;
 
-    @Override
-    @Nullable
-    public Department getRelationship() {
-
-        return getDepartment();
-    }
-
     @Nullable
     public Set<Hobby> getHobbies() {
 
@@ -97,12 +88,5 @@ public class Employee
             return null;
         }
         return Collections.unmodifiableSet(hobbies);
-    }
-
-    @Override
-    @Nullable
-    public Set<Hobby> getRelationships() {
-
-        return getHobbies();
     }
 }

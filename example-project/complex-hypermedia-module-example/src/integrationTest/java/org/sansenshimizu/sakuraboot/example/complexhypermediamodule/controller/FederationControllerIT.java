@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.FederationService;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Federation;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.FederationController;
@@ -44,7 +45,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.Hyper
 @WebMvcTest(FederationController.class)
 @Import({
     FederationModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class FederationControllerIT
     implements BasicControllerIT<Federation, Long, Federation>,

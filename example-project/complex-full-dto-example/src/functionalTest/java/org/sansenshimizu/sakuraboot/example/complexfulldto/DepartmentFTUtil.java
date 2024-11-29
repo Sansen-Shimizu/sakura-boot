@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper.AbstractDepartmentMapper;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Department;
@@ -34,13 +35,16 @@ public class DepartmentFTUtil
 
     private final AbstractDepartmentMapper mapper;
 
+    private final GlobalSpecification globalSpecification;
+
     @Autowired
     DepartmentFTUtil(
-        final CacheManager cacheManager,
-        final AbstractDepartmentMapper mapper) {
+        final CacheManager cacheManager, final AbstractDepartmentMapper mapper,
+        final GlobalSpecification globalSpecification) {
 
         this.cacheManager = cacheManager;
         this.mapper = mapper;
+        this.globalSpecification = globalSpecification;
     }
 
     @Override

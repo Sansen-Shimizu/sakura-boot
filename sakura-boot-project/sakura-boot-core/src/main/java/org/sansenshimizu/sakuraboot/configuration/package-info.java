@@ -15,14 +15,14 @@
  */
 
 /**
- * The package for mapper relationship class.
+ * The package for global configuration class.
  *
  * @author Malcolm Rozé
- * @since  0.1.0
+ * @since  0.1.1
  */
 @NonNullApi
 @NonNullFields
-package org.sansenshimizu.sakuraboot.mapper.api.relationship;
+package org.sansenshimizu.sakuraboot.configuration;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;

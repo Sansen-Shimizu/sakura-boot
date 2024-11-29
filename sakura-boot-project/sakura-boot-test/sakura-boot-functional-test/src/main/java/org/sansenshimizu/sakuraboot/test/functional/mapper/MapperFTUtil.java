@@ -41,15 +41,25 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  *
  * <pre>
  * &#064;Component
- * public class YourITUtil
+ * public class YourFTUtil
  *     implements MapperFTUtil&lt;YourEntity, YourIdType, YourDto&gt; {
+ *
+ *     private final GlobalSpecification globalSpecification;
  *
  *     private final YourMapper yourMapper;
  *
  *     &#064;Autowired
- *     YourITUtil(final YourMapper yourMapper) {
+ *     YourFTUtil(final GlobalSpecification globalSpecification,
+ *         final YourMapper yourMapper) {
  *
+ *         this.globalSpecification = globalSpecification;
  *         this.yourMapper = yourMapper;
+ *     }
+ *
+ *     &#064;Override
+ *     public GlobalSpecification getGlobalSpecification() {
+ *
+ *         return globalSpecification;
  *     }
  *
  *     &#064;Override

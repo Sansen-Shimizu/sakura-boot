@@ -17,27 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Employee;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class EmployeeModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<EmployeeModelAssembler, Employee> {
-
-    @Override
-    protected String getPath() {
-
-        return "employees";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "departments";
-    }
-
-    @Override
-    protected String getSecondRelationshipName() {
-
-        return "hobbies";
-    }
-}
+    implements BasicModelAssemblerTest<EmployeeModelAssembler, Employee> {}

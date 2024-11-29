@@ -16,107 +16,12 @@
 
 package org.sansenshimizu.sakuraboot.example.allmodule.business;
 
-import lombok.Getter;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
-import org.sansenshimizu.sakuraboot.example.allmodule.persistence.DepartmentRepository;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Employee;
-import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.example.allmodule.persistence.HobbyRepository;
+import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.relationship.two.AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany;
 
-@Getter
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractEmployeeMapper
-    extends AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany<Employee,
-        EmployeeDto, Department, DepartmentDto, Long, Hobby, HobbyDto, Long> {
-
-    @Nullable
-    private DepartmentRepository repository;
-
-    @Nullable
-    private HobbyRepository secondRepository;
-
-    @Nullable
-    private AbstractDepartmentMapper mapper;
-
-    @Nullable
-    private HobbyMapper secondMapper;
-
-    public Class<Long> getRelationalIdType() {
-
-        return Long.class;
-    }
-
-    public Class<Long> getSecondRelationalIdType() {
-
-        return Long.class;
-    }
-
-    @Autowired
-    public void setRepository(final DepartmentRepository repository) {
-
-        this.repository = repository;
-    }
-
-    @Autowired
-    public void setSecondRepository(final HobbyRepository secondRepository) {
-
-        this.secondRepository = secondRepository;
-    }
-
-    @Autowired
-    public void setMapper(final AbstractDepartmentMapper mapper) {
-
-        this.mapper = mapper;
-    }
-
-    @Autowired
-    public void setSecondMapper(final HobbyMapper secondMapper) {
-
-        this.secondMapper = secondMapper;
-    }
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "department",
-        source = "dto",
-        qualifiedBy = RelationshipFromDto.class)
-    @Mapping(
-        target = "hobbies",
-        source = "dto",
-        qualifiedBy = SecondRelationshipFromDto.class)
-    public abstract Employee toEntity(@Nullable EmployeeDto dto);
-
-    @Override
-    @Nullable
-    @Mapping(
-        target = "department",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipId",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithId.class)
-    @Mapping(
-        target = "hobbies",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipsId",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithId.class)
-    public abstract EmployeeDto toDto(@Nullable Employee entity);
-}
+    extends AbstractBasicMapperForRelationship<Employee, EmployeeDto> {}

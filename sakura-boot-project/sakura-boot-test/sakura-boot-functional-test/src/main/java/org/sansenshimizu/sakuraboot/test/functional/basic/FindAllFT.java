@@ -69,13 +69,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     private int port;
  *
  *     &#064;Autowired
- *     YourIT(
- *     final YourUtil util,final ApplicationContext applicationContext,
- *     final ObjectMapper objectMapper){
+ *     YourFT(
+ *         final YourUtil util, final ApplicationContext applicationContext,
+ *         final ObjectMapper objectMapper) {
  *
- *     this.util=util;
- *     this.applicationContext=applicationContext;
- *     this.objectMapper=objectMapper;
+ *         this.util = util;
+ *         this.applicationContext = applicationContext;
+ *         this.objectMapper = objectMapper;
  *     }
  *
  *     &#064;Override

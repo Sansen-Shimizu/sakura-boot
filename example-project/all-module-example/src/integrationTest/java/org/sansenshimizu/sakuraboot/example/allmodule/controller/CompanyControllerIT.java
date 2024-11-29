@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Company;
@@ -44,7 +45,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 @WebMvcTest(CompanyController.class)
 @Import({
     CompanyModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class CompanyControllerIT
     implements CriteriaControllerIT<Company, Long, CompanyDto, CompanyFilter>,

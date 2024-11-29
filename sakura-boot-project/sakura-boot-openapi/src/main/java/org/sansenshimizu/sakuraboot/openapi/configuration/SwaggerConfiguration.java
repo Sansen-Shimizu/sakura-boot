@@ -20,9 +20,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -54,11 +54,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 
-import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.openapi.api.annotations.SwaggerUpdateOperation;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 /**
  * The class SwaggerConfiguration customizes the {@code OpenAPI} that can be
@@ -84,6 +83,11 @@ public class SwaggerConfiguration {
      * The information configuration class.
      */
     private final InformationConfiguration informationConfiguration;
+
+    /**
+     * The {@link GlobalSpecification}.
+     */
+    private final GlobalSpecification globalSpecification;
 
     /**
      * Update the {@code OpenAPI}.
@@ -168,10 +172,10 @@ public class SwaggerConfiguration {
     @ConditionalOnMissingBean
     public OperationCustomizer operationCustomizer() {
 
-        return SwaggerConfiguration::updateOperation;
+        return this::updateOperation;
     }
 
-    private static Operation updateOperation(
+    private Operation updateOperation(
         final Operation operation, final HandlerMethod handlerMethod) {
 
         if (handlerMethod.hasMethodAnnotation(SwaggerUpdateOperation.class)) {
@@ -205,7 +209,7 @@ public class SwaggerConfiguration {
         return operation;
     }
 
-    private static void updateResponseOperation(
+    private void updateResponseOperation(
         final Operation operation, final HandlerMethod handlerMethod,
         final Class<?> classType, final Class<?> beanType) {
 
@@ -225,7 +229,7 @@ public class SwaggerConfiguration {
         }
     }
 
-    private static void removeIdFromPostRequestBody(
+    private void removeIdFromPostRequestBody(
         final Operation operation, final Class<?> classType) {
 
         if (operation.getOperationId().contains("save")) {
@@ -239,7 +243,7 @@ public class SwaggerConfiguration {
         }
     }
 
-    private static ResolvedSchema removeIdRecursively(
+    private ResolvedSchema removeIdRecursively(
         final Class<?> classType, final List<Class<?>> visited) {
 
         final ResolvedSchema data = getResolvedSchema(classType);
@@ -252,38 +256,24 @@ public class SwaggerConfiguration {
         }
         visited.add(classType);
 
-        if (DataPresentation1RelationshipAnyToOne.class
-            .isAssignableFrom(classType)
-            || DataPresentation1RelationshipAnyToMany.class
-                .isAssignableFrom(classType)) {
+        RelationshipUtils.doWithRelationFields(classType,
+            (field, relationship) -> data.schema.addProperty(
+                relationship.getClass().getSimpleName(),
+                removeIdRecursively(relationship.getClass(), visited).schema),
+            /* @formatter:off */
+            (final Field field, final Collection<?> relationshipCollection) -> {
 
-            for (final Field field: classType.getDeclaredFields()) {
-
-                final Class<?> relationalClassType;
-
-                if (DataPresentation.class.isAssignableFrom(field.getType())) {
-
-                    relationalClassType = field.getType();
-                    /* @formatter:off */
-                } else if (Set.class.isAssignableFrom(field.getType())
-                    && field.getGenericType() instanceof final
-                    ParameterizedType parameterizedType
+                if (relationshipCollection.getClass().getGenericSuperclass()
+                    instanceof final ParameterizedType parameterizedType
                     /* @formatter:on */
                     && parameterizedType
                         .getActualTypeArguments()[0] instanceof final Class<
-                            ?> argumentClass
-                    && DataPresentation.class.isAssignableFrom(argumentClass)) {
+                            ?> argumentClass) {
 
-                    relationalClassType = argumentClass;
-                } else {
-
-                    continue;
+                    data.schema.addProperty(argumentClass.getSimpleName(),
+                        removeIdRecursively(argumentClass, visited).schema);
                 }
-
-                data.schema.addProperty(field.getName(),
-                    removeIdRecursively(relationalClassType, visited).schema);
-            }
-        }
+            }, globalSpecification);
         return data;
     }
 

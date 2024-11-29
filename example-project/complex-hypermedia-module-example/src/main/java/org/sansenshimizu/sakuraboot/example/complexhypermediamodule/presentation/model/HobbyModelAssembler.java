@@ -20,18 +20,19 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.HobbyController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.two.AbstractBasicModelAssembler2Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class HobbyModelAssembler
-    extends AbstractBasicModelAssembler2Relationship<Hobby, HobbyModel> {
+    extends AbstractBasicModelAssembler<Hobby, HobbyModel> {
 
-    protected HobbyModelAssembler() {
+    protected HobbyModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(HobbyController.class, HobbyModel.class, "hobbies", "employees",
-            "federations");
+        super(HobbyController.class, HobbyModel.class, globalSpecification);
     }
 
     @Override

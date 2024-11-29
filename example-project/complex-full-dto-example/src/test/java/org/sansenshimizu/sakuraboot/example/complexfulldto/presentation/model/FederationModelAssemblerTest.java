@@ -17,22 +17,21 @@
 package org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.FederationDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class FederationModelAssemblerTest
-    extends
-    AbstractBasicModelAssemblerTest<FederationModelAssembler, FederationDto> {
+    implements
+    BasicModelAssemblerTest<FederationModelAssembler, FederationDto> {
 
     @Override
-    protected String getPath() {
+    public String getDtoPackageName() {
 
-        return "federations";
+        return "business.dto";
     }
 
     @Override
-    protected String getRelationshipName() {
+    public String getMapperPackageName() {
 
-        return "hobbies";
+        return "business.mapper";
     }
 }

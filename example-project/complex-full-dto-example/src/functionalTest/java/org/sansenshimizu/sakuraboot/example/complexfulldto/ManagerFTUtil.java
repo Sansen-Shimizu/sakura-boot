@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.ManagerDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper.AbstractManagerMapper;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
@@ -29,18 +30,24 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
 @Component
 public class ManagerFTUtil extends AbstractCommonUtil<Manager, ManagerDto> {
 
-    public static final String TEST = "test";
+    private static final String TEST = "test";
+
+    private static final String TEST2 = "test2";
 
     private final CacheManager cacheManager;
 
     private final AbstractManagerMapper mapper;
 
+    private final GlobalSpecification globalSpecification;
+
     @Autowired
     ManagerFTUtil(
-        final CacheManager cacheManager, final AbstractManagerMapper mapper) {
+        final CacheManager cacheManager, final AbstractManagerMapper mapper,
+        final GlobalSpecification globalSpecification) {
 
         this.cacheManager = cacheManager;
         this.mapper = mapper;
+        this.globalSpecification = globalSpecification;
     }
 
     @Override
@@ -84,6 +91,6 @@ public class ManagerFTUtil extends AbstractCommonUtil<Manager, ManagerDto> {
     @Override
     public ManagerDto getDifferentData() {
 
-        return ManagerDto.builder().id(null).name(TEST).build();
+        return ManagerDto.builder().id(getInvalidId()).name(TEST2).build();
     }
 }

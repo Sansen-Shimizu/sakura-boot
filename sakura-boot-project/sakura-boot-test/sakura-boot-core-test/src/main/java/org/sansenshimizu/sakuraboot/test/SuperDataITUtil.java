@@ -40,8 +40,33 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * <blockquote>
  *
  * <pre>
- * public class YourTestUtil //
- *     implements SuperITUtil&lt;YourEntity, YourIdType, YourDataType&gt; {}
+ * public class YourITUtil //
+ *     implements SuperDataITUtil&lt;YourEntity, YourIdType, YourDataType&gt; {
+ *
+ *     &#064;Override
+ *     public YourIdType getValidId() {
+ *
+ *         return ANY_VALUE; // ANY_VALUE can be 0L, "a" or any other value of
+ *                           // the type YourIdType.
+ *     }
+ *
+ *     &#064;Override
+ *     public YourIdType getBiggerValidId() {
+ *
+ *         return ANY_BIGGER_VALUE;
+ *         // ANY_BIGGER_VALUE must be bigger than ANY_VALUE can be 1L, "b"
+ *         // or any other bigger value of the type YourIdType.
+ *     }
+ *
+ *     &#064;Override
+ *     public YourIdType getInvalidId() {
+ *
+ *         return ANY_OTHER_VALUE;
+ *         // ANY_OTHER_VALUE must be different than ANY_VALUE and
+ *         // ANY_BIGGER_VALUE can be -1L, "z"
+ *         // or any other value of the type YourIdType.
+ *     }
+ * }
  * </pre>
  *
  * </blockquote>
@@ -60,15 +85,16 @@ public interface SuperDataITUtil<E extends DataPresentation<I>,
     extends SuperITUtil<E, I>, BasicDataTestUtil<E, I, D> {
 
     /**
-     * Get the different data with the given id.
+     * Get the different data with the given ids from the other entity.
      *
-     * @param  ids The id to give to the new data.
-     * @return     The created data.
+     * @param  otherEntity The other entity from which to get the ids.
+     * @return             The created data.
      */
-    default D getDifferentDataWithId(final DataCreatorHelper.EntityIds ids) {
+    default D getDifferentDataWithId(final E otherEntity) {
 
-        return DataCreatorHelper.updateId(ids,
-            SerializationUtils.clone(getDifferentData()));
+        return DataCreatorHelper.updateId(otherEntity,
+            SerializationUtils.clone(getDifferentData()),
+            getGlobalSpecification());
     }
 
     /**

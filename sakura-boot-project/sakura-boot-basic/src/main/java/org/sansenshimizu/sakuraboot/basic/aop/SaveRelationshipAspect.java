@@ -17,8 +17,9 @@
 package org.sansenshimizu.sakuraboot.basic.aop;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.lang.reflect.Field;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,11 +31,9 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.aop.AspectUtil;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
 import org.sansenshimizu.sakuraboot.basic.api.relationship.annotations.SaveWithRelationship;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 /**
  * The aspect class for relationship in service class.
@@ -48,6 +47,7 @@ import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2Relationsh
 @Order(AspectUtil.SAVE_RELATIONSHIP_ORDER)
 @Aspect
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public final class SaveRelationshipAspect<D extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> implements AspectUtil {
@@ -58,6 +58,11 @@ public final class SaveRelationshipAspect<D extends DataPresentation<I>,
     private static final String TYPE_ANNOTATION_POINTCUT
         = " && @target(org.sansenshimizu.sakuraboot.basic.api.relationship"
             + ".annotations.Relationshipable)";
+
+    /**
+     * The {@link GlobalSpecification}.
+     */
+    private final GlobalSpecification globalSpecification;
 
     /**
      * Aspect method that handles the relationships in a save call.
@@ -86,81 +91,23 @@ public final class SaveRelationshipAspect<D extends DataPresentation<I>,
 
         methodCallLog(log, joinPoint, target, annotation);
 
-        checkRelationship(arg);
-        checkSecondRelationship(arg);
+        RelationshipUtils.doWithRelationFields(arg,
+            (final Field field, final Object object) -> {
+
+                if (object instanceof final DataPresentation<?> data
+                    && data.getId() != null) {
+
+                    throw new BadRequestException(
+                        """
+                        Can't save an entity when the relationship already
+                        has an ID
+                        """);
+                }
+            }, globalSpecification);
 
         final Object result = joinPoint.proceed();
 
         methodEndLog(log, joinPoint, target, annotation);
         return result;
-    }
-
-    private static <
-        D extends DataPresentation<I>,
-        I extends Comparable<? super I> & Serializable> void
-        checkRelationship(final D arg) {
-
-        final String cannotSaveMessage
-            = "Can't save an entity when the relationship already has an ID";
-
-        if (arg instanceof final DataPresentation1RelationshipAnyToOne<?,
-            ?> dataRelationship) {
-
-            final DataPresentation<?> relationship
-                = dataRelationship.getRelationship();
-
-            if (relationship != null && relationship.getId() != null) {
-
-                throw new BadRequestException(cannotSaveMessage);
-            }
-        }
-
-        if (arg instanceof final DataPresentation1RelationshipAnyToMany<?,
-            ?> dataRelationship) {
-
-            final Set<? extends DataPresentation<?>> relationship
-                = dataRelationship.getRelationships();
-
-            if (relationship != null
-                && relationship.stream().anyMatch(e -> e.getId() != null)) {
-
-                throw new BadRequestException(cannotSaveMessage);
-            }
-        }
-    }
-
-    private static <
-        D extends DataPresentation<I>,
-        I extends Comparable<? super I> & Serializable> void
-        checkSecondRelationship(final D arg) {
-
-        final String cannotSaveMessageSecond
-            = "Can't save an entity when the second relationship already has "
-                + "an ID";
-
-        if (arg instanceof final DataPresentation2RelationshipAnyToOne<?, ?,
-            ?> dataRelationship) {
-
-            final DataPresentation<?> relationship
-                = dataRelationship.getSecondRelationship();
-
-            if (relationship != null && relationship.getId() != null) {
-
-                throw new BadRequestException(cannotSaveMessageSecond);
-            }
-        }
-
-        if (arg instanceof final DataPresentation2RelationshipAnyToMany<?, ?,
-            ?> dataRelationship) {
-
-            final Set<? extends DataPresentation<?>> relationship
-                = dataRelationship.getSecondRelationships();
-
-            if (relationship != null
-                && relationship.stream().anyMatch(e -> e.getId() != null)) {
-
-                throw new BadRequestException(cannotSaveMessageSecond);
-            }
-        }
     }
 }

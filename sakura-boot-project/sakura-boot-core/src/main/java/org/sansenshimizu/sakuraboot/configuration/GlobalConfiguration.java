@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+package org.sansenshimizu.sakuraboot.configuration;
+
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
 /**
- * The package for mapper annotation class with two relationships.
+ * The global configuration class for Sakura Boot.
  *
  * @author Malcolm Rozé
- * @since  0.1.0
+ * @since  0.1.1
  */
-@NonNullApi
-@NonNullFields
-package org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations;
-
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+@Configuration
+@EnableConfigurationProperties(GlobalSpecification.class)
+public class GlobalConfiguration {}

@@ -16,12 +16,22 @@
 
 package org.sansenshimizu.sakuraboot.hypermedia;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.atteo.evo.inflector.English;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
+import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaController;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 /**
  * This class can be used to convert a {@link DataPresentation} to
@@ -44,9 +54,10 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * public class YourModelAssembler
  *     extends AbstractBasicModelAssembler&lt;YourData, YourModel&gt; {
  *
- *     protected YourModelAssembler() {
+ *     protected YourModelAssembler(
+ *         final GlobalSpecification globalSpecification) {
  *
- *         super(YourController.class, YourModel.class, "pathOfTheController");
+ *         super(YourController.class, YourModel.class, globalSpecification);
  *     }
  *
  *     &#064;Override
@@ -75,25 +86,34 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
     extends RepresentationModelAssemblerSupport<D, M> {
 
     /**
-     * The path use by the controller.
+     * The {@link GlobalSpecification}.
      */
-    protected final String path;
+    private final GlobalSpecification globalSpecification;
+
+    /**
+     * The model type.
+     */
+    private final Class<M> modelType;
 
     /**
      * This constructor only calls the super constructor of the
      * {@link RepresentationModelAssemblerSupport} class and sets the path.
      *
-     * @param controllerClass The class of the controller that used this model
-     *                        assembler.
-     * @param modelType       The class of the model.
-     * @param path            The path of your controller ("/yourPath").
+     * @param controllerClass     The class of the controller that used
+     *                            this
+     *                            model
+     *                            assembler.
+     * @param modelType           The class of the model.
+     * @param globalSpecification The {@link GlobalSpecification},
+     *                            help to create the relationship links, if any.
      */
     protected AbstractBasicModelAssembler(
         final Class<?> controllerClass, final Class<M> modelType,
-        final String path) {
+        final GlobalSpecification globalSpecification) {
 
         super(controllerClass, modelType);
-        this.path = path;
+        this.modelType = modelType;
+        this.globalSpecification = globalSpecification;
     }
 
     /**
@@ -102,6 +122,18 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
      * @return A function that instantiates the model with parameters.
      */
     protected abstract Function<D, M> instantiateModel();
+
+    /**
+     * The path use by the controller.
+     *
+     * @return The path use by the controller.
+     */
+    protected String getPath() {
+
+        return English
+            .plural(StringUtils.uncapitalize(modelType.getSimpleName())
+                .replace("Model", ""));
+    }
 
     /**
      * Converts the given data into a model, which extends
@@ -113,8 +145,52 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
     public M toModel(final D data) {
 
         final M model = instantiateModel().apply(data);
-        model.addLink(path + "/" + data.getId(), IanaLinkRelations.SELF);
-        model.addLink(path, IanaLinkRelations.COLLECTION);
+        model.addLink(getPath() + "/" + data.getId(), IanaLinkRelations.SELF);
+        model.addLink(getPath(), IanaLinkRelations.COLLECTION);
+        RelationshipUtils.doWithIdRelationFields(data,
+            (field, id) -> addRelationLink(field, id, model),
+            (field, collection) -> addRelationsLink(field, collection, model),
+            globalSpecification);
+
         return model;
+    }
+
+    private static <
+        D extends DataPresentation<?>, M extends AbstractBasicModel<D>> void
+        addRelationLink(
+            final Field field, @Nullable final Object id, final M model) {
+
+        if (id != null) {
+
+            model.addLink(getClassName(field, false) + "/" + id,
+                IanaLinkRelations.RELATED);
+        }
+    }
+
+    private void addRelationsLink(
+        final Field field, final Collection<?> collection, final M model) {
+
+        if (CriteriaController.class.isAssignableFrom(getControllerClass())) {
+
+            final String idsFilter = collection.stream()
+                .filter(Objects::nonNull)
+                .map(Object::toString)
+                .collect(Collectors.joining(",",
+                    getClassName(field, true) + "?id" + ".in=", ""));
+            model.addLink(idsFilter, IanaLinkRelations.RELATED);
+        } else {
+
+            model.addLink(getClassName(field, true), IanaLinkRelations.RELATED);
+        }
+    }
+
+    private static
+        String getClassName(final Field field, final boolean plural) {
+
+        if (plural) {
+
+            return field.getName().replace("Id", "");
+        }
+        return English.plural(field.getName().replace("Id", ""));
     }
 }

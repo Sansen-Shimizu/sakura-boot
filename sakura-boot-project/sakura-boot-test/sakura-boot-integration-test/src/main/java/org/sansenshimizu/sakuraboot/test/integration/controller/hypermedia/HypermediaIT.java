@@ -39,11 +39,58 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.SuperControllerI
  * &#064;WebMvcTest(YourController.class)
  * &#064;Import({
  *     YourModelAssembler.class, AopAutoConfiguration.class,
- *     HypermediaAspect.class
+ *     HypermediaAspect.class, GlobalConfiguration.class
  * })
  * public class YourIT //
  *     implements //
- *     HypermediaIT&lt;YourEntity, YourIdType, YourDataType&gt; {}
+ *     HypermediaIT&lt;YourEntity, YourIdType, YourDataType&gt; {
+ *
+ *     private final YourUtil util = new YourUtil();
+ *
+ *     private final MockMvc mockMvc;
+ *
+ *     private final ObjectMapper objectMapper;
+ *
+ *     &#064;MockBean
+ *     private YourService service;
+ *
+ *     &#064;Autowired
+ *     YourIT(final MockMvc mockMvc, final ObjectMapper objectMapper) {
+ *
+ *         this.mockMvc = mockMvc;
+ *         this.objectMapper = objectMapper;
+ *     }
+ *
+ *     &#064;Override
+ *     public YourUtil getUtil() {
+ *
+ *         return util;
+ *     }
+ *
+ *     &#064;Override
+ *     public MockMvc getMockMvc() {
+ *
+ *         return mockMvc;
+ *     }
+ *
+ *     &#064;Override
+ *     public ObjectMapper getObjectMapper() {
+ *
+ *         return objectMapper;
+ *     }
+ *
+ *     &#064;Override
+ *     public YourService getService() {
+ *
+ *         return service;
+ *     }
+ *
+ *     &#064;Override
+ *     public String getBasePath() {
+ *
+ *         return "api/yourPath";
+ *     }
+ * }
  * </pre>
  *
  * </blockquote>

@@ -27,7 +27,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,15 +34,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class Department
-    extends AbstractBasicEntity1RelationshipAnyToOne<Long, Company> {
+public class Department extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -62,11 +60,4 @@ public class Department
 
     @Nullable
     private String name;
-
-    @Override
-    @JsonIgnore
-    public Company getRelationship() {
-
-        return getCompany();
-    }
 }

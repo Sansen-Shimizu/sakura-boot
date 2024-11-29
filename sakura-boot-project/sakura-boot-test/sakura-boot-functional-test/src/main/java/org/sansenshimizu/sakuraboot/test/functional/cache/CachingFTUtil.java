@@ -44,15 +44,26 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <pre>
  * &#064;Component
- * public class YourITUtil //
+ * public class YourFTUtil //
  *     implements CachingFTUtil&lt;YourEntity, YourIdType&gt; {
+ *
+ *     private final GlobalSpecification globalSpecification;
  *
  *     private final CacheManager cacheManager;
  *
  *     &#064;Autowired
- *     YourITUtil(final CacheManager cacheManager) {
+ *     public YourFTUtil(
+ *         final GlobalSpecification globalSpecification,
+ *         final CacheManager cacheManager) {
  *
+ *         this.globalSpecification = globalSpecification;
  *         this.cacheManager = cacheManager;
+ *     }
+ *
+ *     &#064;Override
+ *     public GlobalSpecification getGlobalSpecification() {
+ *
+ *         return globalSpecification;
  *     }
  *
  *     &#064;Override

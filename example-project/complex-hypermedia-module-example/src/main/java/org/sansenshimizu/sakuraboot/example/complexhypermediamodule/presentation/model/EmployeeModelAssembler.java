@@ -20,18 +20,20 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Employee;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.EmployeeController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.two.AbstractBasicModelAssembler2Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class EmployeeModelAssembler
-    extends AbstractBasicModelAssembler2Relationship<Employee, EmployeeModel> {
+    extends AbstractBasicModelAssembler<Employee, EmployeeModel> {
 
-    protected EmployeeModelAssembler() {
+    protected EmployeeModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(EmployeeController.class, EmployeeModel.class, "employees",
-            "departments", "hobbies");
+        super(EmployeeController.class, EmployeeModel.class,
+            globalSpecification);
     }
 
     @Override

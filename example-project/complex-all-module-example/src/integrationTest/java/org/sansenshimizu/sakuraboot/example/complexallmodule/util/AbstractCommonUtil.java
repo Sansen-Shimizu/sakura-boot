@@ -41,4 +41,16 @@ public abstract class AbstractCommonUtil<E extends DataPresentation<UUID>,
 
         return UUID.fromString("777fe735-4d1d-4be1-bfe7-354d1d1be138");
     }
+
+    @Override
+    public String getDtoPackageName() {
+
+        return "business.dto";
+    }
+
+    @Override
+    public String getMapperPackageName() {
+
+        return "business.mapper";
+    }
 }
