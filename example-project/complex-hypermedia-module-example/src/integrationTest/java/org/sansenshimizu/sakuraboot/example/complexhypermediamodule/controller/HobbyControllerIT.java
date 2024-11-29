@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.HobbyService;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.HobbyController;
@@ -44,7 +45,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.Hyper
 @WebMvcTest(HobbyController.class)
 @Import({
     HobbyModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class HobbyControllerIT
     implements BasicControllerIT<Hobby, Long, Hobby>,

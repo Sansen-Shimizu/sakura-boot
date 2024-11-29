@@ -39,4 +39,16 @@ public abstract class AbstractCommonUtil<E extends DataPresentation<Long>,
 
         return -1L;
     }
+
+    @Override
+    public String getDtoPackageName() {
+
+        return "business.dto";
+    }
+
+    @Override
+    public String getMapperPackageName() {
+
+        return "business.mapper";
+    }
 }

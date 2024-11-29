@@ -25,10 +25,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.LazyInitializationException;
@@ -255,7 +251,7 @@ public class ToStringUtils {
         list.addAll(Arrays.stream(object.getClass().getDeclaredFields())
             .filter(field -> !excludedFields.contains(field.getName()))
             .filter(field -> !Modifier.isStatic(field.getModifiers()))
-            .filter(ToStringUtils::isNotRelationWithMappedBy)
+            .filter(RelationshipUtils::isNotRelationWithMappedBy)
             .map((final Field field) -> {
 
                 try {
@@ -269,39 +265,5 @@ public class ToStringUtils {
             })
             .toList());
         return list;
-    }
-
-    /**
-     * Util method to check if a field is not a relation with mappedBy
-     * attribute in the mapping annotation.
-     * Help to not include this field in the toString.
-     *
-     * @param  field The field to check.
-     * @return       True if the field is not a relation with mappedBy
-     *               attribute, false otherwise.
-     */
-    public boolean isNotRelationWithMappedBy(final Field field) {
-
-        return isNotOneToOneWithMappedBy(field)
-            && isNotOneToManyWithMappedBy(field)
-            && isNotManyToManyWithMappedBy(field);
-    }
-
-    private boolean isNotOneToOneWithMappedBy(final Field field) {
-
-        return !(field.isAnnotationPresent(OneToOne.class)
-            && !"".equals(field.getAnnotation(OneToOne.class).mappedBy()));
-    }
-
-    private boolean isNotOneToManyWithMappedBy(final Field field) {
-
-        return !(field.isAnnotationPresent(OneToMany.class)
-            && !"".equals(field.getAnnotation(OneToMany.class).mappedBy()));
-    }
-
-    private boolean isNotManyToManyWithMappedBy(final Field field) {
-
-        return !(field.isAnnotationPresent(ManyToMany.class)
-            && !"".equals(field.getAnnotation(ManyToMany.class).mappedBy()));
     }
 }

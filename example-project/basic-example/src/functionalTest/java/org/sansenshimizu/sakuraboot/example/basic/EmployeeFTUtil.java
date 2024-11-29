@@ -16,13 +16,20 @@
 
 package org.sansenshimizu.sakuraboot.example.basic;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.basic.persistence.Employee;
 import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
 
+@Getter
+@RequiredArgsConstructor
 @Component
 public class EmployeeFTUtil implements BasicFTUtil<Employee, Long> {
+
+    private final GlobalSpecification globalSpecification;
 
     @Override
     public String getPath() {

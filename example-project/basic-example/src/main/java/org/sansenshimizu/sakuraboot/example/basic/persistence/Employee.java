@@ -32,7 +32,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,16 +39,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.two.AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class Employee
-    extends AbstractBasicEntity2RelationshipAnyToOneAndAnyToMany<Long,
-        Department, Hobby> {
+public class Employee extends AbstractBasicEntity<Long> {
 
     @Serial
     private static final long serialVersionUID = -2636662559034440172L;
@@ -79,14 +76,6 @@ public class Employee
     @Nullable
     private String name;
 
-    @Override
-    @JsonIgnore
-    @Nullable
-    public Department getRelationship() {
-
-        return getDepartment();
-    }
-
     @Nullable
     public Set<Hobby> getHobbies() {
 
@@ -95,13 +84,5 @@ public class Employee
             return null;
         }
         return Collections.unmodifiableSet(hobbies);
-    }
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public Set<Hobby> getRelationships() {
-
-        return getHobbies();
     }
 }

@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.CompanyService;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.CompanyController;
@@ -42,7 +43,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.Hyper
 @WebMvcTest(CompanyController.class)
 @Import({
     CompanyModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class CompanyControllerIT
     implements BasicControllerIT<Company, Long, Company>,

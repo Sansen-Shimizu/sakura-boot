@@ -17,15 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class HobbyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<HobbyModelAssembler, HobbyDto> {
-
-    @Override
-    protected String getPath() {
-
-        return "hobbies";
-    }
-}
+    implements BasicModelAssemblerTest<HobbyModelAssembler, HobbyDto> {}

@@ -17,15 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Company;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class CompanyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<CompanyModelAssembler, Company> {
-
-    @Override
-    protected String getPath() {
-
-        return "companies";
-    }
-}
+    implements BasicModelAssemblerTest<CompanyModelAssembler, Company> {}

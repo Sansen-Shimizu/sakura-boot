@@ -16,112 +16,44 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper;
 
-import java.util.UUID;
-
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
+import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.HobbyDto;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Department;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.DepartmentRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employee;
+import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federation;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.HobbyRepository;
+import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.two.annotations.SecondRelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.relationship.two.AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany;
 
-@Getter
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractEmployeeMapper
-    extends AbstractBasicMapper2RelationshipAnyToOneAndAnyToMany<Employee,
-        EmployeeDto, Department, DepartmentDto, UUID, Hobby, HobbyDto, UUID> {
-
-    @Nullable
-    private DepartmentRepository repository;
-
-    @Nullable
-    private HobbyRepository secondRepository;
-
-    @Nullable
-    private AbstractDepartmentMapper mapper;
-
-    @Nullable
-    private AbstractHobbyMapper secondMapper;
-
-    public Class<UUID> getRelationalIdType() {
-
-        return UUID.class;
-    }
-
-    public Class<UUID> getSecondRelationalIdType() {
-
-        return UUID.class;
-    }
-
-    @Autowired
-    public void setRepository(final DepartmentRepository repository) {
-
-        this.repository = repository;
-    }
-
-    @Autowired
-    public void setSecondRepository(final HobbyRepository secondRepository) {
-
-        this.secondRepository = secondRepository;
-    }
-
-    @Autowired
-    public void setMapper(final AbstractDepartmentMapper mapper) {
-
-        this.mapper = mapper;
-    }
-
-    @Autowired
-    public void setSecondMapper(final AbstractHobbyMapper secondMapper) {
-
-        this.secondMapper = secondMapper;
-    }
+    extends AbstractBasicMapperForRelationship<Employee, EmployeeDto> {
 
     @Override
     @Nullable
-    @Mapping(
-        target = "department",
-        source = "dto",
-        qualifiedBy = RelationshipFromDto.class)
-    @Mapping(
-        target = "hobbies",
-        source = "dto",
-        qualifiedBy = SecondRelationshipFromDto.class)
+    @Mapping(target = "department.manager.department", ignore = true)
     public abstract Employee toEntity(@Nullable EmployeeDto dto);
 
+    @Mapping(target = "employees", ignore = true)
+    public abstract Hobby hobbyDtoToHobby(HobbyDto hobbyDto);
+
+    @Mapping(target = "hobbies", ignore = true)
+    public abstract
+        Federation federationDtoToFederation(FederationDto federationDto);
+
     @Override
     @Nullable
-    @Mapping(
-        target = "department",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipId",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithId.class)
-    @Mapping(
-        target = "hobbies",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipsId",
-        source = "entity",
-        qualifiedBy = SecondRelationshipFromEntityWithId.class)
+    @Mapping(target = "department.manager.department", ignore = true)
     public abstract EmployeeDto toDto(@Nullable Employee entity);
+
+    @Mapping(target = "employees", ignore = true)
+    public abstract HobbyDto hobbyToHobbyDto(Hobby hobby);
+
+    @Mapping(target = "hobbies", ignore = true)
+    public abstract
+        FederationDto federationToFederationDto(Federation federation);
 }

@@ -20,18 +20,19 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Manager;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.ManagerController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.one.AbstractBasicModelAssembler1Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class ManagerModelAssembler
-    extends AbstractBasicModelAssembler1Relationship<Manager, ManagerModel> {
+    extends AbstractBasicModelAssembler<Manager, ManagerModel> {
 
-    protected ManagerModelAssembler() {
+    protected ManagerModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(ManagerController.class, ManagerModel.class, "managers",
-            "departments");
+        super(ManagerController.class, ManagerModel.class, globalSpecification);
     }
 
     @Override

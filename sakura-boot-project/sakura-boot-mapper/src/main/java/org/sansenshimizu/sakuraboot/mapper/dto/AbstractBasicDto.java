@@ -62,15 +62,6 @@ import org.sansenshimizu.sakuraboot.util.ToStringUtils;
  *         this.id = id;
  *         this.yourField = yourField;
  *     }
- *
- *     &#064;Override
- *     protected List&lt;Pair&lt;String, Object&gt;&gt; listFieldsForToString(
- *         final List&lt;Pair&lt;String, Object&gt;&gt; list) {
- *
- *         super.listFieldsForToString(list);
- *         list.add(Pair.of("yourField", getYourField()));
- *         return list;
- *     }
  *     // Getter ...
  * }
  * </pre>

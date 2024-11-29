@@ -17,14 +17,24 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Federation;
 import org.sansenshimizu.sakuraboot.test.functional.hypermedia.HypermediaFTUtil;
 
 @Getter
 @Component
 public class FederationFTUtil implements HypermediaFTUtil<Federation, Long> {
+
+    private final GlobalSpecification globalSpecification;
+
+    @Autowired
+    public FederationFTUtil(final GlobalSpecification globalSpecification) {
+
+        this.globalSpecification = globalSpecification;
+    }
 
     @Override
     public String getPath() {

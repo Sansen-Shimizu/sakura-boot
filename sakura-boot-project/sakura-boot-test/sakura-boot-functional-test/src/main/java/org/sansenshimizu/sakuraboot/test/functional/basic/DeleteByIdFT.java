@@ -17,20 +17,10 @@
 package org.sansenshimizu.sakuraboot.test.functional.basic;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,13 +64,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     private int port;
  *
  *     &#064;Autowired
- *     YourIT(
- *     final YourUtil util,final ApplicationContext applicationContext,
- *     final ObjectMapper objectMapper){
+ *     YourFT(
+ *         final YourUtil util, final ApplicationContext applicationContext,
+ *         final ObjectMapper objectMapper) {
  *
- *     this.util=util;
- *     this.applicationContext=applicationContext;
- *     this.objectMapper=objectMapper;
+ *         this.util = util;
+ *         this.applicationContext = applicationContext;
+ *         this.objectMapper = objectMapper;
  *     }
  *
  *     &#064;Override
@@ -130,8 +121,9 @@ public interface DeleteByIdFT<E extends DataPresentation<I>,
 
         final Repositories repositories
             = new Repositories(getApplicationContext());
-        getClassToDeleteBeforeTest(getUtil().getEntityClass(),
-            new ArrayList<>()).stream()
+        RelationshipUtils.getMappedByRelationClass(getUtil().getEntityClass())
+            .reversed()
+            .stream()
             .map(clazz -> repositories.getRepositoryFor(clazz).orElse(null))
             .filter(CrudRepository.class::isInstance)
             .map(CrudRepository.class::cast)
@@ -163,46 +155,6 @@ public interface DeleteByIdFT<E extends DataPresentation<I>,
                     .isNull();
             }
         }
-    }
-
-    private static List<Class<?>> getClassToDeleteBeforeTest(
-        final Class<?> clazz, final List<Class<?>> relationClass) {
-
-        final List<Field> fieldsAnyToOne
-            = FieldUtils.getFieldsListWithAnnotation(clazz, OneToOne.class)
-                .stream()
-                .filter(field -> !""
-                    .equals(field.getAnnotation(OneToOne.class).mappedBy()))
-                .toList();
-
-        final List<Field> fieldsAnyToMany
-            = FieldUtils.getFieldsListWithAnnotation(clazz, OneToMany.class)
-                .stream()
-                .filter(field -> !""
-                    .equals(field.getAnnotation(OneToMany.class).mappedBy()))
-                .collect(Collectors.toList());
-        fieldsAnyToMany.addAll(
-            FieldUtils.getFieldsListWithAnnotation(clazz, ManyToMany.class)
-                .stream()
-                .filter(field -> !""
-                    .equals(field.getAnnotation(ManyToMany.class).mappedBy()))
-                .toList());
-
-        final List<Class<?>> newRelationClass = fieldsAnyToOne.stream()
-            .map(Field::getType)
-            .collect(Collectors.toList());
-        newRelationClass.addAll(fieldsAnyToMany.stream()
-            .map(
-                field -> (Class<?>) ((ParameterizedType) field.getGenericType())
-                    .getActualTypeArguments()[0])
-            .toList());
-
-        for (final Class<?> newClass: newRelationClass) {
-
-            relationClass.add(newClass);
-            getClassToDeleteBeforeTest(newClass, relationClass);
-        }
-        return relationClass.reversed();
     }
 
     @Test

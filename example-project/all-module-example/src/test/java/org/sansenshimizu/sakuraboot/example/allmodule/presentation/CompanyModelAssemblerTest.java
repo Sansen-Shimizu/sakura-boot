@@ -17,15 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class CompanyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<CompanyModelAssembler, CompanyDto> {
-
-    @Override
-    protected String getPath() {
-
-        return "companies";
-    }
-}
+    implements BasicModelAssemblerTest<CompanyModelAssembler, CompanyDto> {}

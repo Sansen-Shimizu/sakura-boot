@@ -17,21 +17,20 @@
 package org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.ManagerDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class ManagerModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<ManagerModelAssembler, ManagerDto> {
+    implements BasicModelAssemblerTest<ManagerModelAssembler, ManagerDto> {
 
     @Override
-    protected String getPath() {
+    public String getDtoPackageName() {
 
-        return "managers";
+        return "business.dto";
     }
 
     @Override
-    protected String getRelationshipName() {
+    public String getMapperPackageName() {
 
-        return "departments";
+        return "business.mapper";
     }
 }

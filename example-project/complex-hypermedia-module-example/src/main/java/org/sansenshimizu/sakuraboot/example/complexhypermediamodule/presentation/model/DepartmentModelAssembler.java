@@ -20,19 +20,20 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.DepartmentController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.two.AbstractBasicModelAssembler2Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class DepartmentModelAssembler
-    extends
-    AbstractBasicModelAssembler2Relationship<Department, DepartmentModel> {
+    extends AbstractBasicModelAssembler<Department, DepartmentModel> {
 
-    protected DepartmentModelAssembler() {
+    protected DepartmentModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(DepartmentController.class, DepartmentModel.class, "departments",
-            "companies", "managers");
+        super(DepartmentController.class, DepartmentModel.class,
+            globalSpecification);
     }
 
     @Override

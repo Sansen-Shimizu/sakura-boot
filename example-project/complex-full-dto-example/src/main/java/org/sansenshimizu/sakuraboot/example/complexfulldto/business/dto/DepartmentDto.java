@@ -18,22 +18,18 @@ package org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto;
 
 import java.io.Serial;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class DepartmentDto
-    extends AbstractBasicDto2RelationshipAnyToOne<Long, CompanyDto, Long,
-        ManagerDto, Long> {
+public class DepartmentDto extends AbstractBasicDto<Long> {
 
     @Serial
     private static final long serialVersionUID = 3483687044259717900L;
@@ -45,34 +41,16 @@ public class DepartmentDto
     @Nullable
     private final CompanyDto company;
 
-    @JsonProperty("companyId")
     @Nullable
-    private final Long relationshipId;
+    private final Long companyId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
     private final ManagerDto manager;
 
-    @JsonProperty("managerId")
     @Nullable
-    private final Long secondRelationshipId;
+    private final Long managerId;
 
     @Nullable
     private final String name;
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public CompanyDto getRelationship() {
-
-        return getCompany();
-    }
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public ManagerDto getSecondRelationship() {
-
-        return getManager();
-    }
 }

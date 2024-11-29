@@ -16,27 +16,34 @@
 
 package org.sansenshimizu.sakuraboot.test.hypermedia;
 
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
+import jakarta.persistence.Entity;
+
+import org.atteo.evo.inflector.English;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
 import org.sansenshimizu.sakuraboot.test.BeanCreatorHelper;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,24 +54,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * </p>
  * <p>
  * To create a concrete test class that inherits from
- * {@link AbstractBasicModelAssemblerTest}, follow these steps:
+ * {@link BasicModelAssemblerTest}, follow these steps:
  * </p>
  * <p>
- * Extends the {@link AbstractBasicModelAssemblerTest} class:
+ * Extends the {@link BasicModelAssemblerTest} class:
  * </p>
  * <blockquote>
  *
  * <pre>
  * public class YourBasicModelAssemblerTest
- *     extends //
- *     AbstractBasicModelAssemblerTest&lt;YourModelAssembler, YourData&gt; {
- *
- *     &#064;Override
- *     protected String getPath() {
- *
- *         return "yourPath";
- *     }
- * }
+ *     implements //
+ *     BasicModelAssemblerTest&lt;YourModelAssembler, YourData&gt; {}
  * </pre>
  *
  * </blockquote>
@@ -75,20 +75,83 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @see         AbstractBasicModelAssembler
  * @since       0.1.0
  */
-public abstract class AbstractBasicModelAssemblerTest<
+@ExtendWith(MockitoExtension.class)
+public interface BasicModelAssemblerTest<
     MA extends AbstractBasicModelAssembler<D, ?>,
     D extends DataPresentation<?>> {
 
     /**
      * The name of the field data in the model class.
      */
-    private static final String DATA_FIELD_NAME = "data";
+    String DATA_FIELD_NAME = "data";
+
+    /**
+     * The {@link GlobalSpecification} used to check the relational links.
+     *
+     * @return The {@link GlobalSpecification}.
+     */
+    default GlobalSpecification getGlobalSpecification() {
+
+        return new GlobalSpecification(getEntityPackageName(),
+            getServicePackageName(), getDtoPackageName(),
+            getMapperPackageName(), getControllerPackageName());
+    }
+
+    /**
+     * Get the entity package name.
+     *
+     * @return The entity package name.
+     */
+    default String getEntityPackageName() {
+
+        return "persistence";
+    }
+
+    /**
+     * Get the service package name.
+     *
+     * @return The service package name.
+     */
+    default String getServicePackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the DTO package name.
+     *
+     * @return The DTO package name.
+     */
+    default String getDtoPackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the mapper package name.
+     *
+     * @return The mapper package name.
+     */
+    default String getMapperPackageName() {
+
+        return "business";
+    }
+
+    /**
+     * Get the controller package name.
+     *
+     * @return The controller package name.
+     */
+    default String getControllerPackageName() {
+
+        return "presentation";
+    }
 
     private Class<MA> getModelAssemblerClass() {
 
         @SuppressWarnings("unchecked")
         final Class<MA> modelAssemblerClass = (Class<
-            MA>) ((ParameterizedType) getClass().getGenericSuperclass())
+            MA>) ((ParameterizedType) getClass().getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         return modelAssemblerClass;
     }
@@ -98,19 +161,49 @@ public abstract class AbstractBasicModelAssemblerTest<
      *
      * @return the model assembler of type M
      */
-    protected MA getModelAssembler() {
+    default MA getModelAssembler() {
 
-        return BeanCreatorHelper.getEmptyBean(getModelAssemblerClass());
+        final MA modelAssembler
+            = BeanCreatorHelper.getEmptyBean(getModelAssemblerClass());
+
+        try {
+
+            final Field globalSpecificationField = ReflectionUtils
+                .findField(modelAssembler.getClass(), "globalSpecification");
+
+            if (globalSpecificationField == null) {
+
+                throw new RuntimeException("Shouldn't happen");
+            }
+            globalSpecificationField.setAccessible(true);
+            globalSpecificationField.set(modelAssembler,
+                getGlobalSpecification());
+        } catch (final IllegalAccessException e) {
+
+            throw new RuntimeException(e);
+        }
+
+        return modelAssembler;
     }
 
-    protected abstract String getPath();
+    /**
+     * The path use by the controller.
+     *
+     * @return The path use by the controller.
+     */
+    default String getPath() {
+
+        return English.plural(
+            StringUtils.uncapitalize(getModelAssemblerClass().getSimpleName())
+                .replace("ModelAssembler", ""));
+    }
 
     /**
      * Retrieves the data object of the specified type.
      *
      * @return the data object of type D
      */
-    protected D getData() {
+    default D getData() {
 
         @SuppressWarnings("unchecked")
         final Class<D> dataClass
@@ -119,32 +212,12 @@ public abstract class AbstractBasicModelAssemblerTest<
         return BeanCreatorHelper.getBean(dataClass);
     }
 
-    /**
-     * Get the name of the relationship used in the links.
-     *
-     * @return The name of the relationship.
-     */
-    protected String getRelationshipName() {
-
-        return "relationships";
-    }
-
-    /**
-     * Get the name of the second relationship used in the links.
-     *
-     * @return The name of the second relationship.
-     */
-    protected String getSecondRelationshipName() {
-
-        return "secondRelationships";
-    }
-
     @Test
     @DisplayName("GIVEN a basicModelAssembler and a data object,"
         + " WHEN converting the data object to model,"
         + " THEN the model should be the expected model with the same data "
         + "and expected links")
-    final void testToModel() {
+    default void testToModel() {
 
         // GIVEN
         final MockHttpServletRequest request = new MockHttpServletRequest();
@@ -164,7 +237,7 @@ public abstract class AbstractBasicModelAssemblerTest<
         + " WHEN converting the data object to model,"
         + " THEN the collection model should be the expected collection model "
         + "with the same data and expected links")
-    final void testToCollectionModel() {
+    default void testToCollectionModel() {
 
         // GIVEN
         final MockHttpServletRequest request = new MockHttpServletRequest();
@@ -212,47 +285,23 @@ public abstract class AbstractBasicModelAssemblerTest<
 
     private boolean hasRelationLink(final D data) {
 
-        final boolean hasRelationAnyToOneLink
-            = data instanceof final DataPresentation1RelationshipAnyToOne<?,
-                ?> relationshipAnyToOne
-                && relationshipAnyToOne.getRelationship() != null;
+        if (data.getClass().isAnnotationPresent(Entity.class)) {
 
-        final boolean hasRelationAnyToManyLink;
-
-        if (data instanceof final DataPresentation1RelationshipAnyToMany<?,
-            ?> relationshipAnyToMany) {
-
-            final Set<?> relationships
-                = relationshipAnyToMany.getRelationships();
-            hasRelationAnyToManyLink
-                = relationships != null && !relationships.isEmpty();
-        } else {
-
-            hasRelationAnyToManyLink = false;
+            return Arrays.stream(data.getClass().getDeclaredFields())
+                .anyMatch(RelationshipUtils::isRelationship);
         }
+        return Arrays.stream(data.getClass().getDeclaredFields())
+            .anyMatch((final Field field) -> {
 
-        final boolean hasRelation2AnyToOneLink
-            = data instanceof final DataPresentation2RelationshipAnyToOne<?, ?,
-                ?> relationship2AnyToOne
-                && relationship2AnyToOne.getSecondRelationship() != null;
+                final AnnotatedElement entityField = RelationshipUtils
+                    .getEntityFieldFromDto(field, data.getClass(),
+                        getEntityPackageName(), getDtoPackageName());
 
-        final boolean hasRelation2AnyToManyLink;
+                if (entityField == null) {
 
-        if (data instanceof final DataPresentation2RelationshipAnyToMany<?, ?,
-            ?> relationship2AnyToMany) {
-
-            final Set<?> secondRelationships
-                = relationship2AnyToMany.getSecondRelationships();
-            hasRelation2AnyToManyLink
-                = secondRelationships != null && !secondRelationships.isEmpty();
-        } else {
-
-            hasRelation2AnyToManyLink = false;
-        }
-
-        return hasRelationAnyToOneLink
-            || hasRelationAnyToManyLink
-            || hasRelation2AnyToOneLink
-            || hasRelation2AnyToManyLink;
+                    return false;
+                }
+                return RelationshipUtils.isRelationship(entityField);
+            });
     }
 }

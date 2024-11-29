@@ -40,8 +40,33 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * <blockquote>
  *
  * <pre>
- * public class YourTestUtil //
- *     implements SuperITUtil&lt;YourEntity, YourIdType&gt; {}
+ * public class YourITUtil //
+ *     implements SuperITUtil&lt;YourEntity, YourIdType&gt; {
+ *
+ *     &#064;Override
+ *     public YourIdType getValidId() {
+ *
+ *         return ANY_VALUE; // ANY_VALUE can be 0L, "a" or any other value of
+ *                           // the type YourIdType.
+ *     }
+ *
+ *     &#064;Override
+ *     public YourIdType getBiggerValidId() {
+ *
+ *         return ANY_BIGGER_VALUE;
+ *         // ANY_BIGGER_VALUE must be bigger than ANY_VALUE can be 1L, "b"
+ *         // or any other bigger value of the type YourIdType.
+ *     }
+ *
+ *     &#064;Override
+ *     public YourIdType getInvalidId() {
+ *
+ *         return ANY_OTHER_VALUE;
+ *         // ANY_OTHER_VALUE must be different than ANY_VALUE and
+ *         // ANY_BIGGER_VALUE can be -1L, "z"
+ *         // or any other value of the type YourIdType.
+ *     }
+ * }
  * </pre>
  *
  * </blockquote>
@@ -57,15 +82,16 @@ public interface SuperITUtil<E extends DataPresentation<I>,
     extends BasicTestUtil<E, I> {
 
     /**
-     * Get a different entity with the given id.
+     * Get a different entity with the given ids from the other entity.
      *
-     * @param  ids The id to give to the new entity.
-     * @return     The created entity.
+     * @param  otherEntity The other entity from which to get the ids.
+     * @return             The created entity.
      */
-    default E getDifferentEntityWithId(final DataCreatorHelper.EntityIds ids) {
+    default E getDifferentEntityWithId(final E otherEntity) {
 
-        return DataCreatorHelper.updateId(ids,
-            SerializationUtils.clone(getDifferentEntity()));
+        return DataCreatorHelper.updateId(otherEntity,
+            SerializationUtils.clone(getDifferentEntity()),
+            getGlobalSpecification());
     }
 
     /**

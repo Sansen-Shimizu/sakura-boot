@@ -41,7 +41,6 @@ import org.sansenshimizu.sakuraboot.basic.api.relationship.annotations.FindAllWi
 import org.sansenshimizu.sakuraboot.basic.api.relationship.annotations.FindByIdWithRelationship;
 import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
 import org.sansenshimizu.sakuraboot.test.aop.AspectUtilTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,18 +88,16 @@ class RelationshipAspectTest implements AspectUtilTest {
      * The {@link RelationshipAspect} to test.
      */
     @Getter
-    private final RelationshipAspect<
-        DataPresentation1RelationshipAnyToMany<Long, DataPresentation<Long>>,
-        Long> aspect = new RelationshipAspect<>();
+    private final RelationshipAspect<DataPresentation<Long>, Long> aspect
+        = new RelationshipAspect<>();
 
     @ParameterizedTest
     @MethodSource("getFindAllTarget")
-    @DisplayName("GIVEN the caching aspect method call,"
-        + " WHEN caching,"
+    @DisplayName("GIVEN the relationship aspect method call,"
+        + " WHEN find all with relationship,"
         + " THEN the result should be the expected result")
     final void testFindAllWithRelationship(
-        final FindAllService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findAllTarget,
+        final FindAllService<DataPresentation<Long>, Long> findAllTarget,
         final Boolean fetchRelationship, final Object expectedResult,
         final boolean testLog)
         throws Throwable {
@@ -136,12 +133,11 @@ class RelationshipAspectTest implements AspectUtilTest {
 
     @ParameterizedTest
     @MethodSource("getFindByIdTarget")
-    @DisplayName("GIVEN the caching aspect method call,"
-        + " WHEN caching,"
+    @DisplayName("GIVEN the relationship aspect method call,"
+        + " WHEN find by id with relationship,"
         + " THEN the result should be the expected result")
     final void testFindByIdWithRelationship(
-        final FindByIdService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findByIdTarget,
+        final FindByIdService<DataPresentation<Long>, Long> findByIdTarget,
         final Boolean fetchRelationship, @Nullable final Object expectedResult,
         final boolean testLog)
         throws Throwable {
@@ -184,21 +180,17 @@ class RelationshipAspectTest implements AspectUtilTest {
 
     private static Stream<Arguments> getFindAllTarget() {
 
-        final DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>> entity = mock();
+        final DataPresentation<Long> entity = mock();
         given(entity.getId()).willReturn(ID);
 
         // Service with basic repository
-        final BasicRepository<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> repository = mock();
-        final FindAllService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findAllTarget = mock();
+        final BasicRepository<DataPresentation<Long>, Long> repository = mock();
+        final FindAllService<DataPresentation<Long>, Long> findAllTarget
+            = mock();
         given(findAllTarget.getRepository()).willReturn(repository);
 
         // Service with an empty result
-        final BasicRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final BasicRepository<DataPresentation<Long>,
             Long> repositoryRelationshipWithEmptyResult = mock(withSettings()
                 .extraInterfaces(FetchRelationshipRepository.class));
         given(repositoryRelationshipWithEmptyResult
@@ -206,50 +198,37 @@ class RelationshipAspectTest implements AspectUtilTest {
             .willReturn(new PageImpl<>(List.of()));
 
         @SuppressWarnings("unchecked")
-        final FetchRelationshipRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long> castRepository = (FetchRelationshipRepository<
-                DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>,
-                Long>) repositoryRelationshipWithEmptyResult;
+        final FetchRelationshipRepository<DataPresentation<Long>,
+            Long> castRepository
+                = (FetchRelationshipRepository<DataPresentation<Long>,
+                    Long>) repositoryRelationshipWithEmptyResult;
         given(castRepository.findAllEagerRelationship(any(), any()))
             .willReturn(List.of());
-        final FindAllService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FindAllService<DataPresentation<Long>,
             Long> findAllRelationshipNoResultTarget = mock();
         given(findAllRelationshipNoResultTarget.getRepository())
             .willReturn(repositoryRelationshipWithEmptyResult);
 
         // Service with a result
-        final BasicRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final BasicRepository<DataPresentation<Long>,
             Long> repositoryRelationshipWithResult = mock(withSettings()
                 .extraInterfaces(FetchRelationshipRepository.class));
         given(repositoryRelationshipWithResult.findAllIds(any(Pageable.class)))
             .willReturn(new PageImpl<>(List.of(ID)));
         @SuppressWarnings("unchecked")
-        final FetchRelationshipRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FetchRelationshipRepository<DataPresentation<Long>,
             Long> castRepositoryWithResult = (FetchRelationshipRepository<
-                DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>,
-                Long>) repositoryRelationshipWithResult;
+                DataPresentation<Long>, Long>) repositoryRelationshipWithResult;
         given((castRepositoryWithResult).findAllEagerRelationship(any(), any()))
             .willReturn(List.of(entity));
-        final FindAllService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FindAllService<DataPresentation<Long>,
             Long> findAllRelationshipTarget = mock();
         given(findAllRelationshipTarget.getRepository())
             .willReturn(repositoryRelationshipWithResult);
 
         // Service with loggable
-        final FindAllService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findAllWithLoggableTarget
+        final FindAllService<DataPresentation<Long>,
+            Long> findAllWithLoggableTarget
                 = mock(withSettings().extraInterfaces(Loggable.class));
         given(findAllWithLoggableTarget.getRepository())
             .willReturn(repositoryRelationshipWithResult);
@@ -267,73 +246,56 @@ class RelationshipAspectTest implements AspectUtilTest {
 
     private static Stream<Arguments> getFindByIdTarget() {
 
-        final DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>> entity = mock();
+        final DataPresentation<Long> entity = mock();
         given(entity.getId()).willReturn(ID);
 
         // Service with basic repository
-        final BasicRepository<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> repository = mock();
-        final FindByIdService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findByIdTarget = mock();
+        final BasicRepository<DataPresentation<Long>, Long> repository = mock();
+        final FindByIdService<DataPresentation<Long>, Long> findByIdTarget
+            = mock();
         given(findByIdTarget.getRepository()).willReturn(repository);
 
         // Service with no result
-        final BasicRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final BasicRepository<DataPresentation<Long>,
             Long> repositoryRelationshipWithEmptyResult = mock(withSettings()
                 .extraInterfaces(FetchRelationshipRepository.class));
 
         @SuppressWarnings("unchecked")
-        final FetchRelationshipRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long> castRepository = (FetchRelationshipRepository<
-                DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>,
-                Long>) repositoryRelationshipWithEmptyResult;
+        final FetchRelationshipRepository<DataPresentation<Long>,
+            Long> castRepository
+                = (FetchRelationshipRepository<DataPresentation<Long>,
+                    Long>) repositoryRelationshipWithEmptyResult;
         given(castRepository.findByIdEagerRelationship(anyLong(), any()))
             .willReturn(Optional.empty());
-        final FindByIdService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FindByIdService<DataPresentation<Long>,
             Long> findRelationshipNoResultTarget = mock();
         given(findRelationshipNoResultTarget.getRepository())
             .willReturn(repositoryRelationshipWithEmptyResult);
         @SuppressWarnings("unchecked")
-        final Class<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>> castClass
-                = (Class<DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>>) entity.getClass();
+        final Class<DataPresentation<Long>> castClass
+            = (Class<DataPresentation<Long>>) entity.getClass();
         given(findRelationshipNoResultTarget.getEntityClass())
             .willReturn(castClass);
 
         // Service with a result
-        final BasicRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final BasicRepository<DataPresentation<Long>,
             Long> repositoryRelationshipWithResult = mock(withSettings()
                 .extraInterfaces(FetchRelationshipRepository.class));
 
         @SuppressWarnings("unchecked")
-        final FetchRelationshipRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FetchRelationshipRepository<DataPresentation<Long>,
             Long> castRepositoryWithResult = (FetchRelationshipRepository<
-                DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>,
-                Long>) repositoryRelationshipWithResult;
+                DataPresentation<Long>, Long>) repositoryRelationshipWithResult;
         given(castRepositoryWithResult.findByIdEagerRelationship(any(), any()))
             .willReturn(Optional.of(entity));
-        final FindByIdService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findRelationshipTarget = mock();
+        final FindByIdService<DataPresentation<Long>,
+            Long> findRelationshipTarget = mock();
         given(findRelationshipTarget.getRepository())
             .willReturn(repositoryRelationshipWithResult);
 
         // Service with loggable
-        final FindByIdService<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> findAllWithLoggableTarget
+        final FindByIdService<DataPresentation<Long>,
+            Long> findAllWithLoggableTarget
                 = mock(withSettings().extraInterfaces(Loggable.class));
         given(findAllWithLoggableTarget.getRepository())
             .willReturn(repositoryRelationshipWithResult);

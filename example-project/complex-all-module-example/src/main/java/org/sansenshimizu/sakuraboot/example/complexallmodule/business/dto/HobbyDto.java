@@ -22,22 +22,18 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class HobbyDto
-    extends AbstractBasicDto2RelationshipAnyToMany<UUID, EmployeeDto, UUID,
-        FederationDto, UUID> {
+public class HobbyDto extends AbstractBasicDto<UUID> {
 
     @Serial
     private static final long serialVersionUID = -7056599975876114239L;
@@ -49,17 +45,15 @@ public class HobbyDto
     @Nullable
     private final Set<EmployeeDto> employees;
 
-    @JsonProperty("employeesId")
     @Nullable
-    private final Set<UUID> relationshipsId;
+    private final Set<UUID> employeesId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
     private final Set<FederationDto> federations;
 
-    @JsonProperty("federationsId")
     @Nullable
-    private final Set<UUID> secondRelationshipsId;
+    private final Set<UUID> federationsId;
 
     @Nullable
     private final String name;
@@ -80,23 +74,14 @@ public class HobbyDto
         return Collections.unmodifiableSet(employees);
     }
 
-    @Override
-    @JsonIgnore
     @Nullable
-    public Set<EmployeeDto> getRelationships() {
+    public Set<UUID> getEmployeesId() {
 
-        return getEmployees();
-    }
-
-    @Override
-    @Nullable
-    public Set<UUID> getRelationshipsId() {
-
-        if (relationshipsId == null) {
+        if (employeesId == null) {
 
             return null;
         }
-        return Collections.unmodifiableSet(relationshipsId);
+        return Collections.unmodifiableSet(employeesId);
     }
 
     @Nullable
@@ -109,22 +94,13 @@ public class HobbyDto
         return Collections.unmodifiableSet(federations);
     }
 
-    @Override
-    @JsonIgnore
     @Nullable
-    public Set<FederationDto> getSecondRelationships() {
+    public Set<UUID> getFederationsId() {
 
-        return getFederations();
-    }
-
-    @Override
-    @Nullable
-    public Set<UUID> getSecondRelationshipsId() {
-
-        if (secondRelationshipsId == null) {
+        if (federationsId == null) {
 
             return null;
         }
-        return Collections.unmodifiableSet(secondRelationshipsId);
+        return Collections.unmodifiableSet(federationsId);
     }
 }

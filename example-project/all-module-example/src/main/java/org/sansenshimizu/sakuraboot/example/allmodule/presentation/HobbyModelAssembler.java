@@ -20,6 +20,7 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyDto;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
@@ -27,9 +28,10 @@ import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 public class HobbyModelAssembler
     extends AbstractBasicModelAssembler<HobbyDto, HobbyModel> {
 
-    protected HobbyModelAssembler() {
+    protected HobbyModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(HobbyController.class, HobbyModel.class, "hobbies");
+        super(HobbyController.class, HobbyModel.class, globalSpecification);
     }
 
     @Override

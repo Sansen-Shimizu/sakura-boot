@@ -33,7 +33,6 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
 import org.sansenshimizu.sakuraboot.specification.api.business.services.FindAllByCriteriaService;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
@@ -80,21 +79,17 @@ class RelationshipSpecificationAspectTest implements AspectUtilTest {
      * The {@link RelationshipSpecificationAspect} to test.
      */
     @Getter
-    private final RelationshipSpecificationAspect<
-        DataPresentation1RelationshipAnyToMany<Long, DataPresentation<Long>>,
-        Long, FilterPresentation<NumberFilter<Long>>> aspect
+    private final RelationshipSpecificationAspect<DataPresentation<Long>, Long,
+        FilterPresentation<NumberFilter<Long>>> aspect
             = new RelationshipSpecificationAspect<>();
 
     @ParameterizedTest
     @MethodSource("getFindAllByCriteriaTarget")
-    @DisplayName("GIVEN the caching aspect method call,"
-        + " WHEN caching,"
+    @DisplayName("GIVEN the relationship specification aspect method call,"
+        + " WHEN find all by criteria with relationship,"
         + " THEN the result should be the expected result")
     final void testFindAllByCriteriaWithRelationship(
-        final FindAllByCriteriaService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long,
+        final FindAllByCriteriaService<DataPresentation<Long>, Long,
             FilterPresentation<NumberFilter<Long>>> findAllByCriteriaTarget,
         final Boolean fetchRelationship, final Object expectedResult,
         final boolean testLog)
@@ -134,89 +129,68 @@ class RelationshipSpecificationAspectTest implements AspectUtilTest {
 
     private static Stream<Arguments> getFindAllByCriteriaTarget() {
 
-        final DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>> entity = mock();
+        final DataPresentation<Long> entity = mock();
         given(entity.getId()).willReturn(ID);
 
         // Service with criteria repository
-        final CriteriaRepository<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> repository = mock();
-        final FindAllByCriteriaService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long,
+        final CriteriaRepository<DataPresentation<Long>, Long> repository
+            = mock();
+        final FindAllByCriteriaService<DataPresentation<Long>, Long,
             FilterPresentation<NumberFilter<Long>>> findAllByCriteriaTarget
                 = mock();
         given(findAllByCriteriaTarget.getRepository()).willReturn(repository);
 
         // Service with an empty result
-        final CriteriaRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final CriteriaRepository<DataPresentation<Long>,
             Long> repositoryRelationshipWithEmptyResult
                 = mock(withSettings().extraInterfaces(
                     FetchRelationshipSpecificationRepository.class));
 
         @SuppressWarnings("unchecked")
-        final FetchRelationshipSpecificationRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FetchRelationshipSpecificationRepository<DataPresentation<Long>,
             Long> castRepository = (FetchRelationshipSpecificationRepository<
-                DataPresentation1RelationshipAnyToMany<Long,
-                    DataPresentation<Long>>,
+                DataPresentation<Long>,
                 Long>) repositoryRelationshipWithEmptyResult;
         given(castRepository.findAllIds(any(), any(), any()))
             .willReturn(new PageImpl<>(List.of()));
         given(castRepository.findAllEagerRelationship(any(), any()))
             .willReturn(List.of());
-        final FindAllByCriteriaService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long, FilterPresentation<
+        final FindAllByCriteriaService<DataPresentation<Long>, Long,
+            FilterPresentation<
                 NumberFilter<Long>>> findAllRelationshipNoResultTarget = mock();
         given(findAllRelationshipNoResultTarget.getRepository())
             .willReturn(repositoryRelationshipWithEmptyResult);
 
         // Service with a result
         final FluentQuery.FetchableFluentQuery<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>> fetchableFluentQuery = mock();
+            DataPresentation<Long>> fetchableFluentQuery = mock();
         given(fetchableFluentQuery.project(anyString()))
             .willReturn(fetchableFluentQuery);
         given(fetchableFluentQuery.page(any()))
             .willReturn(new PageImpl<>(List.of(entity)));
-        final CriteriaRepository<DataPresentation1RelationshipAnyToMany<Long,
-            DataPresentation<Long>>, Long> repositoryRelationshipWithResult
+        final CriteriaRepository<DataPresentation<Long>,
+            Long> repositoryRelationshipWithResult
                 = mock(withSettings().extraInterfaces(
                     FetchRelationshipSpecificationRepository.class));
 
         @SuppressWarnings("unchecked")
-        final FetchRelationshipSpecificationRepository<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
+        final FetchRelationshipSpecificationRepository<DataPresentation<Long>,
             Long> castRepositoryWithResult
                 = (FetchRelationshipSpecificationRepository<
-                    DataPresentation1RelationshipAnyToMany<Long,
-                        DataPresentation<Long>>,
+                    DataPresentation<Long>,
                     Long>) repositoryRelationshipWithResult;
         given(castRepositoryWithResult.findAllIds(any(), any(), any()))
             .willReturn(new PageImpl<>(List.of(ID)));
         given(castRepositoryWithResult.findAllEagerRelationship(any(), any()))
             .willReturn(List.of(entity));
-        final FindAllByCriteriaService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long,
+        final FindAllByCriteriaService<DataPresentation<Long>, Long,
             FilterPresentation<NumberFilter<Long>>> findAllRelationshipTarget
                 = mock();
         given(findAllRelationshipTarget.getRepository())
             .willReturn(repositoryRelationshipWithResult);
 
         // Service with loggable
-        final FindAllByCriteriaService<
-            DataPresentation1RelationshipAnyToMany<Long,
-                DataPresentation<Long>>,
-            Long,
+        final FindAllByCriteriaService<DataPresentation<Long>, Long,
             FilterPresentation<NumberFilter<Long>>> findAllWithLoggableTarget
                 = mock(withSettings().extraInterfaces(Loggable.class));
         given(findAllWithLoggableTarget.getRepository())

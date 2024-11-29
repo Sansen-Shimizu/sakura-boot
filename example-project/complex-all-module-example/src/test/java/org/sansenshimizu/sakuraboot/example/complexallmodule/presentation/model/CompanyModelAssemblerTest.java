@@ -17,15 +17,20 @@
 package org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.CompanyDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class CompanyModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<CompanyModelAssembler, CompanyDto> {
+    implements BasicModelAssemblerTest<CompanyModelAssembler, CompanyDto> {
 
     @Override
-    protected String getPath() {
+    public String getDtoPackageName() {
 
-        return "companies";
+        return "business.dto";
+    }
+
+    @Override
+    public String getMapperPackageName() {
+
+        return "business.mapper";
     }
 }

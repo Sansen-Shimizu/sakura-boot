@@ -26,14 +26,12 @@ import org.springframework.lang.Nullable;
  *
  * @param  caches        The list of the different {@link CacheSpecification}.
  * @param  activeL2Cache If the hibernate L2 cache needs to be active.
- * @param  dtoPackage    The package to find DTO class. ("business" by default)
  * @author               Malcolm Rozé
  * @since                0.1.0
  */
 @ConfigurationProperties("sakuraboot.cache")
 public record CachesSpecification(
-    @Nullable List<CacheSpecification> caches, boolean activeL2Cache,
-    @Nullable String dtoPackage) {
+    @Nullable List<CacheSpecification> caches, boolean activeL2Cache) {
 
     /**
      * Java class for cache specification.

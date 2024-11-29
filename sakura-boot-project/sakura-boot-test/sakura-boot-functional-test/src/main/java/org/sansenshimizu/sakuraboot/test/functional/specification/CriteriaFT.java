@@ -54,13 +54,13 @@ import org.sansenshimizu.sakuraboot.test.functional.basic.UpdateByIdFT;
  *     private int port;
  *
  *     &#064;Autowired
- *     YourIT(
- *     final YourUtil util,final ApplicationContext applicationContext,
- *     final ObjectMapper objectMapper){
+ *     YourFT(
+ *         final YourUtil util, final ApplicationContext applicationContext,
+ *         final ObjectMapper objectMapper) {
  *
- *     this.util=util;
- *     this.applicationContext=applicationContext;
- *     this.objectMapper=objectMapper;
+ *         this.util = util;
+ *         this.applicationContext = applicationContext;
+ *         this.objectMapper = objectMapper;
  *     }
  *
  *     &#064;Override

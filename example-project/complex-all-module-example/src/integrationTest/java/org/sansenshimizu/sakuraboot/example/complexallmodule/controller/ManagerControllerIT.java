@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalConfiguration;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.ManagerService;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.ManagerDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Manager;
@@ -46,7 +47,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 @WebMvcTest(ManagerController.class)
 @Import({
     ManagerModelAssembler.class, AopAutoConfiguration.class,
-    HypermediaAspect.class
+    HypermediaAspect.class, GlobalConfiguration.class
 })
 public class ManagerControllerIT
     implements CriteriaControllerIT<Manager, UUID, ManagerDto, ManagerFilter>,

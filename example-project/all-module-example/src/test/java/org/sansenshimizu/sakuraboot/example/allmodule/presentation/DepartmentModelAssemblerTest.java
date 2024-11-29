@@ -17,22 +17,8 @@
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentDto;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class DepartmentModelAssemblerTest
-    extends
-    AbstractBasicModelAssemblerTest<DepartmentModelAssembler, DepartmentDto> {
-
-    @Override
-    protected String getPath() {
-
-        return "departments";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "companies";
-    }
-}
+    implements
+    BasicModelAssemblerTest<DepartmentModelAssembler, DepartmentDto> {}

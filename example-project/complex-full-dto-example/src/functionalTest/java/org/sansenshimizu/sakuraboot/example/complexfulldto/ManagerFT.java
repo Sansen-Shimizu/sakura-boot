@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +50,5 @@ public class ManagerFT implements CriteriaFT<Manager, Long, ManagerFilter> {
         this.util = util;
         this.applicationContext = applicationContext;
         this.objectMapper = objectMapper;
-    }
-
-    @Override
-    public List<String> fieldsToIgnoreInAssert() {
-
-        return List.of("department");
     }
 }

@@ -20,22 +20,18 @@ import java.io.Serial;
 import java.util.Collections;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToOneAndAnyToMany;
+import org.sansenshimizu.sakuraboot.mapper.dto.AbstractBasicDto;
 
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-public class EmployeeDto
-    extends AbstractBasicDto2RelationshipAnyToOneAndAnyToMany<Long,
-        DepartmentDto, Long, HobbyDto, Long> {
+public class EmployeeDto extends AbstractBasicDto<Long> {
 
     @Serial
     private static final long serialVersionUID = -2636662559034440172L;
@@ -47,28 +43,18 @@ public class EmployeeDto
     @Nullable
     private final DepartmentDto department;
 
-    @JsonProperty("departmentId")
     @Nullable
-    private final Long relationshipId;
+    private final Long departmentId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Nullable
     private final Set<HobbyDto> hobbies;
 
-    @JsonProperty("hobbiesId")
     @Nullable
-    private final Set<Long> relationshipsId;
+    private final Set<Long> hobbiesId;
 
     @Nullable
     private final String name;
-
-    @Override
-    @JsonIgnore
-    @Nullable
-    public DepartmentDto getRelationship() {
-
-        return getDepartment();
-    }
 
     @Nullable
     public Set<HobbyDto> getHobbies() {
@@ -80,22 +66,13 @@ public class EmployeeDto
         return Collections.unmodifiableSet(hobbies);
     }
 
-    @Override
     @Nullable
-    @JsonIgnore
-    public Set<HobbyDto> getRelationships() {
+    public Set<Long> getHobbiesId() {
 
-        return getHobbies();
-    }
-
-    @Override
-    @Nullable
-    public Set<Long> getRelationshipsId() {
-
-        if (relationshipsId == null) {
+        if (hobbiesId == null) {
 
             return null;
         }
-        return Collections.unmodifiableSet(relationshipsId);
+        return Collections.unmodifiableSet(hobbiesId);
     }
 }

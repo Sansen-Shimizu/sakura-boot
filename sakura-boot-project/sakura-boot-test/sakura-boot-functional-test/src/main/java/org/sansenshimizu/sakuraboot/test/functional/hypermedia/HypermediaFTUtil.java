@@ -38,8 +38,23 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  *
  * <pre>
  * &#064;Component
- * public class YourITUtil //
+ * public class YourFTUtil //
  *     implements HypermediaFTUtil&lt;YourEntity, YourIdType&gt; {
+ *
+ *     private final GlobalSpecification globalSpecification;
+ *
+ *     &#064;Autowired
+ *     public YourFTUtil(
+ *         final GlobalSpecification globalSpecification) {
+ *
+ *         this.globalSpecification = globalSpecification;
+ *     }
+ *
+ *     &#064;Override
+ *     public GlobalSpecification getGlobalSpecification() {
+ *
+ *         return globalSpecification;
+ *     }
  *
  *     &#064;Override
  *     public Optional&lt;YourEntity&gt; createValidation

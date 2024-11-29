@@ -18,6 +18,7 @@ package org.sansenshimizu.sakuraboot.mapper.api;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -72,7 +73,9 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * @author     Malcolm Rozé
  * @since      0.1.0
  */
-@MapperConfig(componentModel = MappingConstants.ComponentModel.SPRING)
+@MapperConfig(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BasicMapper<E extends DataPresentation<?>,
     D extends DataPresentation<?>> {
 
@@ -100,4 +103,25 @@ public interface BasicMapper<E extends DataPresentation<?>,
     })
     @Nullable
     D toDto(@Nullable E entity);
+
+    /**
+     * This method is used to change the mapping relationship from an entity to
+     * a DTO.
+     * If the DTO must have the relationship represent by the ID this method
+     * must return {@code false}.
+     * If the Dto must have the relationship represent by the actual entity this
+     * method must return {@code true}.
+     * Default {@code false}.
+     * It is recommended to keep the default {@code false} when using the
+     * {@code cache} module because hibernate proxy can't be put in the
+     * cache and will be initialized, making more SQL request and slowing down
+     * the application.
+     *
+     * @return {@code false} if the ID represents the relationship,
+     *         {@code true} otherwise.
+     */
+    default boolean useRelationObjectToMapToDto() {
+
+        return false;
+    }
 }

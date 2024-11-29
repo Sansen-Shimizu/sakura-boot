@@ -28,10 +28,7 @@ import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
@@ -42,6 +39,7 @@ import org.springframework.util.ReflectionUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.relationship.FetchRelationshipRepository;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 /**
  * The implementation of {@link FetchRelationshipRepository}.
@@ -303,22 +301,13 @@ public class FetchRelationshipRepositoryImpl<E extends DataPresentation<I>,
             alreadyVisited = visitedEntity.contains(field.getType());
         }
 
-        final boolean isNotOneRelationship
-            = !field.isAnnotationPresent(OneToOne.class)
-                && !field.isAnnotationPresent(ManyToOne.class);
-        final boolean isNotManyRelationship
-            = !field.isAnnotationPresent(OneToMany.class)
-                && !field.isAnnotationPresent(ManyToMany.class);
-
-        return (isNotOneRelationship && isNotManyRelationship)
-            || alreadyVisited;
+        return !RelationshipUtils.isRelationship(field) || alreadyVisited;
     }
 
     private static boolean isMultipleManyRelationship(
         final Field field, final boolean currentMultipleManyRelationships) {
 
-        return (field.isAnnotationPresent(OneToMany.class)
-            || field.isAnnotationPresent(ManyToMany.class))
+        return RelationshipUtils.isAnyToManyRelationship(field)
             && currentMultipleManyRelationships;
     }
 
@@ -345,8 +334,7 @@ public class FetchRelationshipRepositoryImpl<E extends DataPresentation<I>,
         final StringBuilder jpql, final Field field,
         final StringBuilder relationshipJpql) {
 
-        if (field.isAnnotationPresent(OneToOne.class)
-            || field.isAnnotationPresent(ManyToOne.class)) {
+        if (RelationshipUtils.isAnyToOneRelationship(field)) {
 
             jpql.append(relationshipJpql);
             return field.getType();

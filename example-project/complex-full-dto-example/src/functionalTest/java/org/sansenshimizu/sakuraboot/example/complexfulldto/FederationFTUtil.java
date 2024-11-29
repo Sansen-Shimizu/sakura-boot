@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper.AbstractFederationMapper;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Federation;
@@ -34,13 +35,16 @@ public class FederationFTUtil
 
     private final AbstractFederationMapper mapper;
 
+    private final GlobalSpecification globalSpecification;
+
     @Autowired
     FederationFTUtil(
-        final CacheManager cacheManager,
-        final AbstractFederationMapper mapper) {
+        final CacheManager cacheManager, final AbstractFederationMapper mapper,
+        final GlobalSpecification globalSpecification) {
 
         this.cacheManager = cacheManager;
         this.mapper = mapper;
+        this.globalSpecification = globalSpecification;
     }
 
     @Override

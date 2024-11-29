@@ -20,6 +20,7 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.CompanyController;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
@@ -28,9 +29,10 @@ import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 public class CompanyModelAssembler
     extends AbstractBasicModelAssembler<Company, CompanyModel> {
 
-    protected CompanyModelAssembler() {
+    protected CompanyModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(CompanyController.class, CompanyModel.class, "companies");
+        super(CompanyController.class, CompanyModel.class, globalSpecification);
     }
 
     @Override

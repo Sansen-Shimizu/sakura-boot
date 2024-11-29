@@ -17,21 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Manager;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class ManagerModelAssemblerTest
-    extends AbstractBasicModelAssemblerTest<ManagerModelAssembler, Manager> {
-
-    @Override
-    protected String getPath() {
-
-        return "managers";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "departments";
-    }
-}
+    implements BasicModelAssemblerTest<ManagerModelAssembler, Manager> {}

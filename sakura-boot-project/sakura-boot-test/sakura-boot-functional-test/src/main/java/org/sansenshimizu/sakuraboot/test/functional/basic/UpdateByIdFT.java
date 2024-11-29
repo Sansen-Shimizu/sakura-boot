@@ -27,10 +27,8 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.SerializationUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.DataCreatorHelper;
 import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
@@ -66,13 +64,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     private int port;
  *
  *     &#064;Autowired
- *     YourIT(
- *     final YourUtil util,final ApplicationContext applicationContext,
- *     final ObjectMapper objectMapper){
+ *     YourFT(
+ *         final YourUtil util, final ApplicationContext applicationContext,
+ *         final ObjectMapper objectMapper) {
  *
- *     this.util=util;
- *     this.applicationContext=applicationContext;
- *     this.objectMapper=objectMapper;
+ *         this.util = util;
+ *         this.applicationContext = applicationContext;
+ *         this.objectMapper = objectMapper;
  *     }
  *
  *     &#064;Override
@@ -122,19 +120,16 @@ public interface UpdateByIdFT<E extends DataPresentation<I>,
         // GIVEN
         final E saveEntity = createAndSaveEntity();
         final I savedEntityId = saveEntity.getId();
-        final DataCreatorHelper.EntityIds savedEntityIds
-            = DataCreatorHelper.getIdsFromEntity(saveEntity);
         final DataPresentation<I> dataWithId;
 
-        if (getUtil() instanceof final MapperFTUtil<?, I, ?> mapperUtil) {
+        if (getUtil() instanceof final MapperFTUtil<E, I, ?> mapperUtil) {
 
-            dataWithId = SerializationUtils
-                .clone(mapperUtil.getDifferentDataWithId(savedEntityIds));
+            dataWithId = mapperUtil.getDifferentDataWithId(saveEntity);
             BasicFT.removeRelationshipsIfNeeded(getApplicationContext(),
-                dataWithId, saveEntity);
+                getUtil().getGlobalSpecification(), dataWithId);
         } else {
 
-            dataWithId = getUtil().getDifferentEntityWithId(savedEntityIds);
+            dataWithId = getUtil().getDifferentEntityWithId(saveEntity);
         }
 
         // WHEN
@@ -177,19 +172,16 @@ public interface UpdateByIdFT<E extends DataPresentation<I>,
 
         // GIVEN
         final E saveEntity = createAndSaveEntity();
-        final DataCreatorHelper.EntityIds savedEntityIds
-            = DataCreatorHelper.getIdsFromEntity(saveEntity);
         final DataPresentation<I> dataWithId;
 
-        if (getUtil() instanceof final MapperFTUtil<?, I, ?> mapperUtil) {
+        if (getUtil() instanceof final MapperFTUtil<E, I, ?> mapperUtil) {
 
-            dataWithId = SerializationUtils
-                .clone(mapperUtil.getDifferentDataWithId(savedEntityIds));
+            dataWithId = mapperUtil.getDifferentDataWithId(saveEntity);
             BasicFT.removeRelationshipsIfNeeded(getApplicationContext(),
-                dataWithId, saveEntity);
+                getUtil().getGlobalSpecification(), dataWithId);
         } else {
 
-            dataWithId = getUtil().getDifferentEntityWithId(savedEntityIds);
+            dataWithId = getUtil().getDifferentEntityWithId(saveEntity);
         }
 
         // WHEN

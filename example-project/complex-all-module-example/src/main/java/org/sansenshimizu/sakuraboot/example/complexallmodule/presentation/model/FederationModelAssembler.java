@@ -20,19 +20,20 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.FederationController;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.one.AbstractBasicModelAssembler1Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class FederationModelAssembler
-    extends
-    AbstractBasicModelAssembler1Relationship<FederationDto, FederationModel> {
+    extends AbstractBasicModelAssembler<FederationDto, FederationModel> {
 
-    protected FederationModelAssembler() {
+    protected FederationModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(FederationController.class, FederationModel.class, "federations",
-            "hobbies");
+        super(FederationController.class, FederationModel.class,
+            globalSpecification);
     }
 
     @Override

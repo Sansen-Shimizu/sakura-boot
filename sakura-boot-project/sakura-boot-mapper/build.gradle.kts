@@ -13,14 +13,12 @@ publishing.publications.getByName<MavenPublication>("mavenJava") {
 }
 
 dependencies {
-    api(projects.sakuraBootBasicApi)
     api(projects.sakuraBootCore)
     api(projects.sakuraBootMapperApi)
     api(libs.aspectjweaver)
     api(libs.spring.context)
     api(libs.spring.core)
     implementation(libs.commons.lang3)
-    implementation(libs.hibernate.core)
     implementation(libs.slf4j.api)
     implementation(libs.spring.data.commons)
     compileOnly(libs.mapstruct)

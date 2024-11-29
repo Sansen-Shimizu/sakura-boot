@@ -20,18 +20,19 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentDto;
-import org.sansenshimizu.sakuraboot.hypermedia.relationship.one.AbstractBasicModelAssembler1Relationship;
+import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 
 @Component
 public class DepartmentModelAssembler
-    extends
-    AbstractBasicModelAssembler1Relationship<DepartmentDto, DepartmentModel> {
+    extends AbstractBasicModelAssembler<DepartmentDto, DepartmentModel> {
 
-    protected DepartmentModelAssembler() {
+    protected DepartmentModelAssembler(
+        final GlobalSpecification globalSpecification) {
 
-        super(DepartmentController.class, DepartmentModel.class, "departments",
-            "companies");
+        super(DepartmentController.class, DepartmentModel.class,
+            globalSpecification);
     }
 
     @Override

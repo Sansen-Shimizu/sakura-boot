@@ -16,72 +16,26 @@
 
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper;
 
-import java.util.UUID;
-
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.FederationDto;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.HobbyDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federation;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.HobbyRepository;
+import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromDto;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithEntity;
-import org.sansenshimizu.sakuraboot.mapper.api.relationship.one.annotations.RelationshipFromEntityWithId;
-import org.sansenshimizu.sakuraboot.mapper.relationship.one.AbstractBasicMapper1RelationshipAnyToMany;
 
-@Getter
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractFederationMapper
-    extends AbstractBasicMapper1RelationshipAnyToMany<Federation, FederationDto,
-        Hobby, HobbyDto, UUID> {
-
-    @Nullable
-    private HobbyRepository repository;
-
-    @Nullable
-    private AbstractHobbyMapper mapper;
-
-    public Class<UUID> getRelationalIdType() {
-
-        return UUID.class;
-    }
-
-    @Autowired
-    public void setRepository(final HobbyRepository repository) {
-
-        this.repository = repository;
-    }
-
-    @Autowired
-    public void setMapper(@Lazy final AbstractHobbyMapper mapper) {
-
-        this.mapper = mapper;
-    }
+    extends AbstractBasicMapperForRelationship<Federation, FederationDto> {
 
     @Override
     @Nullable
-    @Mapping(
-        target = "hobbies",
-        source = "dto",
-        qualifiedBy = RelationshipFromDto.class)
+    @Mapping(target = "hobbies", ignore = true)
     public abstract Federation toEntity(@Nullable FederationDto dto);
 
     @Override
     @Nullable
-    @Mapping(
-        target = "hobbies",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithEntity.class)
-    @Mapping(
-        target = "relationshipsId",
-        source = "entity",
-        qualifiedBy = RelationshipFromEntityWithId.class)
+    @Mapping(target = "hobbies", ignore = true)
     public abstract FederationDto toDto(@Nullable Federation entity);
 }

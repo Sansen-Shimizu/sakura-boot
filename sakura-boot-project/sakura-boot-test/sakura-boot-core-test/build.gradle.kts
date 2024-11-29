@@ -17,7 +17,6 @@ dependencies {
     api(libs.mockito.junit.jupiter)
     api(libs.spring.core)
     api(libs.spring.test)
-    implementation(projects.sakuraBootMapperApi)
     implementation(libs.assertj.core)
     implementation(libs.commons.lang3)
     implementation(libs.mockito.core)

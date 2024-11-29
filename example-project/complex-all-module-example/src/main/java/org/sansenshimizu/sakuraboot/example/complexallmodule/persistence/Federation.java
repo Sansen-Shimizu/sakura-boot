@@ -39,7 +39,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractBasicEntity1RelationshipAnyToMany;
+import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
 
 @Entity
 @Getter
@@ -47,8 +47,7 @@ import org.sansenshimizu.sakuraboot.basic.persistence.relationship.one.AbstractB
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Federation
-    extends AbstractBasicEntity1RelationshipAnyToMany<UUID, Hobby> {
+public class Federation extends AbstractBasicEntity<UUID> {
 
     @Serial
     private static final long serialVersionUID = -1856840435186840741L;
@@ -85,12 +84,5 @@ public class Federation
             return null;
         }
         return Collections.unmodifiableSet(hobbies);
-    }
-
-    @Override
-    @Nullable
-    public Set<Hobby> getRelationships() {
-
-        return getHobbies();
     }
 }

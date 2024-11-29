@@ -16,7 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.basic.aop;
 
-import java.util.Set;
 import java.util.stream.Stream;
 
 import lombok.Getter;
@@ -31,13 +30,10 @@ import org.springframework.lang.Nullable;
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
 import org.sansenshimizu.sakuraboot.basic.api.relationship.annotations.SaveWithRelationship;
-import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.test.aop.AspectUtilTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -56,13 +52,6 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
     private static final long ID = 1L;
 
     /**
-     * The error message.
-     */
-    private static final String ERROR_MESSAGE
-        = "Can't save an entity when the (second )?relationship "
-            + "already has an ID";
-
-    /**
      * The mock {@link ProceedingJoinPoint}.
      */
     @Mock
@@ -79,34 +68,22 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
      * The {@link RelationshipAspect} to test.
      */
     @Getter
-    private final SaveRelationshipAspect<
-        DataPresentation2RelationshipAnyToMany<Long, DataPresentation<Long>,
-            DataPresentation<Long>>,
-        Long> aspect = new SaveRelationshipAspect<>();
-
-    /**
-     * The second {@link RelationshipAspect} to test any to one relationship.
-     */
-    private final SaveRelationshipAspect<
-        DataPresentation2RelationshipAnyToOne<Long, DataPresentation<Long>,
-            DataPresentation<Long>>,
-        Long> secondAspect = new SaveRelationshipAspect<>();
+    private final SaveRelationshipAspect<DataPresentation<Long>, Long> aspect
+        = new SaveRelationshipAspect<>(new GlobalSpecification("persistence",
+            "business", "business", "business", "presentation"));
 
     @ParameterizedTest
-    @MethodSource("getSaveTargetAnyToMany")
-    @DisplayName("GIVEN the caching aspect method call,"
-        + " WHEN caching,"
+    @MethodSource("getSaveTarget")
+    @DisplayName("GIVEN the save relationship aspect method call,"
+        + " WHEN save with relationship,"
         + " THEN the result should be the expected result")
-    final void testSaveWithRelationshipAnyToMany(
-        final DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>, DataPresentation<Long>> param,
+    final void testSaveWithRelationship(
+        final DataPresentation<Long> param,
         @Nullable final Object expectedResult)
         throws Throwable {
 
         // GIVEN
-        final SaveService<DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>, DataPresentation<Long>>,
-            Long> saveTarget = mock();
+        final SaveService<DataPresentation<Long>, Long> saveTarget = mock();
 
         if (expectedResult != null) {
 
@@ -115,156 +92,23 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
 
         mockForLog(() -> {
 
-            // WHEN
-            if (expectedResult == null) {
+            final Object result = aspect.saveWithRelationship(joinPoint, param,
+                saveTarget, saveAnnotation);
 
-                assertThatThrownBy(() -> aspect.saveWithRelationship(joinPoint,
-                    param, saveTarget, saveAnnotation))
-                    .isInstanceOf(BadRequestException.class)
-                    .hasMessageFindingMatch(ERROR_MESSAGE);
-            } else {
-
-                final Object result = aspect.saveWithRelationship(joinPoint,
-                    param, saveTarget, saveAnnotation);
-
-                // THEN
-                assertThat(result).isEqualTo(expectedResult);
-            }
+            // THEN
+            assertThat(result).isEqualTo(expectedResult);
         });
     }
 
-    @ParameterizedTest
-    @MethodSource("getSaveTargetAnyToOne")
-    @DisplayName("GIVEN the caching aspect method call,"
-        + " WHEN caching,"
-        + " THEN the result should be the expected result")
-    final void testSaveWithRelationshipAnyToOne(
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>, DataPresentation<Long>> param,
-        @Nullable final Object expectedResult)
-        throws Throwable {
+    private static Stream<Arguments> getSaveTarget() {
 
-        // GIVEN
-        final SaveService<DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>, DataPresentation<Long>>,
-            Long> saveTarget = mock();
-
-        if (expectedResult != null) {
-
-            mockJoinPoint(expectedResult);
-        }
-
-        mockForLog(() -> {
-
-            // WHEN
-            if (expectedResult == null) {
-
-                assertThatThrownBy(() -> secondAspect.saveWithRelationship(
-                    joinPoint, param, saveTarget, saveAnnotation))
-                    .isInstanceOf(BadRequestException.class)
-                    .hasMessageFindingMatch(ERROR_MESSAGE);
-            } else {
-
-                final Object result = secondAspect.saveWithRelationship(
-                    joinPoint, param, saveTarget, saveAnnotation);
-
-                // THEN
-                assertThat(result).isEqualTo(expectedResult);
-            }
-        });
-    }
-
-    private static Stream<Arguments> getSaveTargetAnyToMany() {
-
-        final DataPresentation<Long> entityWithoutId = mock();
         final DataPresentation<Long> entityWithId = mock();
         given(entityWithId.getId()).willReturn(ID);
 
-        final DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> expectedEntity = mock();
-        given(expectedEntity.getId()).willReturn(ID);
-        given(expectedEntity.getRelationships())
-            .willReturn(Set.of(entityWithId));
-        given(expectedEntity.getSecondRelationships())
-            .willReturn(Set.of(entityWithId));
+        final DataPresentation<Long> expectedEntity = mock();
 
-        final DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> validEntity = mock();
-        given(validEntity.getRelationships())
-            .willReturn(Set.of(entityWithoutId));
-        given(validEntity.getSecondRelationships())
-            .willReturn(Set.of(entityWithoutId));
+        final DataPresentation<Long> validEntity = mock();
 
-        final DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> entityWith1RelationshipId = mock();
-        given(entityWith1RelationshipId.getRelationships())
-            .willReturn(Set.of(entityWithId));
-        given(entityWith1RelationshipId.getSecondRelationships())
-            .willReturn(Set.of(entityWithoutId));
-
-        final DataPresentation2RelationshipAnyToMany<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> entityWith2RelationshipId = mock();
-        given(entityWith2RelationshipId.getRelationships())
-            .willReturn(Set.of(entityWithoutId));
-        given(entityWith2RelationshipId.getSecondRelationships())
-            .willReturn(Set.of(entityWithId));
-
-        return Stream.of(Arguments.of(validEntity, expectedEntity),
-            Arguments.of(entityWith1RelationshipId, null),
-            Arguments.of(entityWith2RelationshipId, null));
-    }
-
-    private static Stream<Arguments> getSaveTargetAnyToOne() {
-
-        final DataPresentation<Long> entityWithoutId = mock();
-        final DataPresentation<Long> entityWithId = mock();
-        given(entityWithId.getId()).willReturn(ID);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> expectedEntity = mock();
-        given(expectedEntity.getId()).willReturn(ID);
-        given(expectedEntity.getRelationship()).willReturn(entityWithId);
-        given(expectedEntity.getSecondRelationship()).willReturn(entityWithId);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> validEntity = mock();
-        given(validEntity.getRelationship()).willReturn(entityWithoutId);
-        given(validEntity.getSecondRelationship()).willReturn(entityWithoutId);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> entityWith1RelationshipId = mock();
-        given(entityWith1RelationshipId.getRelationship())
-            .willReturn(entityWithId);
-        given(entityWith1RelationshipId.getSecondRelationship())
-            .willReturn(entityWithoutId);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> entityWith2RelationshipId = mock();
-        given(entityWith2RelationshipId.getRelationship())
-            .willReturn(entityWithoutId);
-        given(entityWith2RelationshipId.getSecondRelationship())
-            .willReturn(entityWithId);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> expectedEntityNullRelationship = mock();
-        given(expectedEntityNullRelationship.getId()).willReturn(ID);
-
-        final DataPresentation2RelationshipAnyToOne<Long,
-            DataPresentation<Long>,
-            DataPresentation<Long>> validEntityNullRelationship = mock();
-
-        return Stream.of(Arguments.of(validEntity, expectedEntity),
-            Arguments.of(entityWith1RelationshipId, null),
-            Arguments.of(entityWith2RelationshipId, null), Arguments.of(
-                validEntityNullRelationship, expectedEntityNullRelationship));
+        return Stream.of(Arguments.of(validEntity, expectedEntity));
     }
 }

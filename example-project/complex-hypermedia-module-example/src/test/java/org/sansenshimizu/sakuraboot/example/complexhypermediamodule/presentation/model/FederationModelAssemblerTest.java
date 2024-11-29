@@ -17,22 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Federation;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class FederationModelAssemblerTest
-    extends
-    AbstractBasicModelAssemblerTest<FederationModelAssembler, Federation> {
-
-    @Override
-    protected String getPath() {
-
-        return "federations";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "hobbies";
-    }
-}
+    implements BasicModelAssemblerTest<FederationModelAssembler, Federation> {}

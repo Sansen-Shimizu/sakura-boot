@@ -16,6 +16,8 @@ dependencies {
     api(libs.junit.jupiter.api)
     api(libs.mockito.junit.jupiter)
     implementation(libs.assertj.core)
+    implementation(libs.evo.inflector)
+    implementation(libs.jakarta.persistence.api)
     implementation(libs.mockito.core)
     implementation(libs.spring.core)
     implementation(libs.spring.data.commons)

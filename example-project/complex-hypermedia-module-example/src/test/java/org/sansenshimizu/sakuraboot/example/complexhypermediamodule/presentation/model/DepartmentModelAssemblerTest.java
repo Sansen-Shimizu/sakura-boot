@@ -17,28 +17,7 @@
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Department;
-import org.sansenshimizu.sakuraboot.test.hypermedia.AbstractBasicModelAssemblerTest;
+import org.sansenshimizu.sakuraboot.test.hypermedia.BasicModelAssemblerTest;
 
-@SuppressWarnings("java:S2187")
 public class DepartmentModelAssemblerTest
-    extends
-    AbstractBasicModelAssemblerTest<DepartmentModelAssembler, Department> {
-
-    @Override
-    protected String getPath() {
-
-        return "departments";
-    }
-
-    @Override
-    protected String getRelationshipName() {
-
-        return "companies";
-    }
-
-    @Override
-    protected String getSecondRelationshipName() {
-
-        return "managers";
-    }
-}
+    implements BasicModelAssemblerTest<DepartmentModelAssembler, Department> {}

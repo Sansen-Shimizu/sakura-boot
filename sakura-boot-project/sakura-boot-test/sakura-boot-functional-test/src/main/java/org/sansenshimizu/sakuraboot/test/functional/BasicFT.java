@@ -18,10 +18,8 @@ package org.sansenshimizu.sakuraboot.test.functional;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,11 +29,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -43,7 +37,7 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.atteo.evo.inflector.English;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterEach;
@@ -61,22 +55,16 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.SuperRepository;
 import org.sansenshimizu.sakuraboot.basic.api.relationship.FetchRelationshipRepository;
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.one.AbstractBasicDto1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.mapper.dto.relationship.two.AbstractBasicDto2RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.one.DataPresentation1RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToMany;
-import org.sansenshimizu.sakuraboot.relationship.two.DataPresentation2RelationshipAnyToOne;
-import org.sansenshimizu.sakuraboot.test.BeanCreatorHelper;
-import org.sansenshimizu.sakuraboot.test.DataCreatorHelper;
+import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
+import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaController;
 import org.sansenshimizu.sakuraboot.test.SuperIT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.hypermedia.HypermediaFTUtil;
+import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -286,7 +274,7 @@ public interface BasicFT<E extends DataPresentation<I>,
         for (final Class<?> clazz: repositories) {
 
             final List<Class<?>> fieldsClass
-                = getRelationClass(clazz, new ArrayList<>());
+                = RelationshipUtils.getRelationClass(clazz);
 
             final ListIterator<Class<?>> iterator
                 = orderedRepositories.listIterator();
@@ -313,48 +301,6 @@ public interface BasicFT<E extends DataPresentation<I>,
             .filter(CrudRepository.class::isInstance)
             .map(CrudRepository.class::cast)
             .forEach(CrudRepository<E, I>::deleteAll);
-    }
-
-    private static List<Class<?>> getRelationClass(
-        final Class<?> clazz, final List<Class<?>> relationClass) {
-
-        final List<Field> fieldsAnyToOne
-            = FieldUtils.getFieldsListWithAnnotation(clazz, OneToOne.class)
-                .stream()
-                .filter(field -> ""
-                    .equals(field.getAnnotation(OneToOne.class).mappedBy()))
-                .collect(Collectors.toList());
-        fieldsAnyToOne.addAll(
-            FieldUtils.getFieldsListWithAnnotation(clazz, ManyToOne.class));
-
-        final List<Field> fieldsAnyToMany
-            = FieldUtils.getFieldsListWithAnnotation(clazz, OneToMany.class)
-                .stream()
-                .filter(field -> ""
-                    .equals(field.getAnnotation(OneToMany.class).mappedBy()))
-                .collect(Collectors.toList());
-        fieldsAnyToMany.addAll(
-            FieldUtils.getFieldsListWithAnnotation(clazz, ManyToMany.class)
-                .stream()
-                .filter(field -> ""
-                    .equals(field.getAnnotation(ManyToMany.class).mappedBy()))
-                .toList());
-
-        final List<Class<?>> newRelationClass = fieldsAnyToOne.stream()
-            .map(Field::getType)
-            .collect(Collectors.toList());
-        newRelationClass.addAll(fieldsAnyToMany.stream()
-            .map(
-                field -> (Class<?>) ((ParameterizedType) field.getGenericType())
-                    .getActualTypeArguments()[0])
-            .toList());
-
-        for (final Class<?> newClass: newRelationClass) {
-
-            relationClass.add(newClass);
-            getRelationClass(newClass, relationClass);
-        }
-        return relationClass;
     }
 
     /**
@@ -393,112 +339,75 @@ public interface BasicFT<E extends DataPresentation<I>,
      *
      * @param  path           The path parameter is a string representing the
      *                        base URL path.
-     * @param  ids            It is used to generate the href for the self-link.
      * @param  body           The response body of the request.
      * @param  hypermediaUtil An HypermediaFTUtil.
      * @return                The method is returning a string that represents a
-     *                        JSON object containing hypermedia
-     *                        links.
+     *                        JSON object containing hypermedia links.
      */
     default String createHrefForEntity(
-        final String path, final DataCreatorHelper.EntityIds ids,
-        final Object body, final HypermediaFTUtil<?, I> hypermediaUtil) {
+        final String path, final DataPresentation<I> body,
+        final HypermediaFTUtil<?, I> hypermediaUtil) {
 
         final List<String> relations = new ArrayList<>();
+        RelationshipUtils.doWithIdRelationFields(body,
+            (final Field field, final Object id) -> {
 
-        if (body instanceof final DataPresentation1RelationshipAnyToOne<?,
-            ?> data) {
+                if (id != null
+                    && !field.isAnnotationPresent(JsonIgnore.class)) {
 
-            DataCreatorHelper.EntityIds entityIds = ids.relationalId();
-
-            /*@formatter:off*/
-            if (entityIds != null && (data.getRelationship() != null
-                    || (data instanceof final
-                    AbstractBasicDto1RelationshipAnyToOne<?, ?, ?> dto
-                            && dto.getRelationshipId() != null))) {
-                /*@formatter:on*/
-
-                relations.add(path.replace(hypermediaUtil.getPath(),
-                    hypermediaUtil.relationshipName()) + "/" + entityIds.id());
-            }
-
-            if (body instanceof final DataPresentation2RelationshipAnyToOne<?,
-                ?, ?> data2) {
-
-                entityIds = ids.secondRelationalId();
-
-                /*@formatter:off*/
-                if (entityIds != null
-                    && (data2.getSecondRelationship() != null
-                        || (data2 instanceof final
-                        AbstractBasicDto2RelationshipAnyToOne<?, ?, ?, ?, ?> dto
-                            && dto.getSecondRelationshipId() != null))) {
-                    /*@formatter:on*/
-
-                    relations.add(path.replace(hypermediaUtil.getPath(),
-                        hypermediaUtil.secondRelationshipName())
-                        + "/"
-                        + entityIds.id());
+                    final String relationPath = RestAssured.baseURI
+                        + ":"
+                        + RestAssured.port
+                        + getBasePath().replace(getClassName(body.getClass()),
+                            getClassName(field, false));
+                    relations.add(relationPath + "/" + id);
                 }
-            } else {
+            }, (final Field field, final Collection<?> collection) -> {
 
-                if (body instanceof DataPresentation1RelationshipAnyToMany<?, ?>
-                    && !ids.relationalIds().isEmpty()) {
+                if (field.isAnnotationPresent(JsonIgnore.class)) {
 
-                    final String idsFilter = ids.relationalIds()
-                        .stream()
-                        .map(DataCreatorHelper.EntityIds::id)
+                    return;
+                }
+                final Class<?> controllerClass;
+
+                try {
+
+                    controllerClass = Class.forName(body.getClass()
+                        .getName()
+                        .replace(getUtil().getEntityPackageName(),
+                            getUtil().getControllerPackageName())
+                        .replace(getUtil().getDtoPackageName(),
+                            getUtil().getControllerPackageName())
+                        .replace("Dto", "")
+                        + "Controller");
+                } catch (final ClassNotFoundException e) {
+
+                    throw new RuntimeException(
+                        "The controller class must follow the name convention."
+                            + " (EntityName + Controller)",
+                        e);
+                }
+                final String relationPath = RestAssured.baseURI
+                    + ":"
+                    + RestAssured.port
+                    + getBasePath().replace(getClassName(body.getClass()),
+                        getClassName(field, true));
+
+                if (CriteriaController.class
+                    .isAssignableFrom(controllerClass)) {
+
+                    final String idsFilter = collection.stream()
                         .filter(Objects::nonNull)
                         .map(Object::toString)
-                        .collect(Collectors.joining(","));
-                    relations.add(path.replace(hypermediaUtil.getPath(),
-                        hypermediaUtil.secondRelationshipName())
-                        + "?id.in="
-                        + idsFilter);
+                        .collect(Collectors.joining(",",
+                            relationPath + "?id" + ".in=", ""));
+                    relations.add(idsFilter);
+                } else {
+
+                    relations.add(relationPath);
                 }
-            }
-        } else {
+            }, getUtil().getGlobalSpecification());
 
-            if (body instanceof DataPresentation1RelationshipAnyToMany<?, ?>) {
-
-                if (!ids.relationalIds().isEmpty()) {
-
-                    final String idsFilter = ids.relationalIds()
-                        .stream()
-                        .map(DataCreatorHelper.EntityIds::id)
-                        .filter(Objects::nonNull)
-                        .map(Object::toString)
-                        .collect(Collectors.joining(","));
-
-                    if (!idsFilter.isEmpty()) {
-
-                        relations.add(path.replace(hypermediaUtil.getPath(),
-                            hypermediaUtil.relationshipName())
-                            + "?id.in="
-                            + idsFilter);
-                    }
-                }
-
-                if (body instanceof DataPresentation2RelationshipAnyToMany<?, ?,
-                    ?> && !ids.secondRelationalIds().isEmpty()) {
-
-                    final String idsFilter = ids.secondRelationalIds()
-                        .stream()
-                        .map(DataCreatorHelper.EntityIds::id)
-                        .filter(Objects::nonNull)
-                        .map(Object::toString)
-                        .collect(Collectors.joining(","));
-
-                    if (!idsFilter.isEmpty()) {
-
-                        relations.add(path.replace(hypermediaUtil.getPath(),
-                            hypermediaUtil.secondRelationshipName())
-                            + "?id.in="
-                            + idsFilter);
-                    }
-                }
-            }
-        }
         final String relationshipPrefix;
         final String relationshipSuffix;
 
@@ -522,7 +431,7 @@ public interface BasicFT<E extends DataPresentation<I>,
         return ", \"_links\":{\"self\":{\"href\":\""
             + path
             + "/"
-            + ids.id()
+            + body.getId()
             + "\"}, \"collection\":{\"href\":\""
             + path
             + "\"}"
@@ -532,6 +441,22 @@ public interface BasicFT<E extends DataPresentation<I>,
                     relationshipSuffix))
             + hypermediaUtil.addOtherLink(body, path)
             + "}";
+    }
+
+    private static
+        String getClassName(final Field field, final boolean plural) {
+
+        if (plural) {
+
+            return field.getName().replace("Id", "");
+        }
+        return English.plural(field.getName().replace("Id", ""));
+    }
+
+    private static String getClassName(final Class<?> clazz) {
+
+        return English.plural(
+            StringUtils.uncapitalize(clazz.getSimpleName()).replace("Dto", ""));
     }
 
     /**
@@ -594,9 +519,7 @@ public interface BasicFT<E extends DataPresentation<I>,
 
             final String path
                 = RestAssured.baseURI + ":" + RestAssured.port + getBasePath();
-            links = createHrefForEntity(path,
-                DataCreatorHelper.getIdsFromEntity(bodyContain), bodyContain,
-                hypermediaUtil);
+            links = createHrefForEntity(path, bodyContain, hypermediaUtil);
         } else {
 
             links = "";
@@ -719,9 +642,7 @@ public interface BasicFT<E extends DataPresentation<I>,
                 .getContent()) {
 
                 final String links;
-                links = createHrefForEntity(path,
-                    DataCreatorHelper.getIdsFromEntity(bodyContain),
-                    bodyContain, hypermediaUtil);
+                links = createHrefForEntity(path, bodyContain, hypermediaUtil);
 
                 final String objectJson = StringUtils
                     .chop(getObjectMapper().writeValueAsString(bodyContain))
@@ -750,14 +671,13 @@ public interface BasicFT<E extends DataPresentation<I>,
             final JsonPath expectedJson = new JsonPath(stringJoiner.toString());
 
             response.assertThat()
-                .body("",
-                    allOf(expectedJson.<String, Object>getMap("")
-                        .entrySet()
-                        .stream()
-                        .filter(entry -> embeddedString.equals(entry.getKey()))
-                        .map(
-                            entry -> hasEntry(entry.getKey(), entry.getValue()))
-                        .collect(Collectors.toList())));
+                .body("", allOf(expectedJson.<String, Object>getMap("")
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> !embeddedString.equals(entry.getKey()))
+                    .map((final Map.Entry<String, Object> entry) -> hasEntry(
+                        entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList())));
         } else {
 
             final Pageable pageable = bodyContains.getPageable();
@@ -870,197 +790,49 @@ public interface BasicFT<E extends DataPresentation<I>,
     /**
      * Removes relational entities if needed.
      *
-     * @param applicationContext the application context
-     * @param data               the DataPresentation instance that needs to be
-     *                           updated.
-     * @param actualEntity       the entity used to remove relational entities.
+     * @param applicationContext  The application context.
+     * @param globalSpecification The {@link GlobalSpecification}.
+     * @param data                The DataPresentation instance that needs
+     *                            to be updated.
      */
+    @SuppressWarnings("ReturnOfNull")
     static void removeRelationshipsIfNeeded(
         final ApplicationContext applicationContext,
-        final DataPresentation<?> data,
-        @Nullable final DataPresentation<?> actualEntity) {
+        final GlobalSpecification globalSpecification,
+        @Nullable final Object data) {
 
-        final Repositories repositories = new Repositories(applicationContext);
+        if (data == null) {
+
+            return;
+        }
+
         final Class<?> entityClass;
-        entityClass = Objects.requireNonNullElse(actualEntity, data).getClass();
+
+        try {
+
+            entityClass = Class.forName(data.getClass()
+                .getName()
+                .replace(globalSpecification.dtoPackage(),
+                    globalSpecification.entityPackage())
+                .replace("Dto", ""));
+        } catch (final ClassNotFoundException e) {
+
+            throw new RuntimeException(e);
+        }
+        final Repositories repositories = new Repositories(applicationContext);
         final Object repository
             = repositories.getRepositoryFor(entityClass).orElse(null);
 
-        /*@formatter:off*/
-        if (repository instanceof FetchRelationshipRepository<?, ?>
-            && data instanceof final DataPresentation1RelationshipAnyToOne<?,
-                ?> relationalData
-            && actualEntity instanceof final
-                DataPresentation1RelationshipAnyToOne<?, ?> entity) {
-            /*@formatter:on*/
+        if (repository instanceof FetchRelationshipRepository<?, ?>) {
 
-            final DataPresentation<?> relationalEntity
-                = relationalData.getRelationship();
+            RelationshipUtils.doWithRelationFields(data,
+                (field, relationship) -> removeRelationshipsIfNeeded(
+                    applicationContext, globalSpecification, relationship),
+                globalSpecification);
+        } else {
 
-            if (relationalEntity != null) {
-
-                removeRelationshipsIfNeeded(applicationContext,
-                    relationalEntity, entity.getRelationship());
-            }
-
-            /*@formatter:off*/
-            if (data instanceof final DataPresentation2RelationshipAnyToOne<?,
-                ?, ?> secondRelationalData
-                && entity instanceof final
-                    DataPresentation2RelationshipAnyToOne<?, ?, ?>
-                    secondEntity) {
-                /*@formatter:on*/
-
-                final DataPresentation<?> secondRelationalEntity
-                    = secondRelationalData.getSecondRelationship();
-
-                if (secondRelationalEntity != null) {
-
-                    removeRelationshipsIfNeeded(applicationContext,
-                        secondRelationalEntity,
-                        secondEntity.getSecondRelationship());
-                }
-            }
-        }
-
-        /*@formatter:off*/
-        if (repository instanceof FetchRelationshipRepository<?, ?>
-            && data instanceof final DataPresentation1RelationshipAnyToMany<?,
-                ?> relationalData
-            && actualEntity instanceof final
-                DataPresentation1RelationshipAnyToMany<?, ?> entity) {
-            /*@formatter:on*/
-
-            final Set<? extends DataPresentation<?>> relationalEntities
-                = relationalData.getRelationships();
-            final Set<? extends DataPresentation<?>> relationalEntitiesForType
-                = entity.getRelationships();
-
-            if (relationalEntities != null
-                && relationalEntitiesForType != null) {
-
-                final Iterator<? extends DataPresentation<?>> iterator
-                    = relationalEntitiesForType.iterator();
-                relationalEntities
-                    .forEach(relationalEntity -> removeRelationshipsIfNeeded(
-                        applicationContext, relationalEntity, iterator.next()));
-            }
-
-            /*@formatter:off*/
-            if (data instanceof final DataPresentation2RelationshipAnyToMany<?,
-                ?, ?> secondRelationalData
-                && entity instanceof final
-                    DataPresentation2RelationshipAnyToMany<?, ?, ?>
-                    secondEntity) {
-                /*@formatter:on*/
-
-                final Set<
-                    ? extends DataPresentation<?>> secondRelationalEntities
-                        = secondRelationalData.getSecondRelationships();
-                final Set<? extends DataPresentation<
-                    ?>> secondRelationalEntitiesForType
-                        = secondEntity.getSecondRelationships();
-
-                if (secondRelationalEntities != null
-                    && secondRelationalEntitiesForType != null) {
-
-                    final Iterator<? extends DataPresentation<?>> iterator
-                        = secondRelationalEntitiesForType.iterator();
-                    /*@formatter:off*/
-                    secondRelationalEntities.forEach(
-                        secondRelationalEntity ->
-                            removeRelationshipsIfNeeded(
-                            applicationContext, secondRelationalEntity,
-                            iterator.next()));
-                    /*@formatter:on*/
-                }
-            }
-        }
-
-        if (!(repository instanceof FetchRelationshipRepository<?, ?>)
-            && data instanceof DataPresentation1RelationshipAnyToOne<?, ?>) {
-
-            final Class<?> relationshipClass
-                = BeanCreatorHelper.findBeanClassFromInterface(data.getClass(),
-                    DataPresentation1RelationshipAnyToOne.class.getTypeName(),
-                    1);
-            Arrays.stream(data.getClass().getDeclaredFields())
-                .filter(field -> field.getType() == relationshipClass)
-                .map(Field::getName)
-                .findFirst()
-                .ifPresent(
-                    name -> ReflectionTestUtils.setField(data, name, null));
-
-            if (data instanceof DataPresentation2RelationshipAnyToOne<?, ?,
-                ?>) {
-
-                final Class<?> secondRelationshipClass = BeanCreatorHelper
-                    .findBeanClassFromInterface(data.getClass(),
-                        DataPresentation2RelationshipAnyToOne.class
-                            .getTypeName(),
-                        2);
-                Arrays.stream(data.getClass().getDeclaredFields())
-                    .filter(field -> field.getType() == secondRelationshipClass)
-                    .map(Field::getName)
-                    .findFirst()
-                    .ifPresent(
-                        name -> ReflectionTestUtils.setField(data, name, null));
-            }
-        }
-
-        if (!(repository instanceof FetchRelationshipRepository<?, ?>)
-            && data instanceof DataPresentation1RelationshipAnyToMany<?, ?>) {
-
-            final Class<?> relationshipClass
-                = BeanCreatorHelper.findBeanClassFromInterface(data.getClass(),
-                    DataPresentation1RelationshipAnyToMany.class.getTypeName(),
-                    1);
-            /*@formatter:off*/
-            Arrays.stream(data.getClass().getDeclaredFields())
-                .filter((final Field field) -> {
-
-                    if (field
-                        .getGenericType() instanceof final
-                            ParameterizedType parameterizedType) {
-
-                        /*@formatter:on*/
-                        return parameterizedType.getActualTypeArguments()[0]
-                            == relationshipClass;
-                    }
-                    return false;
-                })
-                .map(Field::getName)
-                .findFirst()
-                .ifPresent(
-                    name -> ReflectionTestUtils.setField(data, name, Set.of()));
-
-            if (data instanceof DataPresentation2RelationshipAnyToMany<?, ?,
-                ?>) {
-
-                final Class<?> secondRelationshipClass = BeanCreatorHelper
-                    .findBeanClassFromInterface(data.getClass(),
-                        DataPresentation2RelationshipAnyToMany.class
-                            .getTypeName(),
-                        2);
-                /*@formatter:off*/
-                Arrays.stream(data.getClass().getDeclaredFields())
-                    .filter((final Field field) -> {
-
-                        if (field
-                            .getGenericType() instanceof final
-                                ParameterizedType parameterizedType) {
-
-                            /*@formatter:on*/
-                            return parameterizedType.getActualTypeArguments()[0]
-                                == secondRelationshipClass;
-                        }
-                        return false;
-                    })
-                    .map(Field::getName)
-                    .findFirst()
-                    .ifPresent(name -> ReflectionTestUtils.setField(data, name,
-                        Set.of()));
-            }
+            RelationshipUtils.updateRelationFields(data, (field, value) -> null,
+                (field, collection) -> Set.of(), globalSpecification);
         }
     }
 }
