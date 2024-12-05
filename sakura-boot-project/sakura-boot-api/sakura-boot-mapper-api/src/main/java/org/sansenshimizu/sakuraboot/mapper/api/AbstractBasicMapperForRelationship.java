@@ -198,7 +198,7 @@ public abstract class AbstractBasicMapperForRelationship<
             if (relationalMapper == null) {
 
                 field.set(dto, sourceFieldObject);
-                mapEntityToId(dto, sourceFieldObject, idField, field);
+                mapEntityToId(dto, sourceFieldObject, idField);
                 return;
             }
 
@@ -207,12 +207,12 @@ public abstract class AbstractBasicMapperForRelationship<
             return;
         }
 
-        mapEntityToId(dto, sourceFieldObject, idField, field);
+        mapEntityToId(dto, sourceFieldObject, idField);
+        field.set(dto, null);
     }
 
     private static <D extends DataPresentation<?>> void mapEntityToId(
-        final D dto, final Object sourceFieldObject, final Field idField,
-        final Field field)
+        final D dto, final Object sourceFieldObject, final Field idField)
         throws IllegalAccessException {
 
         if (sourceFieldObject instanceof final Collection<?> collection) {
@@ -224,7 +224,6 @@ public abstract class AbstractBasicMapperForRelationship<
                     .map(relationship -> relationship.getId())
                     .filter(Objects::nonNull)
                     .collect(Collectors.toUnmodifiableSet()));
-            field.set(dto, null);
             return;
         }
 
@@ -232,7 +231,6 @@ public abstract class AbstractBasicMapperForRelationship<
             ?> relationship) {
 
             idField.set(dto, relationship.getId());
-            field.set(dto, null);
         }
     }
 
