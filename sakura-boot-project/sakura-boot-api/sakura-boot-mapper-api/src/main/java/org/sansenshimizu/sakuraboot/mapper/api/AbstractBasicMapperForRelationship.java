@@ -197,7 +197,7 @@ public abstract class AbstractBasicMapperForRelationship<
 
             if (relationalMapper == null) {
 
-                field.set(dto, sourceFieldObject);
+                field.set(dto, Hibernate.unproxy(sourceFieldObject));
                 mapEntityToId(dto, sourceFieldObject, idField);
                 return;
             }
