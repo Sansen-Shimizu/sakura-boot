@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
@@ -34,11 +32,5 @@ public class FederationModelAssembler
 
         super(FederationController.class, FederationModel.class,
             globalSpecification);
-    }
-
-    @Override
-    protected Function<Federation, FederationModel> instantiateModel() {
-
-        return FederationModel::new;
     }
 }

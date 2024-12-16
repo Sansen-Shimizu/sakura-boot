@@ -36,8 +36,8 @@ import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.SaveController;
 import org.sansenshimizu.sakuraboot.test.BasicDataTestUtil;
-import org.sansenshimizu.sakuraboot.test.BeanCreatorHelper;
 import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -137,7 +137,7 @@ public interface SaveControllerTest<E extends DataPresentation<I>,
      */
     default String getEntityName() {
 
-        final Class<D> dataClass = BeanCreatorHelper.findBeanClassFromInterface(
+        final Class<D> dataClass = ReflectionUtils.findGenericTypeFromInterface(
             getClass(), SaveControllerTest.class.getTypeName(), 0);
         return English
             .plural(dataClass.getSimpleName().toLowerCase(Locale.ENGLISH));

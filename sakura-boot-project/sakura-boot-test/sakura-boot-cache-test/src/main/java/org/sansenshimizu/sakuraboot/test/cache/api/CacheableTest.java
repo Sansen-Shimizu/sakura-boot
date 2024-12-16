@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
+import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,14 +64,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  *         return cachingUtil;
  *     }
- *
- *     &#064;Override
- *     public String[] getExpectedCacheNames() {
- *
- *         return new String[] {
- *             "cacheName"
- *         };
- *     }
  * }
  * </pre>
  *
@@ -80,8 +73,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @see    Cacheable
  * @since  0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 @ExtendWith(MockitoExtension.class)
 public interface CacheableTest {
+
+    /**
+     * The error message when the class need to override a method.
+     */
+    String OVERRIDE_ERROR_MESSAGE
+        = "CacheableTest service must also implement SuperServiceTest or "
+            + "need to override this method.";
 
     /**
      * Get the class to test, that implements {@link Cacheable}. Need to be
@@ -89,7 +90,15 @@ public interface CacheableTest {
      *
      * @return A {@link Cacheable}.
      */
-    Cacheable getCacheable();
+    default Cacheable getCacheable() {
+
+        if (SuperServiceTest.class.isAssignableFrom(getClass())) {
+
+            // noinspection RedundantClassCall
+            return (Cacheable) SuperServiceTest.class.cast(this).getService();
+        }
+        throw new IllegalStateException(OVERRIDE_ERROR_MESSAGE);
+    }
 
     /**
      * Get the expected cache names uses in test. Need to be the same cache
@@ -97,7 +106,20 @@ public interface CacheableTest {
      *
      * @return An array of expected cache names.
      */
-    String[] getExpectedCacheNames();
+    default String[] getExpectedCacheNames() {
+
+        if (SuperServiceTest.class.isAssignableFrom(getClass())) {
+
+            // noinspection RedundantClassCall
+            return new String[] {
+                SuperServiceTest.class.cast(this)
+                    .getUtil()
+                    .getEntityClass()
+                    .getSimpleName()
+            };
+        }
+        throw new IllegalStateException(OVERRIDE_ERROR_MESSAGE);
+    }
 
     /**
      * Get the {@link CachingUtil} for test. Need to be {@link Mock}.

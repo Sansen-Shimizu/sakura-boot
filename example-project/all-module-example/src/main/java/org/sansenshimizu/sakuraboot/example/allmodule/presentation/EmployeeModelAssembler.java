@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
@@ -33,11 +31,5 @@ public class EmployeeModelAssembler
 
         super(EmployeeController.class, EmployeeModel.class,
             globalSpecification);
-    }
-
-    @Override
-    protected Function<EmployeeDto, EmployeeModel> instantiateModel() {
-
-        return EmployeeModel::new;
     }
 }

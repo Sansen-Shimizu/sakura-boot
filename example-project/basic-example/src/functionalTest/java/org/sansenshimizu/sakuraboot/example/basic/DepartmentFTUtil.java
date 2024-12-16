@@ -30,10 +30,4 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
 public class DepartmentFTUtil implements BasicFTUtil<Department, Long> {
 
     private final GlobalSpecification globalSpecification;
-
-    @Override
-    public String getPath() {
-
-        return "api/departments";
-    }
 }

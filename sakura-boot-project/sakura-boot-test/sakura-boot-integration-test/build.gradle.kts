@@ -2,7 +2,7 @@ plugins { alias(libs.plugins.component.framework) }
 
 description =
     "Framework to simplify the creation of a spring boot application. " +
-        "The integration test functionalities."
+            "The integration test functionalities."
 
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description
@@ -19,6 +19,7 @@ dependencies {
     api(libs.spring.test)
     api(libs.spring.tx)
     implementation(libs.assertj.core)
+    implementation(libs.evo.inflector)
     implementation(libs.json.path)
     implementation(libs.mockito.core)
     implementation(libs.spring.boot.test)

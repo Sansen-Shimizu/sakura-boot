@@ -35,10 +35,4 @@ public class ManagerService implements BasicService<Manager, Long> {
     private final ManagerRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    @Override
-    public Class<Manager> getEntityClass() {
-
-        return Manager.class;
-    }
 }

@@ -22,10 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,7 +33,6 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,16 +42,13 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ReflectionUtils;
 
-import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 /**
  * The bean creator helper used to create all kinds of beans with every field
@@ -93,144 +86,6 @@ public final class BeanCreatorHelper {
 
         throw new UnsupportedOperationException(
             "This class is not meant to be instantiated.");
-    }
-
-    private static Class<?> getParameterClass(
-        final ParameterizedType parameterizedType, final int i,
-        final Map<String, Class<?>> genericTypeInfo) {
-
-        final Class<?> parameterClass
-            = getClassInfo(parameterizedType.getActualTypeArguments()[i], null)
-                .clazz();
-
-        if (!genericTypeInfo.isEmpty()) {
-
-            return genericTypeInfo.values()
-                .stream()
-                .filter(parameterClass::isAssignableFrom)
-                .findFirst()
-                .orElse(parameterClass);
-        }
-        return parameterClass;
-    }
-
-    @Nullable
-    private static <T> Class<T> getGenericClass(
-        final String interfaceTypeName, final int typeIndex,
-        final Map<String, Class<?>> genericTypeInfo, final Type interfaceType) {
-
-        if (interfaceType instanceof final ParameterizedType parameterizedType
-            && parameterizedType
-                .getRawType() instanceof final Class<?> interfaceClass) {
-
-            try {
-
-                final Map<String,
-                    Class<?>> actualGenericTypeInfo = IntStream
-                        .range(0, interfaceClass.getTypeParameters().length)
-                        .collect(HashMap::new,
-                            (map, i) -> map.put(
-                                interfaceClass.getTypeParameters()[i].getName(),
-                                getParameterClass(parameterizedType, i,
-                                    genericTypeInfo)),
-                            Map::putAll);
-
-                actualGenericTypeInfo.forEach(genericTypeInfo::putIfAbsent);
-
-                return findBeanClassFromInterface(interfaceClass,
-                    interfaceTypeName, typeIndex, genericTypeInfo);
-            } catch (final NotFoundException ignored) { /* ignore */ }
-        }
-        return null;
-    }
-
-    private static <T> Class<T> findBeanClassFromInterface(
-        final Class<?> clazz, final String interfaceTypeName,
-        final int typeIndex, final Map<String, Class<?>> genericTypeInfo) {
-
-        for (final Type interfaceType: clazz.getGenericInterfaces()) {
-
-            /*@formatter:off*/
-            if (interfaceType
-                instanceof final ParameterizedType parameterizedType
-                && parameterizedType.getRawType()
-                .getTypeName()
-                .equals(interfaceTypeName)) {
-                /*@formatter:on*/
-
-                final Type beanType
-                    = parameterizedType.getActualTypeArguments()[typeIndex];
-
-                if (beanType instanceof final Class<?> beanClass) {
-
-                    @SuppressWarnings("unchecked")
-                    final Class<T> result = (Class<T>) beanClass;
-                    return result;
-                }
-
-                if (beanType instanceof final TypeVariable<?> typeVariable
-                    && genericTypeInfo.containsKey(typeVariable.getName())) {
-
-                    @SuppressWarnings("unchecked")
-                    final Class<T> result = (Class<T>) genericTypeInfo
-                        .get(typeVariable.getName());
-                    return result;
-                }
-            }
-
-            final Class<T> interfaceClass = getGenericClass(interfaceTypeName,
-                typeIndex, genericTypeInfo, interfaceType);
-
-            if (interfaceClass != null) {
-
-                return interfaceClass;
-            }
-        }
-
-        final Class<T> superClass = getGenericClass(interfaceTypeName,
-            typeIndex, genericTypeInfo, clazz.getGenericSuperclass());
-
-        if (superClass != null) {
-
-            return superClass;
-        }
-
-        throw new NotFoundException("No such interface "
-            + interfaceTypeName
-            + " in "
-            + clazz.getName()
-            + " or can't access generic types.");
-    }
-
-    /**
-     * Find bean class from interface.
-     *
-     * @param  <T>               the type of the bean.
-     * @param  clazz             the class of the bean.
-     * @param  interfaceTypeName the interface type name.
-     * @param  typeIndex         index of the type from the interface.
-     * @return                   the bean class retrieved from the interface.
-     */
-    public static <T> Class<T> findBeanClassFromInterface(
-        final Class<?> clazz, final String interfaceTypeName,
-        final int typeIndex) {
-
-        return findBeanClassFromInterface(clazz, interfaceTypeName, typeIndex,
-            new HashMap<>());
-    }
-
-    /**
-     * Find bean class from interface.
-     *
-     * @param  <T>               the type of the bean.
-     * @param  clazz             the class of the bean.
-     * @param  interfaceTypeName the interface type name.
-     * @return                   the bean class retrieved from the interface.
-     */
-    public static <T> Class<T> findBeanClassFromInterface(
-        final Class<?> clazz, final String interfaceTypeName) {
-
-        return findBeanClassFromInterface(clazz, interfaceTypeName, 0);
     }
 
     /**
@@ -320,9 +175,9 @@ public final class BeanCreatorHelper {
             throws InstantiationException {
 
         @SuppressWarnings("unchecked")
-        final T bean
-            = (T) createBeanFromConstructor(getClassInfo(beanClass, null), true,
-                new ArrayList<>(), new ArrayList<>());
+        final T bean = (T) createBeanFromConstructor(
+            ReflectionUtils.getClassInfo(beanClass, null), true,
+            new ArrayList<>(), new ArrayList<>());
         return bean;
     }
 
@@ -337,17 +192,18 @@ public final class BeanCreatorHelper {
         throws InstantiationException {
 
         @SuppressWarnings("unchecked")
-        final T bean
-            = (T) createBeanFromConstructor(getClassInfo(beanClass, null),
-                false, new ArrayList<>(), new ArrayList<>());
+        final T bean = (T) createBeanFromConstructor(
+            ReflectionUtils.getClassInfo(beanClass, null), false,
+            new ArrayList<>(), new ArrayList<>());
         return bean;
     }
 
     /**
-     * Create a bean from a constructor retrieved from the {@link ClassInfo}.
+     * Create a bean from a constructor retrieved from the
+     * {@link ReflectionUtils.ClassInfo}.
      *
-     * @param  classInfo        the {@link ClassInfo} with the information of
-     *                          the bean.
+     * @param  classInfo        the {@link ReflectionUtils.ClassInfo} with the
+     *                          information of the bean.
      * @param  nullField        if the fields should be set to null.
      * @param  origins          the origin classes that need to create this
      *                          bean.
@@ -355,7 +211,7 @@ public final class BeanCreatorHelper {
      * @return                  the bean created.
      */
     private static Object createBeanFromConstructor(
-        final ClassInfo classInfo, final boolean nullField,
+        final ReflectionUtils.ClassInfo classInfo, final boolean nullField,
         final List<Class<?>> origins, final List<Object> originsInstances)
         throws InstantiationException {
 
@@ -415,76 +271,6 @@ public final class BeanCreatorHelper {
             NO_CONSTRUCTOR_FOUND_FOR_CLASS + clazz.getName());
     }
 
-    private static ClassInfo getClassInfo(
-        final Type type, @Nullable final ClassInfo classInfo) {
-
-        final ClassInfo result;
-
-        switch (type) {
-
-            case final Class<?> classType -> result
-                = new ClassInfo(classType, new String[] {}, new ClassInfo[] {});
-
-            case final TypeVariable<?> typeVariable -> {
-
-                if (classInfo != null) {
-
-                    for (int i = 0; i < classInfo.parametersType().length;
-                        i++) {
-
-                        if (classInfo.parametersTypeName()[i]
-                            .equals(typeVariable.getName())) {
-
-                            return classInfo.parametersType()[i];
-                        }
-                    }
-                }
-                result = getClassInfo(typeVariable.getBounds()[0], classInfo);
-            }
-            case final ParameterizedType parameterizedType -> {
-
-                final ClassInfo rawClassInfo
-                    = getClassInfo(parameterizedType.getRawType(), classInfo);
-
-                if (classInfo != null
-                    && classInfo.clazz() == rawClassInfo.clazz()) {
-
-                    return classInfo;
-                }
-                final String[] typeNames
-                    = Arrays.stream(rawClassInfo.clazz().getTypeParameters())
-                        .map(TypeVariable::getName)
-                        .toArray(String[]::new);
-                final ClassInfo[] parametersType
-                    = Arrays.stream(parameterizedType.getActualTypeArguments())
-                        .map(t -> getClassInfo(t, rawClassInfo))
-                        .toArray(ClassInfo[]::new);
-
-                result = new ClassInfo(rawClassInfo.clazz(),
-                    ArrayUtils.addAll(rawClassInfo.parametersTypeName(),
-                        typeNames),
-                    ArrayUtils.addAll(rawClassInfo.parametersType(),
-                        parametersType));
-            }
-            case final WildcardType wildcardType -> {
-
-                final Type actualType;
-
-                if (wildcardType.getLowerBounds().length > 0) {
-
-                    actualType = wildcardType.getLowerBounds()[0];
-                } else {
-
-                    actualType = wildcardType.getUpperBounds()[0];
-                }
-                result = getClassInfo(actualType, classInfo);
-            }
-            default -> result = new ClassInfo(Object.class, new String[] {},
-                new ClassInfo[] {});
-        }
-        return result;
-    }
-
     @Nullable
     private static Object generateValueForDate(final Class<?> clazz) {
 
@@ -523,7 +309,7 @@ public final class BeanCreatorHelper {
     }
 
     private static Object generateCollectionForType(
-        final ClassInfo classInfo, final List<Class<?>> origins,
+        final ReflectionUtils.ClassInfo classInfo, final List<Class<?>> origins,
         final List<Object> originsInstances) {
 
         final Class<?> clazz = classInfo.clazz();
@@ -606,10 +392,12 @@ public final class BeanCreatorHelper {
      */
     @Nullable
     private static Object generateValueForType(
-        final Type type, @Nullable final ClassInfo parentClassInfo,
+        final Type type,
+        @Nullable final ReflectionUtils.ClassInfo parentClassInfo,
         final List<Class<?>> origins, final List<Object> originsInstances) {
 
-        final ClassInfo classInfo = getClassInfo(type, parentClassInfo);
+        final ReflectionUtils.ClassInfo classInfo
+            = ReflectionUtils.getClassInfo(type, parentClassInfo);
         final Class<?> clazz = classInfo.clazz();
 
         if (clazz == boolean.class || clazz == Boolean.class) {
@@ -726,24 +514,22 @@ public final class BeanCreatorHelper {
         final Class<?> clazz, final Object[] objects,
         final List<Class<?>> origins, final List<Object> originsInstances) {
 
-        ReflectionUtils.doWithFields(clazz, (final Field field) -> {
+        org.springframework.util.ReflectionUtils.doWithFields(clazz,
+            (final Field field) -> {
 
-            if (field.trySetAccessible()) {
+                if (field.trySetAccessible()) {
 
-                final Object value = generateValueForType(
-                    field.getGenericType(), null, origins, originsInstances);
+                    final Object value
+                        = generateValueForType(field.getGenericType(), null,
+                            origins, originsInstances);
 
-                for (final Object o: objects) {
+                    for (final Object o: objects) {
 
-                    field.set(o, value);
+                        field.set(o, value);
+                    }
                 }
-            }
-        }, field -> !Modifier.isFinal(field.getModifiers()));
+            }, field -> !Modifier.isFinal(field.getModifiers()));
     }
-
-    private record ClassInfo(
-        Class<?> clazz, String[] parametersTypeName,
-        ClassInfo[] parametersType) {}
 
     /**
      * A bean holder with two beans.

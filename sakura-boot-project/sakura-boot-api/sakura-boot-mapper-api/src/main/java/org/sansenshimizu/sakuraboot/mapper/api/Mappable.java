@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.mapper.api;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 /**
  * Interface for all class that add mapping support needs to implement.
@@ -33,30 +34,14 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  *
  *     private final YourMapper yourMapper;
  *
- *     private final Class&lt;YourEntity&gt; entityClass;
- *
- *     private final Class&lt;YourDto&gt; dtoClass;
- *
  *     public YourClass(final YourMapper yourMapper) {
  *
  *         this.yourMapper = yourMapper;
- *         entityClass = YourEntity.class;
- *         dtoClass = YourDto.class;
  *     }
  *
  *     public YourMapper getMapper() {
  *
  *         return yourMapper;
- *     }
- *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
- *
- *         return entityClass;
- *     }
- *
- *     public Class&lt;YourDto&gt; getDtoClass() {
- *
- *         return dtoClass;
  *     }
  * }
  * </pre>
@@ -68,6 +53,7 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * @author     Malcolm Rozé
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface Mappable<E extends DataPresentation<?>,
     D extends DataPresentation<?>> {
 
@@ -79,16 +65,24 @@ public interface Mappable<E extends DataPresentation<?>,
     BasicMapper<E, D> getMapper();
 
     /**
-     * Get the class of the entity use by the {@link BasicMapper}.
+     * Get the class of the entity used by the {@link BasicMapper}.
      *
      * @return The class of the entity.
      */
-    Class<E> getEntityClass();
+    default Class<E> getEntityClassToMap() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            Mappable.class.getTypeName());
+    }
 
     /**
-     * Get the class of the DTO use by the {@link BasicMapper}.
+     * Get the class of the DTO used by the {@link BasicMapper}.
      *
      * @return The class of the DTO.
      */
-    Class<D> getDtoClass();
+    default Class<D> getDtoClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            Mappable.class.getTypeName(), 1);
+    }
 }

@@ -75,11 +75,6 @@ import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
  *
  *         return this.repository;
  *     }
- *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
- *
- *         return YourEntity.class;
- *     }
  * }
  * </pre>
  *
@@ -92,6 +87,7 @@ import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
  * @see        FindAllService#findAll(Pageable)
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface FindAllService<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperService<E, I> {
 

@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.HobbyTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -46,22 +45,4 @@ public class HobbyControllerTest
 
     @Mock
     private HobbyModelAssembler modelAssembler;
-
-    @Override
-    public Class<HobbyFilter> getExpectedFilterClass() {
-
-        return HobbyFilter.class;
-    }
-
-    @Override
-    public Hypermedia<HobbyDto, HobbyModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<HobbyDto> getExpectedDataClass() {
-
-        return HobbyDto.class;
-    }
 }

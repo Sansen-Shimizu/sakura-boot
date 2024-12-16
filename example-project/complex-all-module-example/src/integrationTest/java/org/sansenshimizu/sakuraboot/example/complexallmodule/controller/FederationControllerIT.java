@@ -72,10 +72,4 @@ public class FederationControllerIT
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
-
-    @Override
-    public String getBasePath() {
-
-        return "federations";
-    }
 }

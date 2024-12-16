@@ -35,28 +35,4 @@ public class DepartmentFTUtil implements HypermediaFTUtil<Department, Long> {
 
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/departments";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "departments";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/companies";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/managers";
-    }
 }

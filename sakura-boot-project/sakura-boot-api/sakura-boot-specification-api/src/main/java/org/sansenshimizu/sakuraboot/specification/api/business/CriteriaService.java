@@ -87,7 +87,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresent
  *         return repository;
  *     }
  *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
+ *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
  *
  *         return YourEntity.class;
  *     }

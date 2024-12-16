@@ -35,28 +35,4 @@ public class HobbyFTUtil implements HypermediaFTUtil<Hobby, Long> {
 
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/hobbies";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "hobbies";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/employees";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/federations";
-    }
 }

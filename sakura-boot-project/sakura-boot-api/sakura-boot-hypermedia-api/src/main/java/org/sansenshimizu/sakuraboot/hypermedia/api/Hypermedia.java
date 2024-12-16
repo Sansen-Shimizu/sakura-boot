@@ -22,6 +22,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 /**
  * Interface for all controller class that add hypermedia support needs to
@@ -61,6 +62,7 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * @author     Malcolm Rozé
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface Hypermedia<D extends DataPresentation<?>,
     M extends RepresentationModelAssemblerSupport<D, ?>> {
 
@@ -75,7 +77,11 @@ public interface Hypermedia<D extends DataPresentation<?>,
      *
      * @return The class of the data.
      */
-    Class<D> getDataClass();
+    default Class<D> getDataClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            Hypermedia.class.getTypeName());
+    }
 
     /**
      * Get the {@link RepresentationModelAssemblerSupport} that will be used to

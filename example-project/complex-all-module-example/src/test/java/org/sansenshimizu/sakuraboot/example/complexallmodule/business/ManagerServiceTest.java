@@ -23,7 +23,6 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.ManagerDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.AbstractManagerMapper;
@@ -31,7 +30,6 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Manager
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.ManagerRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.ManagerFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.ManagerTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -64,42 +62,4 @@ public class ManagerServiceTest
 
     @Mock
     private AbstractManagerMapper mapper;
-
-    @Override
-    public Class<ManagerFilter> getExpectedFilterClass() {
-
-        return ManagerFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Manager"
-        };
-    }
-
-    @Override
-    public Mappable<Manager, ManagerDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Manager> getExpectedEntityClass() {
-
-        return Manager.class;
-    }
-
-    @Override
-    public Class<ManagerDto> getExpectedDtoClass() {
-
-        return ManagerDto.class;
-    }
 }

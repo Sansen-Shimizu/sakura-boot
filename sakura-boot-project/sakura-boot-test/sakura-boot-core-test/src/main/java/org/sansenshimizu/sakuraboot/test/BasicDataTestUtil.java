@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.test;
 import java.io.Serializable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 /**
  * The interface for all the utility test function. This interface
@@ -86,7 +87,7 @@ public interface BasicDataTestUtil<E extends DataPresentation<I>,
      */
     default Class<D> getDataClass() {
 
-        return BeanCreatorHelper.findBeanClassFromInterface(getClass(),
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
             BasicDataTestUtil.class.getTypeName(), 2);
     }
 

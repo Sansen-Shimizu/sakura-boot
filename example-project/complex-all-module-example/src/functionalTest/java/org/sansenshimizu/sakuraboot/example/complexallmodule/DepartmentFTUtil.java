@@ -46,36 +46,4 @@ public class DepartmentFTUtil
         this.mapper = mapper;
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/departments";
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Department"
-        };
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "departments";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/companies";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/managers";
-    }
 }

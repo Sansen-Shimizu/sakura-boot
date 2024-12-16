@@ -35,10 +35,4 @@ public class EmployeeService implements BasicService<Employee, Long> {
     private final EmployeeRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    @Override
-    public Class<Employee> getEntityClass() {
-
-        return Employee.class;
-    }
 }

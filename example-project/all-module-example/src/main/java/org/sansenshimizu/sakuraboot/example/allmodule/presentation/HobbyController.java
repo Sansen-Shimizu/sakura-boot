@@ -39,9 +39,4 @@ public class HobbyController
     private final HobbyService service;
 
     private final HobbyModelAssembler modelAssembler;
-
-    public Class<HobbyDto> getDataClass() {
-
-        return HobbyDto.class;
-    }
 }

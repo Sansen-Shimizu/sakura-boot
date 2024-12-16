@@ -38,9 +38,4 @@ public class EmployeeController
     private final EmployeeService service;
 
     private final EmployeeModelAssembler modelAssembler;
-
-    public Class<Employee> getDataClass() {
-
-        return Employee.class;
-    }
 }

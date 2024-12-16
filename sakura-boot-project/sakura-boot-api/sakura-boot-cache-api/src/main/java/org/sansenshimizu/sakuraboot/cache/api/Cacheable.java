@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.cache.api;
 
+import org.sansenshimizu.sakuraboot.SuperService;
+
 /**
  * Interface for all class that add cache support needs to implement.
  * <p>
@@ -37,15 +39,6 @@ package org.sansenshimizu.sakuraboot.cache.api;
  *     }
  *
  *     &#064;Override
- *     public String[] getCacheNames() {
- *
- *         return new String[] {
- *             "cacheName" // Generally the name of the entity if use in a
- *                         // service.
- *         };
- *     }
- *
- *     &#064;Override
  *     public CachingUtil getCachingUtil() {
  *
  *         return cachingUtil;
@@ -58,14 +51,27 @@ package org.sansenshimizu.sakuraboot.cache.api;
  * @author Malcolm Rozé
  * @since  0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface Cacheable {
 
     /**
-     * Get the cache names use in this class.
+     * Get the cache names used in this class.
      *
      * @return An array of cache names.
      */
-    String[] getCacheNames();
+    default String[] getCacheNames() {
+
+        if (SuperService.class.isAssignableFrom(getClass())) {
+
+            // noinspection RedundantClassCall
+            return new String[] {
+                SuperService.class.cast(this).getEntityClass().getSimpleName()
+            };
+        }
+        throw new IllegalStateException(
+            "Cacheable service must also implement SuperService or need to "
+                + "override this method.");
+    }
 
     /**
      * The {@link CachingUtil} use to perform the caching.

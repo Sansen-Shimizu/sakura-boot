@@ -77,14 +77,9 @@ import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
  *         return this.repository;
  *     }
  *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
+ *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
  *
  *         return YourEntity.class;
- *     }
- *
- *     public ObjectMapper getObjectMapper() {
- *
- *         return objectMapper;
  *     }
  * }
  * </pre>
@@ -98,6 +93,7 @@ import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
  * @see        UpdateByIdService#updateById(DataPresentation, Comparable)
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface UpdateByIdService<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperService<E, I> {
 

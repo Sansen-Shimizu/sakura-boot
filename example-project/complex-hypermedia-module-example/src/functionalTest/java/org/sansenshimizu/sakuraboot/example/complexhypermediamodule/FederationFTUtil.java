@@ -35,22 +35,4 @@ public class FederationFTUtil implements HypermediaFTUtil<Federation, Long> {
 
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/federations";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "federations";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/hobbies";
-    }
 }

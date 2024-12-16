@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.DepartmentTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -47,22 +46,4 @@ public class DepartmentControllerTest
 
     @Mock
     private DepartmentModelAssembler modelAssembler;
-
-    @Override
-    public Class<DepartmentFilter> getExpectedFilterClass() {
-
-        return DepartmentFilter.class;
-    }
-
-    @Override
-    public Hypermedia<DepartmentDto, DepartmentModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<DepartmentDto> getExpectedDataClass() {
-
-        return DepartmentDto.class;
-    }
 }

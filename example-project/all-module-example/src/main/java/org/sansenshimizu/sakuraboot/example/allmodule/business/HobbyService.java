@@ -47,24 +47,4 @@ public class HobbyService
     private final CachingUtil cachingUtil;
 
     private final HobbyMapper mapper;
-
-    @Override
-    public Class<Hobby> getEntityClass() {
-
-        return Hobby.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Hobby"
-        };
-    }
-
-    @Override
-    public Class<HobbyDto> getDtoClass() {
-
-        return HobbyDto.class;
-    }
 }

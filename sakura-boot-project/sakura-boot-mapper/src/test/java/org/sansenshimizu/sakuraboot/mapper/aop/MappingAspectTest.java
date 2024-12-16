@@ -188,7 +188,7 @@ class MappingAspectTest implements AspectUtilTest {
         given(target.getDtoClass()).willReturn(dtoClass);
         mockJoinPointWithArgs(EXPECTED_VALUE);
         given(mappingAnnotation.mapResult()).willReturn(true);
-        given(target.getEntityClass()).willReturn(entityClass);
+        given(target.getEntityClassToMap()).willReturn(entityClass);
         mockForLog(() -> {
 
             // WHEN
@@ -214,7 +214,7 @@ class MappingAspectTest implements AspectUtilTest {
         given(mapper.toEntity(any())).willReturn(entity);
         mockJoinPointWithArgs(entity);
         given(mappingAnnotation.mapResult()).willReturn(true);
-        given(target.getEntityClass()).willReturn(entityClass);
+        given(target.getEntityClassToMap()).willReturn(entityClass);
         given(mapper.toDto(any())).willReturn(dto);
         mockForLog(() -> {
 
@@ -245,7 +245,7 @@ class MappingAspectTest implements AspectUtilTest {
         given(target.getDtoClass()).willReturn(dtoClass);
         mockJoinPointWithArgs(page);
         given(mappingAnnotation.mapResult()).willReturn(true);
-        given(target.getEntityClass()).willReturn(entityClass);
+        given(target.getEntityClassToMap()).willReturn(entityClass);
         mockForLog(() -> {
 
             // WHEN
@@ -271,7 +271,7 @@ class MappingAspectTest implements AspectUtilTest {
         given(mapper.toEntity(any())).willReturn(entity);
         mockJoinPointWithArgs(pageEntity);
         given(mappingAnnotation.mapResult()).willReturn(true);
-        given(target.getEntityClass()).willReturn(entityClass);
+        given(target.getEntityClassToMap()).willReturn(entityClass);
         given(mapper.toDto(any())).willReturn(dto);
         mockForLog(() -> {
 

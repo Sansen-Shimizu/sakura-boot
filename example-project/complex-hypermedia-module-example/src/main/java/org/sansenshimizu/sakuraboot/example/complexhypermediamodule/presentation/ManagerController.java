@@ -38,9 +38,4 @@ public class ManagerController
     private final ManagerService service;
 
     private final ManagerModelAssembler modelAssembler;
-
-    public Class<Manager> getDataClass() {
-
-        return Manager.class;
-    }
 }

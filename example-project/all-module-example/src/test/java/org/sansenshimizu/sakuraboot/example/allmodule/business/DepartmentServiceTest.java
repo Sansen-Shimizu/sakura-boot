@@ -21,13 +21,11 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.DepartmentRepository;
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.DepartmentFilter;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.DepartmentTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -60,42 +58,4 @@ public class DepartmentServiceTest
 
     @Mock
     private AbstractDepartmentMapper mapper;
-
-    @Override
-    public Class<DepartmentFilter> getExpectedFilterClass() {
-
-        return DepartmentFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Department"
-        };
-    }
-
-    @Override
-    public Mappable<Department, DepartmentDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Department> getExpectedEntityClass() {
-
-        return Department.class;
-    }
-
-    @Override
-    public Class<DepartmentDto> getExpectedDtoClass() {
-
-        return DepartmentDto.class;
-    }
 }

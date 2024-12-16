@@ -93,12 +93,6 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.services.Fin
  *
  *         return specificationBuilder;
  *     }
- *
- *     &#064;Override
- *     public Class&lt;YourFilter&gt; getFilterClass() {
- *
- *         return YourFilter.class;
- *     }
  * }
  * </pre>
  *

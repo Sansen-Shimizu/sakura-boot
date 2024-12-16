@@ -45,36 +45,4 @@ public class HobbyFTUtil extends AbstractCommonUtil<Hobby, HobbyDto> {
         this.mapper = mapper;
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/hobbies";
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Hobby"
-        };
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "hobbies";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/employees";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/federations";
-    }
 }

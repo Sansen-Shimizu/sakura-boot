@@ -35,10 +35,4 @@ public class FederationService implements BasicService<Federation, Long> {
     private final FederationRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    @Override
-    public Class<Federation> getEntityClass() {
-
-        return Federation.class;
-    }
 }

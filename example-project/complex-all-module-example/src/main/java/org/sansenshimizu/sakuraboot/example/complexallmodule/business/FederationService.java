@@ -51,24 +51,4 @@ public class FederationService
     private final CachingUtil cachingUtil;
 
     private final AbstractFederationMapper mapper;
-
-    @Override
-    public Class<Federation> getEntityClass() {
-
-        return Federation.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Federation"
-        };
-    }
-
-    @Override
-    public Class<FederationDto> getDtoClass() {
-
-        return FederationDto.class;
-    }
 }

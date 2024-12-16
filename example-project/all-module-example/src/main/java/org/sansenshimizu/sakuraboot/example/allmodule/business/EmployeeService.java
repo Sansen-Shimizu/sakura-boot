@@ -47,24 +47,4 @@ public class EmployeeService
     private final CachingUtil cachingUtil;
 
     private final AbstractEmployeeMapper mapper;
-
-    @Override
-    public Class<Employee> getEntityClass() {
-
-        return Employee.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Employee"
-        };
-    }
-
-    @Override
-    public Class<EmployeeDto> getDtoClass() {
-
-        return EmployeeDto.class;
-    }
 }

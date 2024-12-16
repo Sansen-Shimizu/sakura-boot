@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Dep
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.DepartmentModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.DepartmentTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class DepartmentControllerTest
 
     @Mock
     private DepartmentModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Department, DepartmentModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Department> getExpectedDataClass() {
-
-        return Department.class;
-    }
 }

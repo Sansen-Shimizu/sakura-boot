@@ -38,9 +38,4 @@ public class DepartmentController
     private final DepartmentService service;
 
     private final DepartmentModelAssembler modelAssembler;
-
-    public Class<Department> getDataClass() {
-
-        return Department.class;
-    }
 }

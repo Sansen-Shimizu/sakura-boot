@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.EmployeeService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Employee;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.EmployeeTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -47,22 +46,4 @@ public class EmployeeControllerTest
 
     @Mock
     private EmployeeModelAssembler modelAssembler;
-
-    @Override
-    public Class<EmployeeFilter> getExpectedFilterClass() {
-
-        return EmployeeFilter.class;
-    }
-
-    @Override
-    public Hypermedia<EmployeeDto, EmployeeModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<EmployeeDto> getExpectedDataClass() {
-
-        return EmployeeDto.class;
-    }
 }

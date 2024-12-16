@@ -26,7 +26,6 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Federatio
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.FederationFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.FederationTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -49,22 +48,4 @@ public class FederationControllerTest
 
     @Mock
     private FederationModelAssembler modelAssembler;
-
-    @Override
-    public Class<FederationFilter> getExpectedFilterClass() {
-
-        return FederationFilter.class;
-    }
-
-    @Override
-    public Hypermedia<FederationDto, FederationModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<FederationDto> getExpectedDataClass() {
-
-        return FederationDto.class;
-    }
 }

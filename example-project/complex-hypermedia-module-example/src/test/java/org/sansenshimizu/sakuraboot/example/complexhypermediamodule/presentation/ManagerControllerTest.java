@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Man
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Manager;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.ManagerModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.ManagerTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class ManagerControllerTest
 
     @Mock
     private ManagerModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Manager, ManagerModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Manager> getExpectedDataClass() {
-
-        return Manager.class;
-    }
 }

@@ -23,7 +23,6 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.AbstractFederationMapper;
@@ -31,7 +30,6 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federat
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.FederationRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.FederationFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.FederationTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -64,42 +62,4 @@ public class FederationServiceTest
 
     @Mock
     private AbstractFederationMapper mapper;
-
-    @Override
-    public Class<FederationFilter> getExpectedFilterClass() {
-
-        return FederationFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Federation"
-        };
-    }
-
-    @Override
-    public Mappable<Federation, FederationDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Federation> getExpectedEntityClass() {
-
-        return Federation.class;
-    }
-
-    @Override
-    public Class<FederationDto> getExpectedDtoClass() {
-
-        return FederationDto.class;
-    }
 }

@@ -39,9 +39,4 @@ public class EmployeeController
     private final EmployeeService service;
 
     private final EmployeeModelAssembler modelAssembler;
-
-    public Class<EmployeeDto> getDataClass() {
-
-        return EmployeeDto.class;
-    }
 }

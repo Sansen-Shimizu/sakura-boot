@@ -68,7 +68,7 @@ public final class MappingAspect<E extends DataPresentation<?>,
     @Nullable
     private Object toDto(final Object object, final Mappable<E, D> target) {
 
-        final Class<E> entityClass = target.getEntityClass();
+        final Class<E> entityClass = target.getEntityClassToMap();
 
         if (entityClass.isInstance(object)) {
 

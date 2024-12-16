@@ -17,8 +17,11 @@
 package org.sansenshimizu.sakuraboot.test.functional;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
+import org.atteo.evo.inflector.English;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -65,12 +68,6 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  *         return YourEntity.builder().id(id).build();
  *         // If your class don't have a builder you can use the constructor
  *     }
- *
- *     &#064;Override
- *     public String getPath() {
- *
- *         return "api/pathName";
- *     }
  * }
  * </pre>
  *
@@ -82,8 +79,15 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  * @see        SuperITUtil
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface BasicFTUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperITUtil<E, I> {
+
+    /**
+     * Pattern for camel case.
+     */
+    Pattern CAMEL_CASE_PATTERN = Pattern.compile(
+        "([\\p{Lower}\\d])(\\p{Upper})", Pattern.UNICODE_CHARACTER_CLASS);
 
     @Override
     @Nullable
@@ -157,5 +161,12 @@ public interface BasicFTUtil<E extends DataPresentation<I>,
      *
      * @return The path.
      */
-    String getPath();
+    default String getPath() {
+
+        return "api/"
+            + English.plural(
+                CAMEL_CASE_PATTERN.matcher(getEntityClass().getSimpleName())
+                    .replaceAll("$1-$2")
+                    .toLowerCase(Locale.ENGLISH));
+    }
 }

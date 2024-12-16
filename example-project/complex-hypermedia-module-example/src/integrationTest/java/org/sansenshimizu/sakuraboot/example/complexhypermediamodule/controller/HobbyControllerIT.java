@@ -70,12 +70,6 @@ public class HobbyControllerIT
     }
 
     @Override
-    public String getBasePath() {
-
-        return "hobbies";
-    }
-
-    @Override
     public List<String> fieldsToIgnoreInAssert() {
 
         return List.of("employees");

@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Emp
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Employee;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.EmployeeModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.EmployeeTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class EmployeeControllerTest
 
     @Mock
     private EmployeeModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Employee, EmployeeModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Employee> getExpectedDataClass() {
-
-        return Employee.class;
-    }
 }
