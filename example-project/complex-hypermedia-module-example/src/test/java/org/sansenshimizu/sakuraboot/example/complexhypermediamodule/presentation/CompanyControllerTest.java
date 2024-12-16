@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Com
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.CompanyModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.CompanyTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class CompanyControllerTest
 
     @Mock
     private CompanyModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Company, CompanyModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Company> getExpectedDataClass() {
-
-        return Company.class;
-    }
 }

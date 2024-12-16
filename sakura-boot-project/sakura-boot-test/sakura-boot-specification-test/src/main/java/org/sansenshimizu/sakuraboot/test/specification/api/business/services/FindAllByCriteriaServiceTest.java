@@ -36,6 +36,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.services.FindAllB
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
 import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,12 +97,6 @@ import static org.mockito.Mockito.mock;
  *
  *         return specificationBuilder;
  *     }
- *
- *     &#064;Override
- *     public Class&lt;YourFilter&gt; getExpectedFilterClass() {
- *
- *         return YourFilter.class;
- *     }
  * }
  * </pre>
  *
@@ -147,7 +142,11 @@ public interface FindAllByCriteriaServiceTest<E extends DataPresentation<I>,
      *
      * @return The expected class of the filter.
      */
-    Class<F> getExpectedFilterClass();
+    default Class<F> getExpectedFilterClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            FindAllByCriteriaServiceTest.class.getTypeName(), 2);
+    }
 
     @Test
     @DisplayName("GIVEN a null filter and pageable,"

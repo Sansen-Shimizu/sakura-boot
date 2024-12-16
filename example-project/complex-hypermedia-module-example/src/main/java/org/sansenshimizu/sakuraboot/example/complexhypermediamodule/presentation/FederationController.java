@@ -38,9 +38,4 @@ public class FederationController
     private final FederationService service;
 
     private final FederationModelAssembler modelAssembler;
-
-    public Class<Federation> getDataClass() {
-
-        return Federation.class;
-    }
 }

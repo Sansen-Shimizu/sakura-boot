@@ -77,12 +77,6 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.controll
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public Class&lt;YourFilter&gt; getFilterClass() {
- *
- *         return YourFilter.class;
- *     }
  * }
  * </pre>
  *

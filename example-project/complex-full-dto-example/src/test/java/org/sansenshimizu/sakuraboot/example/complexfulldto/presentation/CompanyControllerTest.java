@@ -26,7 +26,6 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.CompanyFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.CompanyModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.CompanyTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -48,22 +47,4 @@ public class CompanyControllerTest
 
     @Mock
     private CompanyModelAssembler modelAssembler;
-
-    @Override
-    public Class<CompanyFilter> getExpectedFilterClass() {
-
-        return CompanyFilter.class;
-    }
-
-    @Override
-    public Hypermedia<CompanyDto, CompanyModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<CompanyDto> getExpectedDataClass() {
-
-        return CompanyDto.class;
-    }
 }

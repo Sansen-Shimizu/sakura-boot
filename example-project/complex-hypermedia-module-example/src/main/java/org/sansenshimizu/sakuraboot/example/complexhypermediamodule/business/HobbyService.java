@@ -35,10 +35,4 @@ public class HobbyService implements BasicService<Hobby, Long> {
     private final HobbyRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    @Override
-    public Class<Hobby> getEntityClass() {
-
-        return Hobby.class;
-    }
 }

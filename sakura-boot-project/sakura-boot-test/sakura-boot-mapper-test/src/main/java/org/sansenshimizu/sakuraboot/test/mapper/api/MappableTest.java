@@ -26,6 +26,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
 import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
+import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,31 +57,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     private BasicMapper&lt;YourEntity, YourDto&gt; mapper;
  *
  *     &#064;Override
- *     public YourCacheableClass getCacheable() {
+ *     public YourCacheableClass getMappable() {
  *
- *         return yourCacheableClass;
+ *         return yourMappableClass;
  *     }
  *
  *     &#064;Override
  *     public BasicMapper&lt;YourEntity, YourDto&gt; getMapper() {
  *
  *         return mapper;
- *     }
- *
- *     &#064;Override
- *     public Class&lt;YourEntity&gt; getExpectedEntityClass();
- *
- *     {
- *
- *         return YourEntity.class;
- *     }
- *
- *     &#064;Override
- *     public Class&lt;YourDto&gt; getExpectedDtoClass();
- *
- *     {
- *
- *         return YourDto.class;
  *     }
  * }
  * </pre>
@@ -92,6 +78,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @see        Mappable
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 @ExtendWith(MockitoExtension.class)
 public interface MappableTest<E extends DataPresentation<?>,
     D extends DataPresentation<?>> {
@@ -102,7 +89,20 @@ public interface MappableTest<E extends DataPresentation<?>,
      *
      * @return A {@link Mappable}.
      */
-    Mappable<E, D> getMappable();
+    default Mappable<E, D> getMappable() {
+
+        if (SuperServiceTest.class.isAssignableFrom(getClass())) {
+
+            // noinspection RedundantClassCall
+            @SuppressWarnings("unchecked")
+            final Mappable<E, D> service = (Mappable<E,
+                D>) SuperServiceTest.class.cast(this).getService();
+            return service;
+        }
+        throw new IllegalStateException(
+            "MappableTest service must also implement SuperServiceTest or "
+                + "need to override this method.");
+    }
 
     /**
      * Get the {@link BasicMapper} for test. Need to be {@link Mock}.
@@ -117,7 +117,11 @@ public interface MappableTest<E extends DataPresentation<?>,
      *
      * @return An entity class.
      */
-    Class<E> getExpectedEntityClass();
+    default Class<E> getExpectedEntityClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            MappableTest.class.getTypeName());
+    }
 
     /**
      * Get the expected DTO class uses in test. Need to be the same DTO
@@ -125,7 +129,11 @@ public interface MappableTest<E extends DataPresentation<?>,
      *
      * @return A DTO class.
      */
-    Class<D> getExpectedDtoClass();
+    default Class<D> getExpectedDtoClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            MappableTest.class.getTypeName(), 1);
+    }
 
     @Test
     @DisplayName("GIVEN a Mappable,"
@@ -147,13 +155,13 @@ public interface MappableTest<E extends DataPresentation<?>,
     @DisplayName("GIVEN a Mappable,"
         + " WHEN getting the entity class,"
         + " THEN the correct entity class should be returned")
-    default void testGetEntityClass() {
+    default void testGetEntityClassToMap() {
 
         // GIVEN
         final Class<E> expectedEntityClass = getExpectedEntityClass();
 
         // WHEN
-        final Class<E> entityClass = getMappable().getEntityClass();
+        final Class<E> entityClass = getMappable().getEntityClassToMap();
 
         // THEN
         assertThat(entityClass).isEqualTo(expectedEntityClass);

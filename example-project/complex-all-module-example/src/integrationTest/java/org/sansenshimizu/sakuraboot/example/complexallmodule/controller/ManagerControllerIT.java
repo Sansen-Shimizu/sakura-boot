@@ -71,10 +71,4 @@ public class ManagerControllerIT
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
-
-    @Override
-    public String getBasePath() {
-
-        return "managers";
-    }
 }

@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Hob
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.HobbyModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.HobbyTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class HobbyControllerTest
 
     @Mock
     private HobbyModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Hobby, HobbyModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Hobby> getExpectedDataClass() {
-
-        return Hobby.class;
-    }
 }

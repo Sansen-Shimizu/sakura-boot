@@ -45,36 +45,4 @@ public class EmployeeFTUtil extends AbstractCommonUtil<Employee, EmployeeDto> {
         this.mapper = mapper;
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/employees";
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Employee"
-        };
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "employees";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/departments";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/hobbies";
-    }
 }

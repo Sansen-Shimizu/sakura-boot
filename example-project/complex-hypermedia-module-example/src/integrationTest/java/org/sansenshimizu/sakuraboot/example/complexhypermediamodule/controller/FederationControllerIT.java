@@ -71,12 +71,6 @@ public class FederationControllerIT
     }
 
     @Override
-    public String getBasePath() {
-
-        return "federations";
-    }
-
-    @Override
     public List<String> fieldsToIgnoreInAssert() {
 
         return List.of("hobbies");

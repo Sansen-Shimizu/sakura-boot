@@ -35,28 +35,4 @@ public class EmployeeFTUtil implements HypermediaFTUtil<Employee, Long> {
 
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/employees";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "employees";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/departments";
-    }
-
-    @Override
-    public String secondRelationshipName() {
-
-        return "api/hobbies";
-    }
 }

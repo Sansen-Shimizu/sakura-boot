@@ -20,6 +20,8 @@ import java.io.Serializable;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
+
 /**
  * The base service interface.
  * <p>
@@ -66,11 +68,6 @@ import org.springframework.transaction.annotation.Transactional;
  *
  *         return this.repository;
  *     }
- *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
- *
- *         return YourEntity.class;
- *     }
  * }
  * </pre>
  *
@@ -81,6 +78,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author     Malcolm Rozé
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 @Transactional(readOnly = true)
 public interface SuperService<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> {
@@ -90,7 +88,6 @@ public interface SuperService<E extends DataPresentation<I>,
      *
      * @return A repository.
      */
-    @SuppressWarnings("EmptyMethod")
     SuperRepository<E, I> getRepository();
 
     /**
@@ -98,5 +95,9 @@ public interface SuperService<E extends DataPresentation<I>,
      *
      * @return The class of the DataPresentation.
      */
-    Class<E> getEntityClass();
+    default Class<E> getEntityClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            SuperService.class.getTypeName());
+    }
 }

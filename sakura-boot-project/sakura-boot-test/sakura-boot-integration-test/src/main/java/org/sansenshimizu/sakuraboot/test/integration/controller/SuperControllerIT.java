@@ -23,10 +23,13 @@ import java.time.chrono.ChronoZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import org.atteo.evo.inflector.English;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -153,6 +156,12 @@ public interface SuperControllerIT<E extends DataPresentation<I>,
     String PAGE_PATH = "$.page";
 
     /**
+     * Pattern for camel case.
+     */
+    Pattern CAMEL_CASE_PATTERN = Pattern.compile(
+        "([\\p{Lower}\\d])(\\p{Upper})", Pattern.UNICODE_CHARACTER_CLASS);
+
+    /**
      * Return a util class of type {@link SuperDataITUtil}.
      *
      * @return A util class for testing.
@@ -199,7 +208,13 @@ public interface SuperControllerIT<E extends DataPresentation<I>,
      *
      * @return The base path.
      */
-    String getBasePath();
+    default String getBasePath() {
+
+        return English.plural(CAMEL_CASE_PATTERN
+            .matcher(getUtil().getEntityClass().getSimpleName())
+            .replaceAll("$1-$2")
+            .toLowerCase(Locale.ENGLISH));
+    }
 
     /**
      * Get JSON string from an object.

@@ -75,23 +75,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     }
  *
  *     &#064;Override
- *     public String getPath() {
- *
- *         return "api/pathName";
- *     }
- *
- *     &#064;Override
  *     public CacheManager getCacheManager() {
  *
  *         return cacheManager;
- *     }
- *
- *     &#064;Override
- *     public String[] getCacheNames() {
- *
- *         return new String[] {
- *             "yourCacheName"
- *         };
  *     }
  * }
  * </pre>
@@ -134,5 +120,10 @@ public interface CachingFTUtil<E extends DataPresentation<I>,
      *
      * @return An array of cache name.
      */
-    String[] getCacheNames();
+    default String[] getCacheNames() {
+
+        return new String[] {
+            getEntityClass().getSimpleName()
+        };
+    }
 }

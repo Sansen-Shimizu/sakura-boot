@@ -51,24 +51,4 @@ public class ManagerService
     private final CachingUtil cachingUtil;
 
     private final AbstractManagerMapper mapper;
-
-    @Override
-    public Class<Manager> getEntityClass() {
-
-        return Manager.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Manager"
-        };
-    }
-
-    @Override
-    public Class<ManagerDto> getDtoClass() {
-
-        return ManagerDto.class;
-    }
 }

@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.hypermedia;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
@@ -59,12 +60,6 @@ import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
  *
  *         super(YourController.class, YourModel.class, globalSpecification);
  *     }
- *
- *     &#064;Override
- *     protected Function&lt;YourData, YourModel&gt; instantiateModel() {
- *
- *         return YourModel::new;
- *     }
  * }
  * </pre>
  *
@@ -100,9 +95,7 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
      * {@link RepresentationModelAssemblerSupport} class and sets the path.
      *
      * @param controllerClass     The class of the controller that used
-     *                            this
-     *                            model
-     *                            assembler.
+     *                            this model assembler.
      * @param modelType           The class of the model.
      * @param globalSpecification The {@link GlobalSpecification},
      *                            help to create the relationship links, if any.
@@ -121,7 +114,26 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
      *
      * @return A function that instantiates the model with parameters.
      */
-    protected abstract Function<D, M> instantiateModel();
+    protected Function<D, M> instantiateModel() {
+
+        return (final D data) -> {
+
+            try {
+
+                return modelType.getDeclaredConstructor(data.getClass())
+                    .newInstance(data);
+            } catch (final InstantiationException | NoSuchMethodException
+                | IllegalAccessException | InvocationTargetException e) {
+
+                throw new IllegalStateException(
+                    """
+                    Couldn't instantiate model.
+                    Follow the convention or override
+                    the instantiateModel() method.
+                    """, e);
+            }
+        };
+    }
 
     /**
      * The path use by the controller.

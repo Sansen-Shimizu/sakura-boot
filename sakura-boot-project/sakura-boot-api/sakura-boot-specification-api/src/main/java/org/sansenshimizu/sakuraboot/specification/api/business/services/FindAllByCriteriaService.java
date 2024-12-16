@@ -89,7 +89,7 @@ import org.sansenshimizu.sakuraboot.specification.api.relationship.annotations.F
  *     }
  *
  *     &#064;Override
- *     public Class&lt;YourEntity&gt; getEntityClass() {
+ *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
  *
  *         return YourEntity.class;
  *     }

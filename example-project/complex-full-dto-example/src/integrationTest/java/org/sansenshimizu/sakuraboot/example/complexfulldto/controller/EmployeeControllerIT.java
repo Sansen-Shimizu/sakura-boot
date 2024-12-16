@@ -70,10 +70,4 @@ public class EmployeeControllerIT
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
-
-    @Override
-    public String getBasePath() {
-
-        return "employees";
-    }
 }

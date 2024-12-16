@@ -23,7 +23,6 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.HobbyDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.AbstractHobbyMapper;
@@ -31,7 +30,6 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.HobbyRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.HobbyFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.HobbyTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -64,42 +62,4 @@ public class HobbyServiceTest
 
     @Mock
     private AbstractHobbyMapper mapper;
-
-    @Override
-    public Class<HobbyFilter> getExpectedFilterClass() {
-
-        return HobbyFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Hobby"
-        };
-    }
-
-    @Override
-    public Mappable<Hobby, HobbyDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Hobby> getExpectedEntityClass() {
-
-        return Hobby.class;
-    }
-
-    @Override
-    public Class<HobbyDto> getExpectedDtoClass() {
-
-        return HobbyDto.class;
-    }
 }

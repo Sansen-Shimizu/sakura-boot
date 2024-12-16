@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
@@ -33,11 +31,5 @@ public class CompanyModelAssembler
         final GlobalSpecification globalSpecification) {
 
         super(CompanyController.class, CompanyModel.class, globalSpecification);
-    }
-
-    @Override
-    protected Function<Company, CompanyModel> instantiateModel() {
-
-        return CompanyModel::new;
     }
 }

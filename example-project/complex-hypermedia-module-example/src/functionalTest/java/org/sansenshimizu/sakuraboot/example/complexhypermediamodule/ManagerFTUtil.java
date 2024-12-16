@@ -37,24 +37,6 @@ public class ManagerFTUtil implements HypermediaFTUtil<Manager, Long> {
     }
 
     @Override
-    public String getPath() {
-
-        return "api/managers";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "managers";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/departments";
-    }
-
-    @Override
     public Manager getEntityWithoutId() {
 
         return Manager.builder().name("test").build();

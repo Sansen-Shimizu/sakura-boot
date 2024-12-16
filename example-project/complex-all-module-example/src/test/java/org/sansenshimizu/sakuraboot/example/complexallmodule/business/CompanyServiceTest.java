@@ -23,7 +23,6 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.CompanyMapper;
@@ -31,7 +30,6 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Company
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.CompanyRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.CompanyFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.CompanyTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -64,42 +62,4 @@ public class CompanyServiceTest
 
     @Mock
     private CompanyMapper mapper;
-
-    @Override
-    public Class<CompanyFilter> getExpectedFilterClass() {
-
-        return CompanyFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Company"
-        };
-    }
-
-    @Override
-    public Mappable<Company, CompanyDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Company> getExpectedEntityClass() {
-
-        return Company.class;
-    }
-
-    @Override
-    public Class<CompanyDto> getExpectedDtoClass() {
-
-        return CompanyDto.class;
-    }
 }

@@ -23,7 +23,6 @@ import lombok.Getter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.AbstractEmployeeMapper;
@@ -31,7 +30,6 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employe
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.EmployeeRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.EmployeeFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.EmployeeTestUtil;
-import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
@@ -64,42 +62,4 @@ public class EmployeeServiceTest
 
     @Mock
     private AbstractEmployeeMapper mapper;
-
-    @Override
-    public Class<EmployeeFilter> getExpectedFilterClass() {
-
-        return EmployeeFilter.class;
-    }
-
-    @Override
-    public Cacheable getCacheable() {
-
-        return service;
-    }
-
-    @Override
-    public String[] getExpectedCacheNames() {
-
-        return new String[] {
-            "Employee"
-        };
-    }
-
-    @Override
-    public Mappable<Employee, EmployeeDto> getMappable() {
-
-        return service;
-    }
-
-    @Override
-    public Class<Employee> getExpectedEntityClass() {
-
-        return Employee.class;
-    }
-
-    @Override
-    public Class<EmployeeDto> getExpectedDtoClass() {
-
-        return EmployeeDto.class;
-    }
 }

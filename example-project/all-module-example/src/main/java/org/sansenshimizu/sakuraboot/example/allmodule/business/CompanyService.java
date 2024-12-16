@@ -47,24 +47,4 @@ public class CompanyService
     private final CachingUtil cachingUtil;
 
     private final CompanyMapper mapper;
-
-    @Override
-    public Class<Company> getEntityClass() {
-
-        return Company.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Company"
-        };
-    }
-
-    @Override
-    public Class<CompanyDto> getDtoClass() {
-
-        return CompanyDto.class;
-    }
 }

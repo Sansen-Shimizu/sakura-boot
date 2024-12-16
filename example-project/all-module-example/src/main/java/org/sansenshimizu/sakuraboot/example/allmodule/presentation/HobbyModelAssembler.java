@@ -16,8 +16,6 @@
 
 package org.sansenshimizu.sakuraboot.example.allmodule.presentation;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
@@ -32,11 +30,5 @@ public class HobbyModelAssembler
         final GlobalSpecification globalSpecification) {
 
         super(HobbyController.class, HobbyModel.class, globalSpecification);
-    }
-
-    @Override
-    protected Function<HobbyDto, HobbyModel> instantiateModel() {
-
-        return HobbyModel::new;
     }
 }

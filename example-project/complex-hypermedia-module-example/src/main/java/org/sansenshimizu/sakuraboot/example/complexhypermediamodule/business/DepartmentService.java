@@ -35,10 +35,4 @@ public class DepartmentService implements BasicService<Department, Long> {
     private final DepartmentRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    @Override
-    public Class<Department> getEntityClass() {
-
-        return Department.class;
-    }
 }

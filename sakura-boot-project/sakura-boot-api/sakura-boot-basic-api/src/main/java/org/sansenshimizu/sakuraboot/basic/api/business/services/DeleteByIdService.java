@@ -73,11 +73,6 @@ import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
  *
  *         return this.repository;
  *     }
- *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
- *
- *         return YourEntity.class;
- *     }
  * }
  * </pre>
  *
@@ -90,6 +85,7 @@ import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
  * @see        DeleteByIdService#deleteById(Comparable)
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface DeleteByIdService<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperService<E, I> {
 

@@ -47,24 +47,4 @@ public class DepartmentService
     private final CachingUtil cachingUtil;
 
     private final AbstractDepartmentMapper mapper;
-
-    @Override
-    public Class<Department> getEntityClass() {
-
-        return Department.class;
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Department"
-        };
-    }
-
-    @Override
-    public Class<DepartmentDto> getDtoClass() {
-
-        return DepartmentDto.class;
-    }
 }

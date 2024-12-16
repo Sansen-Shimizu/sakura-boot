@@ -36,10 +36,10 @@ import org.springframework.http.HttpStatus;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
-import org.sansenshimizu.sakuraboot.test.BeanCreatorHelper;
 import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -138,7 +138,7 @@ public interface FindAllByCriteriaFT<E extends DataPresentation<I>,
      */
     default Class<F> getFilterClass() {
 
-        return BeanCreatorHelper.findBeanClassFromInterface(getClass(),
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
             FindAllByCriteriaFT.class.getTypeName(), 2);
     }
 

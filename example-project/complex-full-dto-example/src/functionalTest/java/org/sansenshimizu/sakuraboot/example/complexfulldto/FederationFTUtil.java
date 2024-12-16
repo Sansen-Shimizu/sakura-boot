@@ -46,30 +46,4 @@ public class FederationFTUtil
         this.mapper = mapper;
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/federations";
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Federation"
-        };
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "federations";
-    }
-
-    @Override
-    public String relationshipName() {
-
-        return "api/hobbies";
-    }
 }

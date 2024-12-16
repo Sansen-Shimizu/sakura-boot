@@ -71,12 +71,6 @@ public class ManagerControllerIT
     }
 
     @Override
-    public String getBasePath() {
-
-        return "managers";
-    }
-
-    @Override
     public List<String> fieldsToIgnoreInAssert() {
 
         return List.of("department");

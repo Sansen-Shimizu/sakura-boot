@@ -26,7 +26,6 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.ManagerFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.ManagerModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.ManagerTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -48,22 +47,4 @@ public class ManagerControllerTest
 
     @Mock
     private ManagerModelAssembler modelAssembler;
-
-    @Override
-    public Class<ManagerFilter> getExpectedFilterClass() {
-
-        return ManagerFilter.class;
-    }
-
-    @Override
-    public Hypermedia<ManagerDto, ManagerModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<ManagerDto> getExpectedDataClass() {
-
-        return ManagerDto.class;
-    }
 }

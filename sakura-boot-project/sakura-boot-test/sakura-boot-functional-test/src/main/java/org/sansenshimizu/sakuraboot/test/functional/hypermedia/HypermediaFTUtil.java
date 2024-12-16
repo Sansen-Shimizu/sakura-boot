@@ -17,6 +17,9 @@
 package org.sansenshimizu.sakuraboot.test.functional.hypermedia;
 
 import java.io.Serializable;
+import java.util.Locale;
+
+import org.atteo.evo.inflector.English;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
@@ -63,18 +66,6 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  *         return YourEntity.builder().id(id).build();
  *         // If your class don't have a builder you can use the constructor
  *     }
- *
- *     &#064;Override
- *     public String getPath() {
- *
- *         return "api/pathName";
- *     }
- *
- *     &#064;Override
- *     public String entityCollectionName() {
- *
- *         return "entitiesName";
- *     }
  * }
  * </pre>
  *
@@ -86,6 +77,7 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  * @see        BasicFTUtil
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface HypermediaFTUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends BasicFTUtil<E, I> {
 
@@ -106,25 +98,11 @@ public interface HypermediaFTUtil<E extends DataPresentation<I>,
      *
      * @return The collection name.
      */
-    String entityCollectionName();
+    default String entityCollectionName() {
 
-    /**
-     * Get the name of the relationship, if any.
-     *
-     * @return The relationship name.
-     */
-    default String relationshipName() {
-
-        return "";
-    }
-
-    /**
-     * Get the name of the second relationship, if any.
-     *
-     * @return The second relationship name.
-     */
-    default String secondRelationshipName() {
-
-        return "";
+        return English
+            .plural(CAMEL_CASE_PATTERN.matcher(getEntityClass().getSimpleName())
+                .replaceAll("$1-$2")
+                .toLowerCase(Locale.ENGLISH));
     }
 }

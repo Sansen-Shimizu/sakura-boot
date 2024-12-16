@@ -38,9 +38,4 @@ public class CompanyController
     private final CompanyService service;
 
     private final CompanyModelAssembler modelAssembler;
-
-    public Class<Company> getDataClass() {
-
-        return Company.class;
-    }
 }

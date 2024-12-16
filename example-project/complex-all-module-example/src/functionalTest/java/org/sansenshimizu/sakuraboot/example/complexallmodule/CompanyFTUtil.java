@@ -45,24 +45,4 @@ public class CompanyFTUtil extends AbstractCommonUtil<Company, CompanyDto> {
         this.mapper = mapper;
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/companies";
-    }
-
-    @Override
-    public String[] getCacheNames() {
-
-        return new String[] {
-            "Company"
-        };
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "companies";
-    }
 }

@@ -29,6 +29,8 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModel;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,12 +66,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     }
  *
  *     &#064;Override
- *     public Class&lt;YourData&gt; getExpectedData() {
- *
- *         return YourData.class;
- *     }
- *
- *     &#064;Override
  *     public YourModelAssembler getModelAssembler() {
  *
  *         return modelAssembler;
@@ -85,6 +81,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @see        Hypermedia
  * @since      0.1.0
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 @ExtendWith(MockitoExtension.class)
 public interface HypermediaTest<D extends DataPresentation<?>,
     M extends AbstractBasicModelAssembler<D, ?>> {
@@ -94,7 +91,20 @@ public interface HypermediaTest<D extends DataPresentation<?>,
      *
      * @return A {@link Hypermedia}.
      */
-    Hypermedia<D, M> getHypermedia();
+    default Hypermedia<D, M> getHypermedia() {
+
+        if (SuperControllerTest.class.isAssignableFrom(getClass())) {
+
+            // noinspection RedundantClassCall
+            @SuppressWarnings("unchecked")
+            final Hypermedia<D, M> controller = (Hypermedia<D,
+                M>) SuperControllerTest.class.cast(this).getController();
+            return controller;
+        }
+        throw new IllegalStateException(
+            "HypermediaTest controller must also implement SuperControllerTest "
+                + "or need to override this method.");
+    }
 
     /**
      * Get the expected data class uses in test.
@@ -103,7 +113,11 @@ public interface HypermediaTest<D extends DataPresentation<?>,
      *
      * @return A DataPresentation class.
      */
-    Class<D> getExpectedDataClass();
+    default Class<D> getExpectedDataClass() {
+
+        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
+            HypermediaTest.class.getTypeName());
+    }
 
     /**
      * Get the {@link AbstractBasicModelAssembler} for test. Need to be

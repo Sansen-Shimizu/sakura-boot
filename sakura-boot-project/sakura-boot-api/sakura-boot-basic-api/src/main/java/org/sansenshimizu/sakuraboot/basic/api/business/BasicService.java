@@ -77,11 +77,6 @@ import org.sansenshimizu.sakuraboot.basic.api.business.services.UpdateByIdServic
  *         return this.repository;
  *     }
  *
- *     public Class&lt;YourEntity&gt; getEntityClass() {
- *
- *         return YourEntity.class;
- *     }
- *
  *     public ObjectMapper getObjectMapper() {
  *
  *         return objectMapper;

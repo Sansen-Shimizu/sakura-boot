@@ -35,16 +35,4 @@ public class CompanyFTUtil implements HypermediaFTUtil<Company, Long> {
 
         this.globalSpecification = globalSpecification;
     }
-
-    @Override
-    public String getPath() {
-
-        return "api/companies";
-    }
-
-    @Override
-    public String entityCollectionName() {
-
-        return "companies";
-    }
 }

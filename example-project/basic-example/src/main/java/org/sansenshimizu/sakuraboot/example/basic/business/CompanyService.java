@@ -33,9 +33,4 @@ public class CompanyService implements BasicService<Company, Long> {
     private final CompanyRepository repository;
 
     private final ObjectMapper objectMapper;
-
-    public Class<Company> getEntityClass() {
-
-        return Company.class;
-    }
 }

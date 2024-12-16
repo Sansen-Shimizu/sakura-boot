@@ -24,7 +24,6 @@ import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.business.Fed
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Federation;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.util.FederationTestUtil;
-import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.test.basic.api.presentation.BasicControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 
@@ -46,16 +45,4 @@ public class FederationControllerTest
 
     @Mock
     private FederationModelAssembler modelAssembler;
-
-    @Override
-    public Hypermedia<Federation, FederationModelAssembler> getHypermedia() {
-
-        return controller;
-    }
-
-    @Override
-    public Class<Federation> getExpectedDataClass() {
-
-        return Federation.class;
-    }
 }

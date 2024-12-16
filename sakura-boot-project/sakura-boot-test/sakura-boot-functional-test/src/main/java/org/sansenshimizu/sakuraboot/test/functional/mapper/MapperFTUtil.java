@@ -71,12 +71,6 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  *     }
  *
  *     &#064;Override
- *     public String getPath() {
- *
- *         return "api/pathName";
- *     }
- *
- *     &#064;Override
  *     public Optional&lt;YourDto&gt; createValidationErrorDto(YourIdType id) {
  *
  *         return YourDto.builder().id(id).build();

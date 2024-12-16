@@ -69,10 +69,4 @@ public class CompanyControllerIT
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
-
-    @Override
-    public String getBasePath() {
-
-        return "companies";
-    }
 }

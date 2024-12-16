@@ -70,10 +70,4 @@ public class DepartmentControllerIT
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
-
-    @Override
-    public String getBasePath() {
-
-        return "departments";
-    }
 }
