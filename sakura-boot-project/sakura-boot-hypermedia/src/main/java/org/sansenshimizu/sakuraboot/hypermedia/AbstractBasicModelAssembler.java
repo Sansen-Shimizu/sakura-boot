@@ -16,6 +16,7 @@
 
 package org.sansenshimizu.sakuraboot.hypermedia;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -120,8 +121,10 @@ public abstract class AbstractBasicModelAssembler<D extends DataPresentation<?>,
 
             try {
 
-                return modelType.getDeclaredConstructor(data.getClass())
-                    .newInstance(data);
+                final Constructor<M> constructor
+                    = modelType.getDeclaredConstructor(data.getClass());
+                constructor.setAccessible(true);
+                return constructor.newInstance(data);
             } catch (final InstantiationException | NoSuchMethodException
                 | IllegalAccessException | InvocationTargetException e) {
 
