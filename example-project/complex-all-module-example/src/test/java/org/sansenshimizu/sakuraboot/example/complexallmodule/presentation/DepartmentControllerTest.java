@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.DepartmentModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.DepartmentTestUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -39,6 +40,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class DepartmentControllerTest
     implements
     CriteriaControllerTest<Department, UUID, DepartmentDto, DepartmentFilter>,
+    CriteriaBulkControllerTest<Department, UUID, DepartmentDto,
+        DepartmentFilter>,
     HypermediaTest<DepartmentDto, DepartmentModelAssembler> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();

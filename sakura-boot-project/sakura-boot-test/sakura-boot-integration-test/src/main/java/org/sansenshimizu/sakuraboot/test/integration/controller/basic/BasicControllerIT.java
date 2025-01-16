@@ -90,12 +90,6 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.basic.controller
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *

@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -131,16 +130,14 @@ public interface PatchByIdController<E extends DataPresentation<I>,
     @SwaggerBasicApiResponse
     @SwaggerNotFoundApiResponse
     @SwaggerUpdateOperation
-    @PatchMapping(value = {
-        "", "/{id}"
-    }, consumes = {
+    @PatchMapping(value = "/{id}", consumes = {
         MediaType.APPLICATION_JSON_VALUE, "application/merge-patch+json"
     }, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApplyHypermedia
     @Logging
-    default ResponseEntity<DataPresentation<I>> patchById(
-        @RequestBody final D data,
-        @PathVariable(value = "id", required = false) @Nullable final I id) {
+    @SuppressWarnings("java:S1452")
+    default ResponseEntity<?> patchById(
+        @RequestBody final D data, @PathVariable("id") final I id) {
 
         return ResponseEntity.ok(getService().patchById(data, id));
     }

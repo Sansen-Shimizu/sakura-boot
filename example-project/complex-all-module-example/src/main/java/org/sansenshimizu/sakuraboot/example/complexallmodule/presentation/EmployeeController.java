@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.EmployeeService;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employee;
@@ -38,6 +39,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @RequiredArgsConstructor
 public class EmployeeController
     implements CriteriaController<Employee, UUID, EmployeeDto, EmployeeFilter>,
+    CriteriaBulkController<Employee, UUID, EmployeeDto, EmployeeFilter>,
     Hypermedia<EmployeeDto, EmployeeModelAssembler>, Loggable {
 
     private final EmployeeService service;

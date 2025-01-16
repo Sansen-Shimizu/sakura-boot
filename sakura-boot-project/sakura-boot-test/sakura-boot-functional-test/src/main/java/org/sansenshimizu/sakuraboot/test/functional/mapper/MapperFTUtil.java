@@ -22,7 +22,7 @@ import java.util.Objects;
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
 import org.sansenshimizu.sakuraboot.test.SuperDataITUtil;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 /**
  * The interface for all the utility functional test function. This interface
@@ -91,13 +91,13 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  * @param  <I> The ID of type Comparable and Serializable.
  * @param  <D> The DTO type extending {@link DataPresentation}.
  * @author     Malcolm Rozé
- * @see        BasicFTUtil
+ * @see        SuperFTUtil
  * @since      0.1.0
  */
 public interface MapperFTUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
     D extends DataPresentation<I>>
-    extends BasicFTUtil<E, I>, SuperDataITUtil<E, I, D> {
+    extends SuperFTUtil<E, I>, SuperDataITUtil<E, I, D> {
 
     /**
      * Get the mapper.

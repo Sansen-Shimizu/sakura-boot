@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.ManagerRe
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.ManagerFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.ManagerTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -38,7 +39,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class ManagerServiceTest
-    implements CriteriaServiceTest<Manager, Long, ManagerFilter>, CacheableTest,
+    implements CriteriaServiceTest<Manager, Long, ManagerFilter>,
+    CriteriaBulkServiceTest<Manager, Long, ManagerFilter>, CacheableTest,
     MappableTest<Manager, ManagerDto> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

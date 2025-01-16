@@ -35,6 +35,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.PatchByIdService;
+import org.sansenshimizu.sakuraboot.basic.api.persistence.BasicRepository;
 import org.sansenshimizu.sakuraboot.basic.api.relationship.FetchRelationshipRepository;
 import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
 import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
@@ -62,7 +63,7 @@ import static org.mockito.BDDMockito.given;
  *
  * <pre>
  * public class YourServiceTest
- *     implements BasicServiceTest&lt;YourEntity, YourIdType&gt; {
+ *     implements PatchByIdServiceTest&lt;YourEntity, YourIdType&gt; {
  *
  *     private YourUtil util = new YourUtil();
  *
@@ -122,6 +123,14 @@ public interface PatchByIdServiceTest<E extends DataPresentation<I>,
     PatchByIdService<E, I> getService();
 
     /**
+     * Get the {@link BasicRepository} for test. Need to be {@link Mock}.
+     *
+     * @return A {@link BasicRepository}.
+     */
+    @SuppressWarnings("EmptyMethod")
+    BasicRepository<E, I> getRepository();
+
+    /**
      * Get the {@link ObjectMapper} for test. Need to be {@link Mock}.
      *
      * @return An {@link ObjectMapper}.
@@ -169,34 +178,6 @@ public interface PatchByIdServiceTest<E extends DataPresentation<I>,
         // WHEN
         final DataPresentation<I> patchedEntity
             = getService().patchById(partialEntity, getValidId());
-
-        // THEN
-        assertThat(patchedEntity).usingRecursiveComparison()
-            .isEqualTo(entityWithId);
-    }
-
-    @Test
-    @DisplayName("GIVEN a null ID and partial entity with a valid ID,"
-        + " WHEN patching by ID,"
-        + " THEN the service should patch and return the patched entity")
-    default void testPatchByIdWithParameterNullId()
-        throws JsonMappingException {
-
-        // GIVEN
-        final E entityWithId = getUtil().getEntity();
-        final E partialEntity = getUtil().getPartialEntity();
-
-        mockFindByIdForPatch(entityWithId);
-        given(getObjectMapper().convertValue(any(),
-            ArgumentMatchers.<TypeReference<Map<String, Object>>>any()))
-            .willReturn(new HashMap<>());
-        given(getObjectMapper().updateValue(any(), any()))
-            .willReturn(entityWithId);
-        given(getRepository().save(any())).willReturn(entityWithId);
-
-        // WHEN
-        final DataPresentation<I> patchedEntity
-            = getService().patchById(partialEntity, null);
 
         // THEN
         assertThat(patchedEntity).usingRecursiveComparison()

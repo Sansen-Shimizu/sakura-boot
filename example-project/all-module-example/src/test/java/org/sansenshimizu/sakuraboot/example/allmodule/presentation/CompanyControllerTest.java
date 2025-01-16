@@ -24,6 +24,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.CompanyTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -33,6 +34,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class CompanyControllerTest
     implements CriteriaControllerTest<Company, Long, CompanyDto, CompanyFilter>,
+    CriteriaBulkControllerTest<Company, Long, CompanyDto, CompanyFilter>,
     HypermediaTest<CompanyDto, CompanyModelAssembler> {
 
     private final CompanyTestUtil util = new CompanyTestUtil();

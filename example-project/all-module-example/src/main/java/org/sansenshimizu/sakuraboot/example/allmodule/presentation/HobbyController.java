@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.HobbyService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Hobby;
@@ -34,6 +35,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @RequiredArgsConstructor
 public class HobbyController
     implements CriteriaController<Hobby, Long, HobbyDto, HobbyFilter>,
+    CriteriaBulkController<Hobby, Long, HobbyDto, HobbyFilter>,
     Hypermedia<HobbyDto, HobbyModelAssembler>, Loggable {
 
     private final HobbyService service;

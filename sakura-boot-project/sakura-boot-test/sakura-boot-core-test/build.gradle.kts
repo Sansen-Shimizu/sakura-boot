@@ -19,6 +19,7 @@ dependencies {
     api(libs.spring.test)
     implementation(libs.assertj.core)
     implementation(libs.commons.lang3)
+    implementation(libs.evo.inflector)
     implementation(libs.mockito.core)
     implementation(libs.slf4j.api)
     compileOnly(libs.logback.classic)

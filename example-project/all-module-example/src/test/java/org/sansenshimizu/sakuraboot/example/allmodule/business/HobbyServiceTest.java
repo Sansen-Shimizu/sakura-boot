@@ -27,6 +27,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.persistence.HobbyRepositor
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.HobbyFilter;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.HobbyTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -36,7 +37,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class HobbyServiceTest
-    implements CriteriaServiceTest<Hobby, Long, HobbyFilter>, CacheableTest,
+    implements CriteriaServiceTest<Hobby, Long, HobbyFilter>,
+    CriteriaBulkServiceTest<Hobby, Long, HobbyFilter>, CacheableTest,
     MappableTest<Hobby, HobbyDto> {
 
     private final HobbyTestUtil util = new HobbyTestUtil();

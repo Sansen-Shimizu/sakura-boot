@@ -101,12 +101,6 @@ import static org.mockito.BDDMockito.given;
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *

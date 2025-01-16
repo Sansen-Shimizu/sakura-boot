@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.CompanyService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Company;
@@ -34,6 +35,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @RequiredArgsConstructor
 public class CompanyController
     implements CriteriaController<Company, Long, CompanyDto, CompanyFilter>,
+    CriteriaBulkController<Company, Long, CompanyDto, CompanyFilter>,
     Hypermedia<CompanyDto, CompanyModelAssembler>, Loggable {
 
     private final CompanyService service;

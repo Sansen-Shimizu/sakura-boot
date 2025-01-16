@@ -87,29 +87,15 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresent
  *         return repository;
  *     }
  *
- *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
- *
- *         return YourEntity.class;
- *     }
- *
  *     public ObjectMapper getObjectMapper() {
  *
  *         return objectMapper;
  *     }
  *
  *     &#064;Override
- *     public void createSpecification(final YourFilter filter) {
+ *     public SpecificationBuilder&lt;YourEntity&gt; getSpecificationBuilder() {
  *
- *         specificationBuilder.createSpecificationForField(filter.getId(),
- *             YourEntity_.id);
- *         specificationBuilder.createSpecificationForField(
- *             filter.getOtherField(), YourEntity_.otherField);
- *         // Same thing for all your field in your entity.
- *         specificationBuilder.createSpecificationForField(
- *             YourEntity_.relationalField, JoinType.LEFT,
- *             filter.getRelationalField().getField(),
- *             YourRelationalEntity_.field);
- *         // For relational filtering.
+ *         return specificationBuilder;
  *     }
  * }
  * </pre>

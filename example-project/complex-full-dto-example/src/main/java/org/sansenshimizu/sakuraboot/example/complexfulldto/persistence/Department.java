@@ -52,7 +52,7 @@ public class Department extends AbstractBasicEntity<Long> {
     private static final long serialVersionUID = 3483687044259717900L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     @Nullable
     private Long id;

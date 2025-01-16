@@ -92,6 +92,12 @@ class MappingAspectTest implements AspectUtilTest {
     private static Object[] mapArgs;
 
     /**
+     * The arguments pass to function to test mapping with collection.
+     */
+    @SuppressWarnings("NotNullFieldNotInitialized")
+    private static Object[] mapArgsWithCollection;
+
+    /**
      * The arguments pass to function to test mapping with page.
      */
     @SuppressWarnings("NotNullFieldNotInitialized")
@@ -148,6 +154,9 @@ class MappingAspectTest implements AspectUtilTest {
         pageDto = new PageImpl<>(List.of(dto));
         mapArgs = new Object[] {
             dto
+        };
+        mapArgsWithCollection = new Object[] {
+            List.of(dto)
         };
         mapArgsWithPage = new Object[] {
             pageDto
@@ -224,6 +233,34 @@ class MappingAspectTest implements AspectUtilTest {
 
             // THEN
             assertThat(result).isEqualTo(dto);
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the mapping aspect method call,"
+        + " WHEN mapping the first arg as a collection and the return "
+        + "collection value,"
+        + " THEN the result should be the expected result")
+    final void testMappingFirstArgAndReturnForCollection() throws Throwable {
+
+        // GIVEN
+        given(joinPoint.getArgs()).willReturn(mapArgsWithCollection);
+        given(mappingAnnotation.mapFirstArgument()).willReturn(true);
+        given(target.getDtoClass()).willReturn(dtoClass);
+        given(target.getMapper()).willReturn(mapper);
+        given(mapper.toEntity(any())).willReturn(entity);
+        mockJoinPointWithArgs(List.of(entity));
+        given(mappingAnnotation.mapResult()).willReturn(true);
+        given(target.getEntityClassToMap()).willReturn(entityClass);
+        given(mapper.toDto(any())).willReturn(dto);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result
+                = aspect.mapping(joinPoint, target, mappingAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(List.of(dto));
         });
     }
 

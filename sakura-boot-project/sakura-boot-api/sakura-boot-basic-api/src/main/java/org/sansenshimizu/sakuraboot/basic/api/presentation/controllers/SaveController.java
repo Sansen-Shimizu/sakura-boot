@@ -129,7 +129,8 @@ public interface SaveController<E extends DataPresentation<I>,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ApplyHypermedia
     @Logging
-    default ResponseEntity<DataPresentation<I>> save(
+    @SuppressWarnings("java:S1452")
+    default ResponseEntity<?> save(
         @Validated(DataPresentation.FullData.class) @RequestBody final D data) {
 
         final DataPresentation<I> newData = getService().save(data);

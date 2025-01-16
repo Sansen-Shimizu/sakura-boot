@@ -96,12 +96,6 @@ import static org.mockito.BDDMockito.given;
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *
@@ -146,38 +140,7 @@ public interface PatchByIdControllerIT<E extends DataPresentation<I>,
         final ResultActions result = getMockMvc()
             .perform(MockMvcRequestBuilders.patch(getUrl() + "/{id}", validId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(partialData)));
-
-        // THEN
-        result.andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content()
-                .json(getJsonString(dataWithId)));
-
-        if (this instanceof HypermediaIT) {
-
-            result.andExpect(MockMvcResultMatchers.jsonPath(LINKS_PATH,
-                Matchers.notNullValue()));
-        }
-    }
-
-    @Test
-    @DisplayName("GIVEN a valid partial entity,"
-        + " WHEN patching by ID,"
-        + " THEN the controller should patch and return a valid response "
-        + "with the patched object")
-    default void testPatchingByIdWithNoId() throws Exception {
-
-        // GIVEN
-        final D dataWithId = getUtil().getData();
-        final D partialData = getUtil().getPartialData();
-        given(getService().patchById(any(), any())).willReturn(dataWithId);
-
-        // WHEN
-        final ResultActions result
-            = getMockMvc().perform(MockMvcRequestBuilders.patch(getUrl())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(partialData)));
+                .content(getJsonString(partialData)));
 
         // THEN
         result.andDo(MockMvcResultHandlers.print())

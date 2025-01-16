@@ -37,6 +37,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.ManagerModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.ManagerITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -51,6 +52,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 })
 public class ManagerControllerIT
     implements CriteriaControllerIT<Manager, UUID, ManagerDto, ManagerFilter>,
+    CriteriaBulkControllerIT<Manager, UUID, ManagerDto, ManagerFilter>,
     HypermediaIT<Manager, UUID, ManagerDto> {
 
     private final ManagerITUtil util = new ManagerITUtil();

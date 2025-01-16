@@ -68,27 +68,29 @@ import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasKey;
 
 /**
  * The super interface for all functional tests. This interface has no test but
- * can be used to simplify the access to the {@link BasicFTUtil} interface and
+ * can be used to simplify the access to the {@link SuperFTUtil} interface and
  * do functional test.
  * <p>
  * <b>Example:</b>
  * </p>
  * <p>
- * To create a concrete test class that inherits from {@link BasicFT}, follow
+ * To create a concrete test class that inherits from {@link SuperFT}, follow
  * these steps:
  * </p>
  * <p>
- * Implements the {@link BasicFT} class:
+ * Implements the {@link SuperFT} class:
  * </p>
  * <blockquote>
  *
  * <pre>
- * public class YourFT implements BasicFT&lt;YourEntity, YourIdType&gt; {
+ * public class YourFT implements SuperFT&lt;YourEntity, YourIdType&gt; {
  *
  *     private final YourUtil util;
  *
@@ -141,11 +143,11 @@ import static org.hamcrest.Matchers.hasItem;
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
  * @see        SuperIT
- * @see        BasicFTUtil
+ * @see        SuperFTUtil
  * @since      0.1.0
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public interface BasicFT<E extends DataPresentation<I>,
+public interface SuperFT<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperIT<E, I> {
 
     /**
@@ -196,12 +198,12 @@ public interface BasicFT<E extends DataPresentation<I>,
     int getPort();
 
     /**
-     * Return a Util class of type {@link BasicFTUtil}.
+     * Return a Util class of type {@link SuperFTUtil}.
      *
      * @return A Util class for testing.
      */
     @Override
-    BasicFTUtil<E, I> getUtil();
+    SuperFTUtil<E, I> getUtil();
 
     /**
      * The base url path of the controller.
@@ -565,6 +567,91 @@ public interface BasicFT<E extends DataPresentation<I>,
      * @param  headers                 The expected headers in the response as a
      *                                 map.
      * @param  bodyContains            Contains the expected body of the
+     *                                 response as a collection.
+     * @param  assertLinks             If the links should be asserted.
+     * @throws JsonProcessingException if the bodyContains can't be converted to
+     *                                 JSON.
+     */
+    default void assertResponse(
+        final ValidatableResponse response, final HttpStatus status,
+        final ContentType contentType, final Map<String, String> headers,
+        final Collection<DataPresentation<I>> bodyContains,
+        final boolean assertLinks)
+        throws JsonProcessingException {
+
+        final String contentPath;
+
+        if (getUtil() instanceof final HypermediaFTUtil<?,
+            ?> hypermediaFTUtil) {
+
+            contentPath
+                = "_embedded." + hypermediaFTUtil.entityCollectionName();
+        } else {
+
+            contentPath = "";
+        }
+
+        for (final DataPresentation<I> bodyContain: bodyContains) {
+
+            final String links;
+
+            if (assertLinks
+                && getUtil() instanceof final HypermediaFTUtil<?,
+                    I> hypermediaUtil) {
+
+                final String path = RestAssured.baseURI
+                    + ":"
+                    + RestAssured.port
+                    + getBasePath();
+                links = createHrefForEntity(path, bodyContain, hypermediaUtil);
+            } else {
+
+                links = "";
+
+                if (getUtil() instanceof HypermediaFTUtil) {
+
+                    response.assertThat()
+                        .body(contentPath, everyItem(hasKey("_links")));
+                }
+            }
+
+            final String objectJson = StringUtils
+                .chop(getObjectMapper().writeValueAsString(bodyContain));
+            final JsonPath expectedJson
+                = new JsonPath(objectJson + links + "}");
+
+            response.assertThat()
+                .body(contentPath, hasItem(allOf(expectedJson
+                    .<String, Object>getMap("")
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> !fieldsToIgnoreInAssert()
+                        .contains(entry.getKey()) && entry.getValue() != null)
+                    .map(entry -> hasEntry(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList()))));
+        }
+        response.assertThat()
+            .statusCode(status.value())
+            .assertThat()
+            .contentType(contentType);
+
+        for (final Map.Entry<String, String> header: headers.entrySet()) {
+
+            response.assertThat()
+                .header(header.getKey(),
+                    Matchers.containsString(header.getValue()));
+        }
+    }
+
+    /**
+     * Assert for testing the created response by rest assured.
+     *
+     * @param  response                The response creates in the test.
+     * @param  status                  The expected status of the response.
+     * @param  contentType             The expected content type of the body.
+     * @param  headers                 The expected headers in the response as a
+     *                                 map.
+     * @param  bodyContains            Contains the expected body of the
      *                                 response as a page.
      * @param  param                   The parameters given to the request.
      * @throws JsonProcessingException if the bodyContains can't be converted to
@@ -733,12 +820,12 @@ public interface BasicFT<E extends DataPresentation<I>,
                         .contains(entry.getKey()) && entry.getValue() != null)
                     .map(entry -> hasEntry(entry.getKey(), entry.getValue()))
                     .collect(Collectors.toList())));
-
-            response.assertThat()
-                .statusCode(status.value())
-                .assertThat()
-                .contentType(contentType);
         }
+
+        response.assertThat()
+            .statusCode(status.value())
+            .assertThat()
+            .contentType(contentType);
 
         for (final Map.Entry<String, String> header: headers.entrySet()) {
 

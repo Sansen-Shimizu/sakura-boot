@@ -27,13 +27,12 @@ import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.test.BeanCreatorHelper;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 
@@ -107,11 +106,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFT
+ * @see        SuperFT
  * @since      0.1.0
  */
 public interface SaveFT<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFT<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFT<E, I> {
 
     @Test
     @DisplayName("GIVEN a valid entity,"
@@ -140,10 +139,8 @@ public interface SaveFT<E extends DataPresentation<I>,
             .then();
 
         // THEN
-        final List<E> all
-            = getRepository().findAll(Pageable.unpaged()).getContent();
-        final I expectedId
-            = Objects.requireNonNull(all.get(all.size() - 1).getId());
+        final List<E> all = getRepository().findAll();
+        final I expectedId = Objects.requireNonNull(all.get(0).getId());
         final DataPresentation<I> expectedData
             = BeanCreatorHelper.getEmptyBean(getUtil().getEntityClass());
         ReflectionTestUtils.setField(expectedData, "id", expectedId);

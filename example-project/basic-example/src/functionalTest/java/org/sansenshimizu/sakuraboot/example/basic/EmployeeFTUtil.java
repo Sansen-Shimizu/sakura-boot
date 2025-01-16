@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.basic.persistence.Employee;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 @Getter
 @RequiredArgsConstructor
 @Component
-public class EmployeeFTUtil implements BasicFTUtil<Employee, Long> {
+public class EmployeeFTUtil implements SuperFTUtil<Employee, Long> {
 
     private final GlobalSpecification globalSpecification;
 }

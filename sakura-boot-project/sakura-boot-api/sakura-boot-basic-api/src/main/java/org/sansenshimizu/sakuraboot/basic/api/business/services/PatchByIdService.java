@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -144,7 +143,7 @@ public interface PatchByIdService<E extends DataPresentation<I>,
     @Mapping
     @Logging
     default DataPresentation<I> patchById(
-        final DataPresentation<I> data, @Nullable final I id) {
+        final DataPresentation<I> data, final I id) {
 
         final I dataId = getId(data, id);
 
@@ -212,7 +211,7 @@ public interface PatchByIdService<E extends DataPresentation<I>,
             }, null);
     }
 
-    private I getId(final DataPresentation<I> data, @Nullable final I id) {
+    private I getId(final DataPresentation<I> data, final I id) {
 
         final I dataId = data.getId();
 
@@ -223,7 +222,7 @@ public interface PatchByIdService<E extends DataPresentation<I>,
                     + getEntityClass().getSimpleName());
         }
 
-        if (id != null && !dataId.equals(id)) {
+        if (!dataId.equals(id)) {
 
             throw new BadRequestException(
                 "Can't partially update an entity when different ID are"

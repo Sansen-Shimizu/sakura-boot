@@ -24,6 +24,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.EmployeeDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.EmployeeService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Employee;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.EmployeeTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -34,6 +35,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class EmployeeControllerTest
     implements
     CriteriaControllerTest<Employee, Long, EmployeeDto, EmployeeFilter>,
+    CriteriaBulkControllerTest<Employee, Long, EmployeeDto, EmployeeFilter>,
     HypermediaTest<EmployeeDto, EmployeeModelAssembler> {
 
     private final EmployeeTestUtil util = new EmployeeTestUtil();

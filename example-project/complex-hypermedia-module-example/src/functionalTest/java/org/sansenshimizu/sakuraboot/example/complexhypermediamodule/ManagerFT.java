@@ -23,13 +23,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Manager;
-import org.sansenshimizu.sakuraboot.test.functional.basic.AllFT;
+import org.sansenshimizu.sakuraboot.test.functional.basic.BasicFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class ManagerFT implements AllFT<Manager, Long> {
+public class ManagerFT implements BasicFT<Manager, Long> {
 
     private final ManagerFTUtil util;
 

@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.basic.persistence.Hobby;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 @Getter
 @RequiredArgsConstructor
 @Component
-public class HobbyFTUtil implements BasicFTUtil<Hobby, Long> {
+public class HobbyFTUtil implements SuperFTUtil<Hobby, Long> {
 
     private final GlobalSpecification globalSpecification;
 }

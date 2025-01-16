@@ -25,6 +25,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -34,7 +35,6 @@ import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.test.aop.AspectUtilTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -45,11 +45,6 @@ import static org.mockito.Mockito.mock;
  * @since  0.1.0
  */
 class SaveRelationshipAspectTest implements AspectUtilTest {
-
-    /**
-     * The ID use in test.
-     */
-    private static final long ID = 1L;
 
     /**
      * The mock {@link ProceedingJoinPoint}.
@@ -65,7 +60,7 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
     private SaveWithRelationship saveAnnotation;
 
     /**
-     * The {@link RelationshipAspect} to test.
+     * The {@link SaveRelationshipAspect} to test.
      */
     @Getter
     private final SaveRelationshipAspect<DataPresentation<Long>, Long> aspect
@@ -73,7 +68,7 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
             "business", "business", "business", "presentation"));
 
     @ParameterizedTest
-    @MethodSource("getSaveTarget")
+    @MethodSource("getParams")
     @DisplayName("GIVEN the save relationship aspect method call,"
         + " WHEN save with relationship,"
         + " THEN the result should be the expected result")
@@ -100,15 +95,9 @@ class SaveRelationshipAspectTest implements AspectUtilTest {
         });
     }
 
-    private static Stream<Arguments> getSaveTarget() {
+    private static Stream<Arguments> getParams() {
 
-        final DataPresentation<Long> entityWithId = mock();
-        given(entityWithId.getId()).willReturn(ID);
-
-        final DataPresentation<Long> expectedEntity = mock();
-
-        final DataPresentation<Long> validEntity = mock();
-
-        return Stream.of(Arguments.of(validEntity, expectedEntity));
+        return Stream.of(Arguments.of(Mockito.<DataPresentation<Long>>mock(),
+            Mockito.<DataPresentation<Long>>mock()));
     }
 }

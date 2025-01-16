@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.ManagerService;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.ManagerDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
@@ -36,6 +37,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 @RequiredArgsConstructor
 public class ManagerController
     implements CriteriaController<Manager, Long, ManagerDto, ManagerFilter>,
+    CriteriaBulkController<Manager, Long, ManagerDto, ManagerFilter>,
     Hypermedia<ManagerDto, ManagerModelAssembler>, Loggable {
 
     private final ManagerService service;

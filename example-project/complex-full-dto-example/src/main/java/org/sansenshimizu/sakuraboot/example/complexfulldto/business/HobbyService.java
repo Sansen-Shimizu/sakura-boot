@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import org.sansenshimizu.sakuraboot.basic.api.relationship.annotations.Relationshipable;
+import org.sansenshimizu.sakuraboot.bulk.api.business.CriteriaBulkService;
 import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.HobbyDto;
@@ -39,7 +40,8 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class HobbyService
-    implements CriteriaService<Hobby, Long, HobbyFilter>, Cacheable,
+    implements CriteriaService<Hobby, Long, HobbyFilter>,
+    CriteriaBulkService<Hobby, Long, HobbyFilter>, Cacheable,
     Mappable<Hobby, HobbyDto>, Loggable {
 
     private final HobbyRepository repository;

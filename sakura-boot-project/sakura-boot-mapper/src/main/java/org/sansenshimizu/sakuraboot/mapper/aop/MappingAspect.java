@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.mapper.aop;
 
+import java.util.Collection;
+
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -51,36 +53,54 @@ public final class MappingAspect<E extends DataPresentation<?>,
     private Object toEntity(final Object object, final Mappable<E, D> target) {
 
         final Class<D> dtoClass = target.getDtoClass();
+        final Object result;
 
         if (dtoClass.isInstance(object)) {
 
-            return target.getMapper().toEntity(dtoClass.cast(object));
-        }
-
-        if (object instanceof final Page<?> page
+            result = target.getMapper().toEntity(dtoClass.cast(object));
+        } else if (object instanceof final Page<?> page
             && page.getContent().stream().allMatch(dtoClass::isInstance)) {
 
-            return page.map(dtoClass::cast).map(target.getMapper()::toEntity);
+            result = page.map(dtoClass::cast).map(target.getMapper()::toEntity);
+        } else if (object instanceof final Collection<?> collection
+            && collection.stream().allMatch(dtoClass::isInstance)) {
+
+            result = collection.stream()
+                .map(dtoClass::cast)
+                .map(target.getMapper()::toEntity)
+                .toList();
+        } else {
+
+            result = object;
         }
-        return object;
+        return result;
     }
 
     @Nullable
     private Object toDto(final Object object, final Mappable<E, D> target) {
 
         final Class<E> entityClass = target.getEntityClassToMap();
+        final Object result;
 
         if (entityClass.isInstance(object)) {
 
-            return target.getMapper().toDto(entityClass.cast(object));
-        }
-
-        if (object instanceof final Page<?> page
+            result = target.getMapper().toDto(entityClass.cast(object));
+        } else if (object instanceof final Page<?> page
             && page.getContent().stream().allMatch(entityClass::isInstance)) {
 
-            return page.map(entityClass::cast).map(target.getMapper()::toDto);
+            result = page.map(entityClass::cast).map(target.getMapper()::toDto);
+        } else if (object instanceof final Collection<?> collection
+            && collection.stream().allMatch(entityClass::isInstance)) {
+
+            result = collection.stream()
+                .map(entityClass::cast)
+                .map(target.getMapper()::toDto)
+                .toList();
+        } else {
+
+            result = object;
         }
-        return object;
+        return result;
     }
 
     /**

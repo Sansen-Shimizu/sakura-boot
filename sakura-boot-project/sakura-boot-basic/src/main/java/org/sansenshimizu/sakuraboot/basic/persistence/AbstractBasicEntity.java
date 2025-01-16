@@ -59,7 +59,7 @@ import org.sansenshimizu.sakuraboot.util.ToStringUtils;
  * public class YourEntity extends AbstractBasicEntity&lt;YourIdType&gt; {
  *
  *     &#064;Id
- *     &#064;GeneratedValue(strategy = GenerationType.IDENTITY)
+ *     &#064;GeneratedValue(strategy = GenerationType.AUTO)
  *     &#064;Column(nullable = false)
  *     private Long id;
  *

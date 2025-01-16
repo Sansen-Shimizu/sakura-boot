@@ -18,6 +18,8 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
 import java.util.UUID;
 
+import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepository;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
-public interface CompanyRepository extends CriteriaRepository<Company, UUID> {}
+public interface CompanyRepository
+    extends CriteriaRepository<Company, UUID>, BulkRepository<Company, UUID> {}

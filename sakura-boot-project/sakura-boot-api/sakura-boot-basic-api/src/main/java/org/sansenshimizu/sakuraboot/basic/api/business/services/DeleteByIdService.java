@@ -80,7 +80,7 @@ import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
  *
  * @param  <E> The {@link DataPresentation} type.
  * @param  <I> The ID of type Comparable and Serializable.
- * @author     Malcolm Roz&eacute;
+ * @author     Malcolm Rozé
  * @see        SuperService
  * @see        DeleteByIdService#deleteById(Comparable)
  * @since      0.1.0

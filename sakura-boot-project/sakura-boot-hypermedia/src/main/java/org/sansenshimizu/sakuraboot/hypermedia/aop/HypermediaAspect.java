@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.hypermedia.aop;
 
+import java.util.Collection;
+
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,6 +34,7 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.aop.AspectUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermedia;
+import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermediaOnCollection;
 import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermediaOnPage;
 
 /**
@@ -95,6 +98,56 @@ public final class HypermediaAspect<D extends DataPresentation<?>>
         } else {
 
             log.atError().log(ERROR_MESSAGE_BAD_TYPE + "DataPresentation.");
+        }
+
+        methodEndLog(log, joinPoint, target, annotation);
+        return result;
+    }
+
+    /**
+     * Aspect method that call
+     * {@link RepresentationModelAssemblerSupport#toModel(Object)}.
+     * This aspect method is call for method annotated with
+     * {@link ApplyHypermediaOnCollection}.
+     *
+     * @param  joinPoint  The method that return the {@link ResponseEntity} and
+     *                    need to add a hypermedia link to it.
+     * @param  target     The target of type {@link Hypermedia}.
+     * @param  annotation The annotation of type
+     *                    {@link ApplyHypermediaOnCollection}.
+     * @return            The result of the join point with the hypermedia link
+     *                    added.
+     * @throws Throwable  If an exception occurs in the join point.
+     */
+    @Around(ALL_EXECUTION_POINTCUT + TARGET_POINTCUT + ANNOTATION_POINTCUT)
+    public Object applyHypermediaOnCollection(
+        final ProceedingJoinPoint joinPoint, final Hypermedia<D, ?> target,
+        final ApplyHypermediaOnCollection annotation)
+        throws Throwable {
+
+        methodCallLog(log, joinPoint, target, annotation);
+
+        Object result = joinPoint.proceed();
+
+        if (result instanceof final ResponseEntity<?> responseEntity
+            && responseEntity
+                .getBody() instanceof final Collection<?> collection
+            && !collection.isEmpty()
+            && target.getDataClass().isInstance(collection.iterator().next())) {
+
+            final Collection<D> datas
+                = collection.stream().map(target.getDataClass()::cast).toList();
+            final RepresentationModelAssemblerSupport<D, ?> modelAssembler
+                = target.getModelAssembler();
+
+            result = ResponseEntity.status(responseEntity.getStatusCode())
+                .headers(responseEntity.getHeaders())
+                .body(modelAssembler.toCollectionModel(datas));
+
+            log.atInfo().log("new result for collection : " + result);
+        } else {
+
+            log.atError().log(ERROR_MESSAGE_BAD_TYPE + "Collection.");
         }
 
         methodEndLog(log, joinPoint, target, annotation);

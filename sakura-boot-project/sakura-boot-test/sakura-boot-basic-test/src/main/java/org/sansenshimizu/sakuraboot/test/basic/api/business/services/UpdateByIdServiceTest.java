@@ -21,9 +21,11 @@ import java.io.Serializable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.UpdateByIdService;
+import org.sansenshimizu.sakuraboot.basic.api.persistence.BasicRepository;
 import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
 import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
 import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
@@ -50,7 +52,7 @@ import static org.mockito.BDDMockito.given;
  *
  * <pre>
  * public class YourServiceTest
- *     implements BasicServiceTest&lt;YourEntity, YourIdType&gt; {
+ *     implements UpdateByIdServiceTest&lt;YourEntity, YourIdType&gt; {
  *
  *     private YourUtil util = new YourUtil();
  *
@@ -101,6 +103,14 @@ public interface UpdateByIdServiceTest<E extends DataPresentation<I>,
      */
     UpdateByIdService<E, I> getService();
 
+    /**
+     * Get the {@link BasicRepository} for test. Need to be {@link Mock}.
+     *
+     * @return A {@link BasicRepository}.
+     */
+    @SuppressWarnings("EmptyMethod")
+    BasicRepository<E, I> getRepository();
+
     @Test
     @DisplayName("GIVEN a valid ID and entity,"
         + " WHEN updating by ID,"
@@ -115,25 +125,6 @@ public interface UpdateByIdServiceTest<E extends DataPresentation<I>,
         // WHEN
         final DataPresentation<I> updatedEntity
             = getService().updateById(entityWithId, getValidId());
-
-        // THEN
-        assertThat(updatedEntity).isEqualTo(entityWithId);
-    }
-
-    @Test
-    @DisplayName("GIVEN a null ID and entity with a valid ID,"
-        + " WHEN updating by ID,"
-        + " THEN the service should update and return the entity")
-    default void testUpdateByIdWithParameterNullId() {
-
-        // GIVEN
-        final E entityWithId = getUtil().getEntity();
-        given(getRepository().existsById(any())).willReturn(true);
-        given(getRepository().save(any())).willReturn(entityWithId);
-
-        // WHEN
-        final DataPresentation<I> updatedEntity
-            = getService().updateById(entityWithId, null);
 
         // THEN
         assertThat(updatedEntity).isEqualTo(entityWithId);

@@ -19,6 +19,7 @@ package org.sansenshimizu.sakuraboot.test.basic.api.presentation.controllers;
 import java.io.Serializable;
 import java.util.List;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +31,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.FindAllService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.FindAllController;
 import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
@@ -109,9 +109,9 @@ public interface FindAllControllerTest<E extends DataPresentation<I>,
     FindAllController<E, I> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link FindAllService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link FindAllService}.
      */
     @Override
     FindAllService<E, I> getService();
@@ -129,12 +129,14 @@ public interface FindAllControllerTest<E extends DataPresentation<I>,
             .willReturn(new PageImpl<>(List.of(entityWithId)));
 
         // WHEN
-        final ResponseEntity<Page<DataPresentation<I>>> response
+        final ResponseEntity<Page<?>> response
             = getController().findAll(pageable);
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull()
+            .asInstanceOf(
+                InstanceOfAssertFactories.iterable(DataPresentation.class))
             .containsExactly(entityWithId);
     }
 
@@ -151,12 +153,14 @@ public interface FindAllControllerTest<E extends DataPresentation<I>,
             new PageImpl<>(List.of(entityWithId, otherEntityWithId)));
 
         // WHEN
-        final ResponseEntity<Page<DataPresentation<I>>> response
+        final ResponseEntity<Page<?>> response
             = getController().findAll(Pageable.unpaged());
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull()
+            .asInstanceOf(
+                InstanceOfAssertFactories.iterable(DataPresentation.class))
             .containsExactly(entityWithId, otherEntityWithId);
     }
 }

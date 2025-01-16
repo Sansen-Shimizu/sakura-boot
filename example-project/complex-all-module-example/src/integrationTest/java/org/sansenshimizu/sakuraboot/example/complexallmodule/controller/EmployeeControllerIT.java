@@ -37,6 +37,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.EmployeeModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.EmployeeITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -52,6 +53,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class EmployeeControllerIT
     implements
     CriteriaControllerIT<Employee, UUID, EmployeeDto, EmployeeFilter>,
+    CriteriaBulkControllerIT<Employee, UUID, EmployeeDto, EmployeeFilter>,
     HypermediaIT<Employee, UUID, EmployeeDto> {
 
     private final EmployeeITUtil util = new EmployeeITUtil();

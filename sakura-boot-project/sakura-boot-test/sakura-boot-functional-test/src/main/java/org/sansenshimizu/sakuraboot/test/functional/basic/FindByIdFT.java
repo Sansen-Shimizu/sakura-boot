@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 
@@ -103,11 +103,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFT
+ * @see        SuperFT
  * @since      0.1.0
  */
 public interface FindByIdFT<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFT<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFT<E, I> {
 
     @Test
     @DisplayName("GIVEN a valid ID,"

@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
+import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.SaveController;
 import org.sansenshimizu.sakuraboot.test.integration.controller.SuperControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 
@@ -94,12 +95,6 @@ import static org.mockito.BDDMockito.given;
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *
@@ -110,6 +105,7 @@ import static org.mockito.BDDMockito.given;
  * @param  <D> The {@link DataPresentation} type use to map the given JSON to an
  *             entity or DTO.
  * @author     Malcolm Rozé
+ * @see        SaveController
  * @see        SuperControllerIT
  * @since      0.1.0
  */
@@ -142,7 +138,7 @@ public interface SaveControllerIT<E extends DataPresentation<I>,
         final ResultActions result
             = getMockMvc().perform(MockMvcRequestBuilders.post(getUrl())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(dataWithoutId)));
+                .content(getJsonString(dataWithoutId)));
 
         // THEN
         result.andDo(MockMvcResultHandlers.print())

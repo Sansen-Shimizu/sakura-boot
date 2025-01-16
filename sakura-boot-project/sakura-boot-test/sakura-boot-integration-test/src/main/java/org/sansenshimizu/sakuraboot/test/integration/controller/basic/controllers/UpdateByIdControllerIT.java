@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.UpdateByIdService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.UpdateByIdController;
 import org.sansenshimizu.sakuraboot.test.integration.controller.SuperControllerIT;
@@ -97,12 +96,6 @@ import static org.mockito.BDDMockito.given;
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *
@@ -122,7 +115,7 @@ public interface UpdateByIdControllerIT<E extends DataPresentation<I>,
     D extends DataPresentation<I>> extends SuperControllerIT<E, I, D> {
 
     /**
-     * Return a mock service that extends {@link SaveService}.
+     * Return a mock service that extends {@link UpdateByIdService}.
      * Need to use {@link MockBean}.
      *
      * @return A mock service use in integration test.
@@ -146,37 +139,7 @@ public interface UpdateByIdControllerIT<E extends DataPresentation<I>,
         final ResultActions result = getMockMvc()
             .perform(MockMvcRequestBuilders.put(getUrl() + "/{id}", validId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(dataWithId)));
-
-        // THEN
-        result.andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content()
-                .json(getJsonString(dataWithId)));
-
-        if (this instanceof HypermediaIT) {
-
-            result.andExpect(MockMvcResultMatchers.jsonPath(LINKS_PATH,
-                Matchers.notNullValue()));
-        }
-    }
-
-    @Test
-    @DisplayName("GIVEN a valid entity,"
-        + " WHEN updating by ID,"
-        + " THEN the controller should update and return a valid response "
-        + "with the updated object")
-    default void testUpdateByIdWithNoId() throws Exception {
-
-        // GIVEN
-        final D dataWithId = getUtil().getData();
-        given(getService().updateById(any(), any())).willReturn(dataWithId);
-
-        // WHEN
-        final ResultActions result
-            = getMockMvc().perform(MockMvcRequestBuilders.put(getUrl())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(dataWithId)));
+                .content(getJsonString(dataWithId)));
 
         // THEN
         result.andDo(MockMvcResultHandlers.print())

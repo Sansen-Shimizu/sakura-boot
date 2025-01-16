@@ -19,6 +19,7 @@ dependencies {
     api(libs.spring.core)
     api(libs.spring.data.commons)
     api(libs.spring.data.jpa)
+    api(libs.spring.tx)
     api(libs.spring.web)
     api(libs.springdoc.openapi.starter.common)
     api(libs.swagger.annotations.jakarta)

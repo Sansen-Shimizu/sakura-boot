@@ -23,13 +23,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.basic.persistence.Company;
-import org.sansenshimizu.sakuraboot.test.functional.basic.AllFT;
+import org.sansenshimizu.sakuraboot.test.functional.basic.BasicFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class CompanyFT implements AllFT<Company, Long> {
+public class CompanyFT implements BasicFT<Company, Long> {
 
     private final CompanyFTUtil util;
 

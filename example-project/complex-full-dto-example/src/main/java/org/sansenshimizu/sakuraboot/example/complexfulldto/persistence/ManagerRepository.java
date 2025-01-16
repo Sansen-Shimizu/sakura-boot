@@ -16,9 +16,11 @@
 
 package org.sansenshimizu.sakuraboot.example.complexfulldto.persistence;
 
+import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepositoryKeepContext;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 import org.sansenshimizu.sakuraboot.specification.api.relationship.FetchRelationshipSpecificationRepository;
 
 public interface ManagerRepository
     extends CriteriaRepository<Manager, Long>,
+    BulkRepositoryKeepContext<Manager, Long>,
     FetchRelationshipSpecificationRepository<Manager, Long> {}

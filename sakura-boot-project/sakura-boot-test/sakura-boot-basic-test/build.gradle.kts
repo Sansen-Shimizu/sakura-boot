@@ -20,7 +20,6 @@ dependencies {
     api(libs.junit.jupiter.api)
     implementation(libs.assertj.core)
     implementation(libs.commons.lang3)
-    implementation(libs.evo.inflector)
     implementation(libs.hibernate.core)
     implementation(libs.jackson.core)
     implementation(libs.mockito.core)

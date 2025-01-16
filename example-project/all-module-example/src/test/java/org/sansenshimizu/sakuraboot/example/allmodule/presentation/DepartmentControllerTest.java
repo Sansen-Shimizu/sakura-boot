@@ -24,6 +24,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.allmodule.business.DepartmentService;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.DepartmentTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -34,6 +35,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class DepartmentControllerTest
     implements
     CriteriaControllerTest<Department, Long, DepartmentDto, DepartmentFilter>,
+    CriteriaBulkControllerTest<Department, Long, DepartmentDto,
+        DepartmentFilter>,
     HypermediaTest<DepartmentDto, DepartmentModelAssembler> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();

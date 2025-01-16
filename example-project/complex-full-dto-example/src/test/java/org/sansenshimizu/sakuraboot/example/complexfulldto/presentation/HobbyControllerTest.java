@@ -26,6 +26,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.HobbyFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.HobbyModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.HobbyTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -35,6 +36,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class HobbyControllerTest
     implements CriteriaControllerTest<Hobby, Long, HobbyDto, HobbyFilter>,
+    CriteriaBulkControllerTest<Hobby, Long, HobbyDto, HobbyFilter>,
     HypermediaTest<HobbyDto, HobbyModelAssembler> {
 
     private final HobbyTestUtil util = new HobbyTestUtil();

@@ -1,0 +1,2 @@
+org.sansenshimizu.sakuraboot.bulk.aop.SaveAllRelationshipAspect
+org.sansenshimizu.sakuraboot.bulk.configuration.BulkConfiguration

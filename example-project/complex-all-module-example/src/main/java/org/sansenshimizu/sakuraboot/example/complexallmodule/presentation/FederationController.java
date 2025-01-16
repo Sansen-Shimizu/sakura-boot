@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.FederationService;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federation;
@@ -39,6 +40,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 public class FederationController
     implements
     CriteriaController<Federation, UUID, FederationDto, FederationFilter>,
+    CriteriaBulkController<Federation, UUID, FederationDto, FederationFilter>,
     Hypermedia<FederationDto, FederationModelAssembler>, Loggable {
 
     private final FederationService service;

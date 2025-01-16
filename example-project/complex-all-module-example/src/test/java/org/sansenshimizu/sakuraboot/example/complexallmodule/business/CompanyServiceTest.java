@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Company
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.CompanyFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.CompanyTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -40,7 +41,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class CompanyServiceTest
-    implements CriteriaServiceTest<Company, UUID, CompanyFilter>, CacheableTest,
+    implements CriteriaServiceTest<Company, UUID, CompanyFilter>,
+    CriteriaBulkServiceTest<Company, UUID, CompanyFilter>, CacheableTest,
     MappableTest<Company, CompanyDto> {
 
     private final CompanyTestUtil util = new CompanyTestUtil();

@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employe
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.EmployeeFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.EmployeeTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -41,7 +42,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 @Getter
 public class EmployeeServiceTest
     implements CriteriaServiceTest<Employee, UUID, EmployeeFilter>,
-    CacheableTest, MappableTest<Employee, EmployeeDto> {
+    CriteriaBulkServiceTest<Employee, UUID, EmployeeFilter>, CacheableTest,
+    MappableTest<Employee, EmployeeDto> {
 
     private final EmployeeTestUtil util = new EmployeeTestUtil();
 

@@ -47,8 +47,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.services.Fin
  *
  * <pre>
  * public class YourServiceTest
- *     implements
- *     AbstractCriteriaServiceTest&lt;YourEntity, YourIdType, YourFilter&gt; {
+ *     implements CriteriaServiceTest&lt;YourEntity, YourIdType, YourFilter&gt; {
  *
  *     private YourUtil util = new YourUtil();
  *

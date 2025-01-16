@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.DeleteByIdService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.DeleteByIdController;
 import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
@@ -106,9 +105,9 @@ public interface DeleteByIdControllerTest<E extends DataPresentation<I>,
     DeleteByIdController<E, I> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link DeleteByIdService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link DeleteByIdService}.
      */
     @Override
     DeleteByIdService<E, I> getService();

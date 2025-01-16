@@ -18,6 +18,9 @@ package org.sansenshimizu.sakuraboot.example.complexallmodule.persistence;
 
 import java.util.UUID;
 
+import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepositoryKeepContext;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
-public interface ManagerRepository extends CriteriaRepository<Manager, UUID> {}
+public interface ManagerRepository
+    extends CriteriaRepository<Manager, UUID>,
+    BulkRepositoryKeepContext<Manager, UUID> {}

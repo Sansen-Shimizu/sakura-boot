@@ -17,7 +17,9 @@
 package org.sansenshimizu.sakuraboot.test;
 
 import java.io.Serializable;
+import java.util.Locale;
 
+import org.atteo.evo.inflector.English;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.SuperController;
 import org.sansenshimizu.sakuraboot.SuperService;
+import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 /**
  * The super test interface for all controllers.
@@ -101,4 +104,17 @@ public interface SuperControllerTest<E extends DataPresentation<I>,
      */
     @SuppressWarnings("EmptyMethod")
     SuperService<E, I> getService();
+
+    /**
+     * Get the entity name used to test the header location after saving.
+     *
+     * @return The entity name.
+     */
+    default String getEntityName() {
+
+        final Class<E> dataClass = ReflectionUtils.findGenericTypeFromInterface(
+            getClass(), SuperControllerTest.class.getTypeName(), 0);
+        return English
+            .plural(dataClass.getSimpleName().toLowerCase(Locale.ENGLISH));
+    }
 }

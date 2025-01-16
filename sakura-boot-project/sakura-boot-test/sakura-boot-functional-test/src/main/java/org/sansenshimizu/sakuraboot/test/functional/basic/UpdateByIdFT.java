@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 
@@ -104,11 +104,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFT
+ * @see        SuperFT
  * @since      0.1.0
  */
 public interface UpdateByIdFT<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFT<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFT<E, I> {
 
     @Test
     @DisplayName("GIVEN a valid ID and entity,"
@@ -125,7 +125,7 @@ public interface UpdateByIdFT<E extends DataPresentation<I>,
         if (getUtil() instanceof final MapperFTUtil<E, I, ?> mapperUtil) {
 
             dataWithId = mapperUtil.getDifferentDataWithId(saveEntity);
-            BasicFT.removeRelationshipsIfNeeded(getApplicationContext(),
+            SuperFT.removeRelationshipsIfNeeded(getApplicationContext(),
                 getUtil().getGlobalSpecification(), dataWithId);
         } else {
 
@@ -164,66 +164,17 @@ public interface UpdateByIdFT<E extends DataPresentation<I>,
     }
 
     @Test
-    @DisplayName("GIVEN a valid entity,"
-        + " WHEN updating by ID,"
-        + " THEN the controller should update and return a valid response "
-        + "with the updated object")
-    default void testUpdateByIdWithNoId() throws Exception {
-
-        // GIVEN
-        final E saveEntity = createAndSaveEntity();
-        final DataPresentation<I> dataWithId;
-
-        if (getUtil() instanceof final MapperFTUtil<E, I, ?> mapperUtil) {
-
-            dataWithId = mapperUtil.getDifferentDataWithId(saveEntity);
-            BasicFT.removeRelationshipsIfNeeded(getApplicationContext(),
-                getUtil().getGlobalSpecification(), dataWithId);
-        } else {
-
-            dataWithId = getUtil().getDifferentEntityWithId(saveEntity);
-        }
-
-        // WHEN
-        final ValidatableResponse response = RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(dataWithId)
-            .when()
-            .put()
-            .then();
-
-        // THEN
-        assertResponse(response, HttpStatus.OK, ContentType.JSON, Map.of(),
-            dataWithId, true);
-
-        if (getUtil() instanceof final CachingFTUtil<?, ?> cachingUtil) {
-
-            for (final String cacheName: cachingUtil.getCacheNames()) {
-
-                assertThat(cachingUtil.getCacheManager().getCache(cacheName))
-                    .isNotNull()
-                    .extracting(cache -> cache.get(
-                        Objects.requireNonNull(dataWithId.getId()),
-                        dataWithId.getClass()))
-                    .isEqualTo(dataWithId);
-                assertThat(
-                    cachingUtil.getCacheManager().getCache(cacheName + "All"))
-                    .isNotNull()
-                    .extracting(cache -> cache.get("all"))
-                    .isNull();
-            }
-        }
-    }
-
-    @Test
     @DisplayName("GIVEN no entity and content type,"
         + " WHEN updating by ID,"
         + " THEN the controller shouldn't update and return an error response")
     default void testUpdateByIdWithNoEntityAndContentType() {
 
+        // GIVEN
+        final I savedEntityId = createAndSaveEntity().getId();
+
         // WHEN
         final ValidatableResponse response
-            = RestAssured.given().when().put().then();
+            = RestAssured.given().when().put("/" + savedEntityId).then();
 
         // THEN
         assertErrorResponse(response, HttpStatus.UNSUPPORTED_MEDIA_TYPE,
@@ -236,11 +187,14 @@ public interface UpdateByIdFT<E extends DataPresentation<I>,
         + " THEN the controller shouldn't update and return an error response")
     default void testUpdateByIdWithNoEntity() {
 
+        // GIVEN
+        final I savedEntityId = createAndSaveEntity().getId();
+
         // WHEN
         final ValidatableResponse response = RestAssured.given()
             .contentType(ContentType.JSON)
             .when()
-            .put()
+            .put("/" + savedEntityId)
             .then();
 
         // THEN

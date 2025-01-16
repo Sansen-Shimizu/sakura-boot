@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.FindByIdService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.FindByIdController;
 import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
@@ -105,9 +104,9 @@ public interface FindByIdControllerTest<E extends DataPresentation<I>,
     FindByIdController<E, I> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link FindByIdService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link FindByIdService}.
      */
     @Override
     FindByIdService<E, I> getService();
@@ -125,8 +124,7 @@ public interface FindByIdControllerTest<E extends DataPresentation<I>,
         given(getService().findById(any())).willReturn(entityWithId);
 
         // WHEN
-        final ResponseEntity<DataPresentation<I>> response
-            = getController().findById(validId);
+        final ResponseEntity<?> response = getController().findById(validId);
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

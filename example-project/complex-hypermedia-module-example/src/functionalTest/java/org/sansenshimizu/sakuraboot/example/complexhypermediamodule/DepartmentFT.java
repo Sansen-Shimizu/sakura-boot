@@ -23,13 +23,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Department;
-import org.sansenshimizu.sakuraboot.test.functional.basic.AllFT;
+import org.sansenshimizu.sakuraboot.test.functional.basic.BasicFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class DepartmentFT implements AllFT<Department, Long> {
+public class DepartmentFT implements BasicFT<Department, Long> {
 
     private final DepartmentFTUtil util;
 

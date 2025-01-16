@@ -17,10 +17,8 @@
 package org.sansenshimizu.sakuraboot.test.basic.api.presentation.controllers;
 
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Map;
 
-import org.atteo.evo.inflector.English;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,12 +30,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.SaveController;
 import org.sansenshimizu.sakuraboot.test.BasicDataTestUtil;
 import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
-import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,25 +119,12 @@ public interface SaveControllerTest<E extends DataPresentation<I>,
     SaveController<E, I, D> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link SaveService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link SaveService}.
      */
     @Override
     SaveService<E, I> getService();
-
-    /**
-     * Get the entity name used to test the header location after saving.
-     *
-     * @return The entity name.
-     */
-    default String getEntityName() {
-
-        final Class<D> dataClass = ReflectionUtils.findGenericTypeFromInterface(
-            getClass(), SaveControllerTest.class.getTypeName(), 0);
-        return English
-            .plural(dataClass.getSimpleName().toLowerCase(Locale.ENGLISH));
-    }
 
     @Test
     @DisplayName("GIVEN a valid entity,"
@@ -159,8 +142,7 @@ public interface SaveControllerTest<E extends DataPresentation<I>,
             .setRequestAttributes(new ServletRequestAttributes(request));
 
         // WHEN
-        final ResponseEntity<DataPresentation<I>> response
-            = getController().save(dataWithoutId);
+        final ResponseEntity<?> response = getController().save(dataWithoutId);
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);

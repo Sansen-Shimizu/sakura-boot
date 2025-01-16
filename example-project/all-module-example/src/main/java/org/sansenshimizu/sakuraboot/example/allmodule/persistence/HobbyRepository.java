@@ -16,6 +16,8 @@
 
 package org.sansenshimizu.sakuraboot.example.allmodule.persistence;
 
+import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepository;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
-public interface HobbyRepository extends CriteriaRepository<Hobby, Long> {}
+public interface HobbyRepository
+    extends CriteriaRepository<Hobby, Long>, BulkRepository<Hobby, Long> {}
