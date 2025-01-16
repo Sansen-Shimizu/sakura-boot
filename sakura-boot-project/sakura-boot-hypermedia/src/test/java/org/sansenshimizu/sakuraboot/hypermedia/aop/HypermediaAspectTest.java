@@ -31,6 +31,7 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,7 @@ import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModel;
 import org.sansenshimizu.sakuraboot.hypermedia.AbstractBasicModelAssembler;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermedia;
+import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermediaOnCollection;
 import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermediaOnPage;
 import org.sansenshimizu.sakuraboot.test.aop.AspectUtilTest;
 
@@ -76,6 +78,12 @@ class HypermediaAspectTest implements AspectUtilTest {
     private static ResponseEntity<?> response;
 
     /**
+     * A response collection of entity use for testing.
+     */
+    @SuppressWarnings("NotNullFieldNotInitialized")
+    private static ResponseEntity<?> collectionResponse;
+
+    /**
      * A response page of entity use for testing.
      */
     @SuppressWarnings("NotNullFieldNotInitialized")
@@ -92,6 +100,12 @@ class HypermediaAspectTest implements AspectUtilTest {
      */
     @SuppressWarnings("NotNullFieldNotInitialized")
     private static ResponseEntity<?> expectedResponse;
+
+    /**
+     * A response collection of entity use for testing.
+     */
+    @SuppressWarnings("NotNullFieldNotInitialized")
+    private static ResponseEntity<?> expectedCollectionResponse;
 
     /**
      * A page model use for testing.
@@ -126,6 +140,12 @@ class HypermediaAspectTest implements AspectUtilTest {
      */
     @Mock
     private ApplyHypermedia applyHypermediaAnnotation;
+
+    /**
+     * The mock {@link ApplyHypermediaOnCollection} annotation.
+     */
+    @Mock
+    private ApplyHypermediaOnCollection applyHypermediaOnCollectionAnnotation;
 
     /**
      * The mock {@link ApplyHypermediaOnPage} annotation.
@@ -174,12 +194,15 @@ class HypermediaAspectTest implements AspectUtilTest {
             = (Class<DataPresentation<Long>>) dto.getClass();
         dtoClass = castClass;
         response = new ResponseEntity<>(dto, HttpStatus.OK);
+        collectionResponse = new ResponseEntity<>(List.of(dto), HttpStatus.OK);
         final Page<DataPresentation<Long>> pageDto
             = new PageImpl<>(List.of(dto));
         pageResponse = new ResponseEntity<>(pageDto, HttpStatus.OK);
 
         model = mock();
         expectedResponse = new ResponseEntity<>(model, HttpStatus.OK);
+        expectedCollectionResponse = new ResponseEntity<>(
+            CollectionModel.of(List.of(model)), HttpStatus.OK);
         pageModel = PagedModel.of(List.of(model),
             new PagedModel.PageMetadata(1, 1, 1));
         expectedPageResponse = new ResponseEntity<>(pageModel, HttpStatus.OK);
@@ -261,6 +284,150 @@ class HypermediaAspectTest implements AspectUtilTest {
                     .isEqualTo(expectedResponse.getStatusCode());
                 assertThat(castResult.getBody())
                     .isEqualTo(expectedResponse.getBody());
+            }
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the hypermedia aspect method call,"
+        + " WHEN applying hypermedia on a collection,"
+        + " THEN the result should be the expected result")
+    final void testApplyHypermediaOnCollection() throws Throwable {
+
+        // GIVEN
+        final List<Integer> expectedValues = List.of(EXPECTED_VALUE);
+        mockJoinPoint(expectedValues);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result = aspect.applyHypermediaOnCollection(joinPoint,
+                target, applyHypermediaOnCollectionAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(expectedValues);
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the hypermedia aspect method call,"
+        + " WHEN applying hypermedia on response with no collection,"
+        + " THEN the result should be the expected result")
+    final void testApplyHypermediaOnCollectionOnResponseNoCollection()
+        throws Throwable {
+
+        // GIVEN
+        final ResponseEntity<?> responseEntity
+            = new ResponseEntity<>(EXPECTED_VALUE, HttpStatus.OK);
+        mockJoinPoint(responseEntity);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result = aspect.applyHypermediaOnCollection(joinPoint,
+                target, applyHypermediaOnCollectionAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(responseEntity);
+
+            if (result instanceof final ResponseEntity<?> castResult) {
+
+                assertThat(responseEntity.getStatusCode())
+                    .isEqualTo(castResult.getStatusCode());
+                assertThat(responseEntity.getBody())
+                    .isEqualTo(castResult.getBody());
+            }
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the hypermedia aspect method call,"
+        + " WHEN applying hypermedia on response with an empty collection,"
+        + " THEN the result should be the expected result")
+    final void testApplyHypermediaOnCollectionOnResponseWithEmptyCollection()
+        throws Throwable {
+
+        // GIVEN
+        final ResponseEntity<?> responseEntity
+            = new ResponseEntity<>(List.of(), HttpStatus.OK);
+        mockJoinPoint(responseEntity);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result = aspect.applyHypermediaOnCollection(joinPoint,
+                target, applyHypermediaOnCollectionAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(responseEntity);
+
+            if (result instanceof final ResponseEntity<?> castResult) {
+
+                assertThat(castResult.getStatusCode())
+                    .isEqualTo(responseEntity.getStatusCode());
+                assertThat(castResult.getBody())
+                    .isEqualTo(responseEntity.getBody());
+            }
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the hypermedia aspect method call,"
+        + " WHEN applying hypermedia on response with a collection,"
+        + " THEN the result should be the expected result")
+    final void testApplyHypermediaOnCollectionOnResponseWithCollection()
+        throws Throwable {
+
+        // GIVEN
+        final ResponseEntity<?> responseEntity
+            = new ResponseEntity<>(List.of(EXPECTED_VALUE), HttpStatus.OK);
+        mockJoinPoint(responseEntity);
+        given(target.getDataClass()).willReturn(dtoClass);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result = aspect.applyHypermediaOnCollection(joinPoint,
+                target, applyHypermediaOnCollectionAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(responseEntity);
+
+            if (result instanceof final ResponseEntity<?> castResult) {
+
+                assertThat(castResult.getStatusCode())
+                    .isEqualTo(responseEntity.getStatusCode());
+                assertThat(castResult.getBody())
+                    .isEqualTo(responseEntity.getBody());
+            }
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN the hypermedia aspect method call,"
+        + " WHEN applying hypermedia on response with a collection of "
+        + "entities,"
+        + " THEN the result should be the expected result")
+    final void testApplyHypermediaOnCollectionOnResponseEntityWithCollection()
+        throws Throwable {
+
+        // GIVEN
+        mockJoinPoint(collectionResponse);
+        given(target.getDataClass()).willReturn(dtoClass);
+        given(target.getModelAssembler()).willReturn(modelAssembler);
+        given(modelAssembler.toCollectionModel(any()))
+            .willReturn(CollectionModel.of(List.of(model)));
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result = aspect.applyHypermediaOnCollection(joinPoint,
+                target, applyHypermediaOnCollectionAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(expectedCollectionResponse);
+
+            if (result instanceof final ResponseEntity<?> castResult) {
+
+                assertThat(castResult.getStatusCode())
+                    .isEqualTo(expectedCollectionResponse.getStatusCode());
+                assertThat(castResult.getBody())
+                    .isEqualTo(expectedCollectionResponse.getBody());
             }
         });
     }

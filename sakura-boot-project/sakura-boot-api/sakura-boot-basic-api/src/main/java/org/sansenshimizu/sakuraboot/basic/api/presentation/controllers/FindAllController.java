@@ -121,7 +121,8 @@ public interface FindAllController<E extends DataPresentation<I>,
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ApplyHypermediaOnPage
     @Logging
-    default ResponseEntity<Page<DataPresentation<I>>> findAll(
+    @SuppressWarnings("java:S1452")
+    default ResponseEntity<Page<?>> findAll(
         @Parameter(in = ParameterIn.QUERY, name = "page")
         @ParameterObject final Pageable pageable) {
 

@@ -22,7 +22,7 @@ import java.util.Locale;
 import org.atteo.evo.inflector.English;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 /**
  * The interface for all the utility integration test function. This interface
@@ -74,12 +74,12 @@ import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFTUtil
+ * @see        SuperFTUtil
  * @since      0.1.0
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface HypermediaFTUtil<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFTUtil<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFTUtil<E, I> {
 
     /**
      * Return the additional links in the model.

@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import org.sansenshimizu.sakuraboot.bulk.api.business.CriteriaBulkService;
 import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
@@ -39,7 +40,8 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class EmployeeService
-    implements CriteriaService<Employee, UUID, EmployeeFilter>, Cacheable,
+    implements CriteriaService<Employee, UUID, EmployeeFilter>,
+    CriteriaBulkService<Employee, UUID, EmployeeFilter>, Cacheable,
     Mappable<Employee, EmployeeDto>, Loggable {
 
     private final EmployeeRepository repository;

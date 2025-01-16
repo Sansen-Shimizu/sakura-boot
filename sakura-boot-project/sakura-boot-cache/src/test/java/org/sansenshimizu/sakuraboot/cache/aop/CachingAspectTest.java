@@ -18,6 +18,7 @@ package org.sansenshimizu.sakuraboot.cache.aop;
 
 import java.io.Serial;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Objects;
 
 import lombok.Getter;
@@ -273,6 +274,41 @@ class CachingAspectTest implements AspectUtilTest {
             // THEN
             assertThat(result).isEqualTo(EXPECTED_VALUE);
         });
+    }
+
+    @Test
+    @DisplayName("GIVEN the putCache aspect method call for collection,"
+        + " WHEN putCache,"
+        + " THEN the result should be the expected result")
+    final void testPutCacheForCollection() throws Throwable {
+
+        // GIVEN
+        final List<Integer> expectedValues = List.of(EXPECTED_VALUE);
+        mockJoinPoint(expectedValues);
+        given(putCacheAnnotation.specificsCacheNames())
+            .willReturn(new String[] {});
+        given(target.getCacheNames()).willReturn(CACHE_NAMES);
+        given(putCacheAnnotation.key()).willReturn("#param1[i]");
+        BDDMockito.<Class<? extends Annotation>>given(
+            putCacheAnnotation.annotationType()).willReturn(PutCache.class);
+        given(joinPoint.getSignature()).willReturn(signature);
+        given(signature.getParameterNames()).willReturn(getParameterName());
+        given(joinPoint.getArgs()).willReturn(new Object[] {
+            expectedValues, "test value"
+        });
+        given(target.getCachingUtil()).willReturn(cachingUtil);
+        given(cachingUtil.putCache(any(), any(), any()))
+            .willReturn(expectedValues);
+        given(putCacheAnnotation.refreshEntityCache()).willReturn(false);
+        mockForLog(() -> {
+
+            // WHEN
+            final Object result
+                = getAspect().putCache(joinPoint, target, putCacheAnnotation);
+
+            // THEN
+            assertThat(result).isEqualTo(expectedValues);
+        }, true);
     }
 
     @Test

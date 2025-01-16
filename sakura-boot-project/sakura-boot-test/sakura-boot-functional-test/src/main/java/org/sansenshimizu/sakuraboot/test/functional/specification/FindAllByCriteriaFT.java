@@ -36,7 +36,7 @@ import org.springframework.http.HttpStatus;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
 import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
@@ -114,12 +114,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <I> The ID of type Comparable and Serializable.
  * @param  <F> The {@link FilterPresentation} type.
  * @author     Malcolm Rozé
- * @see        BasicFT
+ * @see        SuperFT
  * @since      0.1.0
  */
 public interface FindAllByCriteriaFT<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
-    F extends FilterPresentation<?>> extends BasicFT<E, I> {
+    F extends FilterPresentation<?>> extends SuperFT<E, I> {
 
     /**
      * The string that represents a page.

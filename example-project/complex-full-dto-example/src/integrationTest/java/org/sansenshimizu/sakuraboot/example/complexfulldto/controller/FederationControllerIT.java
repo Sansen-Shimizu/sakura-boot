@@ -35,6 +35,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.F
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.FederationITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -50,6 +51,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class FederationControllerIT
     implements
     CriteriaControllerIT<Federation, Long, FederationDto, FederationFilter>,
+    CriteriaBulkControllerIT<Federation, Long, FederationDto, FederationFilter>,
     HypermediaIT<Federation, Long, FederationDto> {
 
     private final FederationITUtil util = new FederationITUtil();

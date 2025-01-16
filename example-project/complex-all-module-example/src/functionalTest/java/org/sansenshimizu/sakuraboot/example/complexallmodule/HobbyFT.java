@@ -26,13 +26,16 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Hobby;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.HobbyFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class HobbyFT implements CriteriaFT<Hobby, UUID, HobbyFilter> {
+public class HobbyFT
+    implements CriteriaFT<Hobby, UUID, HobbyFilter>,
+    CriteriaBulkFT<Hobby, UUID> {
 
     private final HobbyFTUtil util;
 

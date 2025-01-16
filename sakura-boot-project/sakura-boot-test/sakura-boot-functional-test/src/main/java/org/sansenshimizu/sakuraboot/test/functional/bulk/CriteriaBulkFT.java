@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package org.sansenshimizu.sakuraboot.test.functional.basic;
+package org.sansenshimizu.sakuraboot.test.functional.bulk;
 
 import java.io.Serializable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 
 /**
- * The interface for functional tests.
+ * The interface for bulk functional tests with filering.
  * <p>
  * <b>Example:</b>
  * </p>
  * <p>
- * To create a concrete test class that inherits from {@link AllFT},
- * follow
- * these steps:
+ * To create a concrete test class that inherits from {@link CriteriaBulkFT},
+ * follow these steps:
  * </p>
  * <p>
- * Implements the {@link AllFT} class:
+ * Implements the {@link CriteriaBulkFT} class:
  * </p>
  * <blockquote>
  *
  * <pre>
- * public class YourFT implements AllFT&lt;YourEntity, YourIdType&gt; {
+ * public class YourFT implements CriteriaBulkFT&lt;YourEntity, YourIdType&gt; {
  *
  *     private final YourUtil util;
  *
@@ -88,15 +87,13 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        SaveFT
- * @see        FindAllFT
- * @see        FindByIdFT
- * @see        UpdateByIdFT
- * @see        PatchByIdFT
- * @see        DeleteByIdFT
- * @since      0.1.0
+ * @see        SaveAllFT
+ * @see        UpdateAllFT
+ * @see        PatchAllFT
+ * @see        DeleteAllByCriteriaFT
+ * @since      0.1.2
  */
-public interface AllFT<E extends DataPresentation<I>,
+public interface CriteriaBulkFT<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable>
-    extends SaveFT<E, I>, FindAllFT<E, I>, FindByIdFT<E, I>, UpdateByIdFT<E, I>,
-    PatchByIdFT<E, I>, DeleteByIdFT<E, I> {}
+    extends SaveAllFT<E, I>, UpdateAllFT<E, I>, PatchAllFT<E, I>,
+    DeleteAllByCriteriaFT<E, I> {}

@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federat
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.FederationFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.FederationTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -41,7 +42,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 @Getter
 public class FederationServiceTest
     implements CriteriaServiceTest<Federation, UUID, FederationFilter>,
-    CacheableTest, MappableTest<Federation, FederationDto> {
+    CriteriaBulkServiceTest<Federation, UUID, FederationFilter>, CacheableTest,
+    MappableTest<Federation, FederationDto> {
 
     private final FederationTestUtil util = new FederationTestUtil();
 

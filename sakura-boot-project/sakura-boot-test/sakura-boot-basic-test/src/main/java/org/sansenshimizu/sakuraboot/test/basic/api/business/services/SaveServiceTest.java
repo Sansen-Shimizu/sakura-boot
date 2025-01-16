@@ -21,9 +21,11 @@ import java.io.Serializable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.SaveService;
+import org.sansenshimizu.sakuraboot.basic.api.persistence.BasicRepository;
 import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
 import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
 
@@ -49,7 +51,7 @@ import static org.mockito.BDDMockito.given;
  *
  * <pre>
  * public class YourServiceTest
- *     implements BasicServiceTest&lt;YourEntity, YourIdType&gt; {
+ *     implements SaveServiceTest&lt;YourEntity, YourIdType&gt; {
  *
  *     private YourUtil util = new YourUtil();
  *
@@ -99,6 +101,14 @@ public interface SaveServiceTest<E extends DataPresentation<I>,
      */
     @Override
     SaveService<E, I> getService();
+
+    /**
+     * Get the {@link BasicRepository} for test. Need to be {@link Mock}.
+     *
+     * @return A {@link BasicRepository}.
+     */
+    @SuppressWarnings("EmptyMethod")
+    BasicRepository<E, I> getRepository();
 
     @Test
     @DisplayName("GIVEN a valid entity,"

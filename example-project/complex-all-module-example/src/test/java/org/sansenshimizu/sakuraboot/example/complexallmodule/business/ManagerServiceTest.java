@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Manager
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.ManagerFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.ManagerTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -40,7 +41,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 })
 @Getter
 public class ManagerServiceTest
-    implements CriteriaServiceTest<Manager, UUID, ManagerFilter>, CacheableTest,
+    implements CriteriaServiceTest<Manager, UUID, ManagerFilter>,
+    CriteriaBulkServiceTest<Manager, UUID, ManagerFilter>, CacheableTest,
     MappableTest<Manager, ManagerDto> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

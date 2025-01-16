@@ -48,7 +48,7 @@ public class Company extends AbstractBasicEntity<Long> {
     private static final long serialVersionUID = 8075672169790602082L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     @Nullable
     private Long id;

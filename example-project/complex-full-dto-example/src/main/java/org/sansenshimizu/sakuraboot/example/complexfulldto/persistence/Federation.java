@@ -51,7 +51,7 @@ public class Federation extends AbstractBasicEntity<Long> {
     private static final long serialVersionUID = -1856840435186840741L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     @Nullable
     private Long id;

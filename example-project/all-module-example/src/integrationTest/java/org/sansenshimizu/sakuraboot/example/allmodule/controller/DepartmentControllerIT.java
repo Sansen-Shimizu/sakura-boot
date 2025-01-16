@@ -35,6 +35,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.presentation.DepartmentFil
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.DepartmentModelAssembler;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.DepartmentITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -50,6 +51,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class DepartmentControllerIT
     implements
     CriteriaControllerIT<Department, Long, DepartmentDto, DepartmentFilter>,
+    CriteriaBulkControllerIT<Department, Long, DepartmentDto, DepartmentFilter>,
     HypermediaIT<Department, Long, DepartmentDto> {
 
     private final DepartmentITUtil util = new DepartmentITUtil();

@@ -144,7 +144,7 @@ public interface FindAllByCriteriaControllerIT<E extends DataPresentation<I>,
         + " WHEN finding all by criteria,"
         + " THEN the controller should return a valid response with a page "
         + "filtered")
-    default void testFindAllWithFilter() throws Exception {
+    default void testFindAllByCriteriaWithFilter() throws Exception {
 
         // GIVEN
         final D dataWithId = getUtil().getData();
@@ -189,7 +189,7 @@ public interface FindAllByCriteriaControllerIT<E extends DataPresentation<I>,
     @DisplayName("GIVEN a pageable and no filter,"
         + " WHEN finding all by criteria,"
         + " THEN the controller should return a valid response with a page")
-    default void testFindAllWithFilterWithNoFilter() throws Exception {
+    default void testFindAllByCriteriaWithNoFilter() throws Exception {
 
         // GIVEN
         final D dataWithId = getUtil().getData();

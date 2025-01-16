@@ -21,10 +21,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +34,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.CriteriaService;
 import org.sansenshimizu.sakuraboot.specification.api.business.services.FindAllByCriteriaService;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.controllers.FindAllByCriteriaController;
-import org.sansenshimizu.sakuraboot.test.SuperControllerTest;
-import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
+import org.sansenshimizu.sakuraboot.test.specification.api.presentation.SuperCriteriaControllerTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -99,13 +96,13 @@ import static org.mockito.Mockito.mock;
  * @param  <F> The {@link FilterPresentation} type.
  * @author     Malcolm Rozé
  * @see        FindAllByCriteriaController
- * @see        SuperControllerTest
+ * @see        SuperCriteriaControllerTest
  * @since      0.1.0
  */
-@ExtendWith(MockitoExtension.class)
 public interface FindAllByCriteriaControllerTest<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
-    F extends FilterPresentation<?>> extends SuperControllerTest<E, I> {
+    F extends FilterPresentation<?>>
+    extends SuperCriteriaControllerTest<E, I, F> {
 
     /**
      * Get the {@link FindAllByCriteriaController} to test. Need to be
@@ -124,45 +121,11 @@ public interface FindAllByCriteriaControllerTest<E extends DataPresentation<I>,
     @Override
     FindAllByCriteriaService<E, I, F> getService();
 
-    /**
-     * Get the expected class of the filter.
-     *
-     * @return The expected class of the filter.
-     */
-    default Class<F> getExpectedFilterClass() {
-
-        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
-            FindAllByCriteriaControllerTest.class.getTypeName(), 2);
-    }
-
-    @Test
-    @DisplayName("GIVEN a pageable and a filter,"
-        + " WHEN finding all by criteria,"
-        + " THEN the controller should return a valid response with a page "
-        + "filtered")
-    default void testFindAllWithFilter() {
-
-        // GIVEN
-        final F filter = mock(getExpectedFilterClass());
-        final E entityWithId = getUtil().getEntity();
-        given(getService().findAllByCriteria(any(), any(Pageable.class)))
-            .willReturn(new PageImpl<>(List.of(entityWithId)));
-
-        // WHEN
-        final ResponseEntity<Page<DataPresentation<I>>> response
-            = getController().findAllByCriteria(filter, Pageable.unpaged());
-
-        // THEN
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull()
-            .containsExactly(entityWithId);
-    }
-
     @Test
     @DisplayName("GIVEN a pageable and no filter,"
         + " WHEN finding all by criteria,"
         + " THEN the controller should return a valid response with a page")
-    default void testFindAllWithFilterWithNoFilter() {
+    default void testFindAllByCriteriaWithNoFilter() {
 
         // GIVEN
         final E entityWithId = getUtil().getEntity();
@@ -179,5 +142,28 @@ public interface FindAllByCriteriaControllerTest<E extends DataPresentation<I>,
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull()
             .containsExactly(entityWithId, otherEntityWithId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a pageable and a filter,"
+        + " WHEN finding all by criteria,"
+        + " THEN the controller should return a valid response with a page "
+        + "filtered")
+    default void testFindAllByCriteriaWithFilter() {
+
+        // GIVEN
+        final F filter = mock(getExpectedFilterClass());
+        final E entityWithId = getUtil().getEntity();
+        given(getService().findAllByCriteria(any(), any(Pageable.class)))
+            .willReturn(new PageImpl<>(List.of(entityWithId)));
+
+        // WHEN
+        final ResponseEntity<Page<DataPresentation<I>>> response
+            = getController().findAllByCriteria(filter, Pageable.unpaged());
+
+        // THEN
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull()
+            .containsExactly(entityWithId);
     }
 }

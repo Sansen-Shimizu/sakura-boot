@@ -246,6 +246,80 @@ public interface AspectUtil {
     }
 
     /**
+     * The function parses a SpEL expression using the given parameter names,
+     * arguments, and expression string, then returns the result at the
+     * specified index as an Object.
+     *
+     * @param  parameterNames An array of parameter names for the method being
+     *                        called.
+     * @param  args           An array of objects representing the arguments
+     *                        passed to the method.
+     * @param  expression     The expression parameter is a String that
+     *                        represents a SpEL (Spring Expression Language)
+     *                        expression with the index need to be
+     *                        represented by [i] (e.g., #list[i]).
+     * @param  index          The index parameter is the index of the element
+     *                        in the collection to be retrieved.
+     * @return                The value of type Object parsed from the given
+     *                        SpEL expression at the specified index.
+     */
+    @Nullable
+    default Object parseSpelExpressionForCollection(
+        final String[] parameterNames, final Object[] args,
+        final String expression, final int index) {
+
+        return parseSpelExpressionForCollection(parameterNames, args,
+            expression, index, Object.class);
+    }
+
+    /**
+     * This function parses a SpEL expression using the given parameter names,
+     * arguments, and expression string, then returns the result at the
+     * specified index as the specified return type.
+     *
+     * @param  <T>            The return type.
+     * @param  parameterNames An array of parameter names for the method being
+     *                        called.
+     * @param  args           An array of objects representing the arguments
+     *                        passed to the method.
+     * @param  expression     The expression parameter is a String that
+     *                        represents a SpEL (Spring Expression Language)
+     *                        expression with the index need to be
+     *                        represented by [i] (e.g., #list[i]).
+     * @param  index          The index parameter is the index of the element
+     *                        in the collection to be retrieved.
+     * @param  returnType     The returnType parameter is the class type of the
+     *                        expected return value from the SpEL
+     *                        expression.
+     * @return                The method is returning a value of type T parsed
+     *                        from the given SpEL expression at the specified
+     *                        index.
+     */
+    @Nullable
+    default <T> T parseSpelExpressionForCollection(
+        final String[] parameterNames, final Object[] args,
+        final String expression, final int index, final Class<T> returnType) {
+
+        if (parameterNames.length != args.length) {
+
+            throw new IllegalArgumentException(
+                "Exception in aspect method when parsing SpEL expression:"
+                    + " parameterNames and args aren't of the same length.");
+        }
+
+        final ExpressionParser parser = new SpelExpressionParser();
+        final EvaluationContext context = new StandardEvaluationContext();
+
+        for (int i = 0; i < parameterNames.length; i++) {
+
+            context.setVariable(parameterNames[i], args[i]);
+        }
+        return parser
+            .parseExpression(expression.replace("[i]", "[" + index + "]"))
+            .getValue(context, returnType);
+    }
+
+    /**
      * Helper function to log messages for an aspect method.
      *
      * @param message       The log message to be logged. Need to have a last

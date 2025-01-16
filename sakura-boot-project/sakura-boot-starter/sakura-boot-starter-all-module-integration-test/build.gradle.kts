@@ -7,6 +7,7 @@ publishing.publications.getByName<MavenPublication>("mavenJava") {
 
 dependencies {
     api(projects.sakuraBootStarterBasicIntegrationTest)
+    api(projects.sakuraBootBulk)
     api(projects.sakuraBootHypermedia)
     api(projects.sakuraBootMapper)
     api(projects.sakuraBootSpecification)

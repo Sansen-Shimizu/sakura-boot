@@ -96,12 +96,6 @@ import static org.mockito.Mockito.verify;
  *
  *         return service;
  *     }
- *
- *     &#064;Override
- *     public String getBasePath() {
- *
- *         return "yourPath";
- *     }
  * }
  * </pre>
  *

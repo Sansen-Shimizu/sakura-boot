@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import org.sansenshimizu.sakuraboot.bulk.api.business.CriteriaBulkService;
 import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.CompanyDto;
@@ -39,7 +40,8 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class CompanyService
-    implements CriteriaService<Company, UUID, CompanyFilter>, Cacheable,
+    implements CriteriaService<Company, UUID, CompanyFilter>,
+    CriteriaBulkService<Company, UUID, CompanyFilter>, Cacheable,
     Mappable<Company, CompanyDto>, Loggable {
 
     private final CompanyRepository repository;

@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.test.functional.basic;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import io.restassured.RestAssured;
@@ -24,13 +25,16 @@ import io.restassured.response.ValidatableResponse;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFT;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFT;
 import org.sansenshimizu.sakuraboot.test.functional.cache.CachingFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.mapper.MapperFTUtil;
 import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,11 +108,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFT
+ * @see        SuperFT
  * @since      0.1.0
  */
 public interface DeleteByIdFT<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFT<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFT<E, I> {
 
     @Test
     @DisplayName("GIVEN a valid ID,"
@@ -117,7 +121,33 @@ public interface DeleteByIdFT<E extends DataPresentation<I>,
     default void testDeleteById() {
 
         // GIVEN
-        final I id = Objects.requireNonNull(createAndSaveEntity().getId());
+        final E saveEntity = createAndSaveEntity();
+        final I id = Objects.requireNonNull(saveEntity.getId());
+        final DataPresentation<I> cacheData;
+
+        if (getUtil() instanceof final MapperFTUtil<E, I, ?> mapperUtil) {
+
+            cacheData = mapperUtil.getData();
+        } else {
+
+            cacheData = getUtil().getEntity();
+        }
+
+        if (getUtil() instanceof final CachingFTUtil<?, ?> cachingUtil) {
+
+            for (final String cacheName: cachingUtil.getCacheNames()) {
+
+                Objects
+                    .requireNonNull(
+                        cachingUtil.getCacheManager().getCache(cacheName))
+                    .put(id, cacheData);
+                Objects
+                    .requireNonNull(cachingUtil.getCacheManager()
+                        .getCache(cacheName + "All"))
+                    .put("all", new PageImpl<>(List.of(cacheData),
+                        Pageable.ofSize(1), 1));
+            }
+        }
 
         final Repositories repositories
             = new Repositories(getApplicationContext());

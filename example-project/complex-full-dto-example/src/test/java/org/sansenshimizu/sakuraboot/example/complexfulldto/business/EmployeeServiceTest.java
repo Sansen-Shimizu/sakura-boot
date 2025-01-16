@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.EmployeeR
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.EmployeeFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.EmployeeTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -39,7 +40,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 @Getter
 public class EmployeeServiceTest
     implements CriteriaServiceTest<Employee, Long, EmployeeFilter>,
-    CacheableTest, MappableTest<Employee, EmployeeDto> {
+    CriteriaBulkServiceTest<Employee, Long, EmployeeFilter>, CacheableTest,
+    MappableTest<Employee, EmployeeDto> {
 
     private final EmployeeTestUtil util = new EmployeeTestUtil();
 

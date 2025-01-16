@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.sansenshimizu.sakuraboot.bulk.api.presentation.CriteriaBulkController;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.DepartmentService;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.DepartmentDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Department;
@@ -39,6 +40,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 public class DepartmentController
     implements
     CriteriaController<Department, UUID, DepartmentDto, DepartmentFilter>,
+    CriteriaBulkController<Department, UUID, DepartmentDto, DepartmentFilter>,
     Hypermedia<DepartmentDto, DepartmentModelAssembler>, Loggable {
 
     private final DepartmentService service;

@@ -47,7 +47,7 @@ public class Hobby extends AbstractBasicEntity<Long> {
     private static final long serialVersionUID = -7056599975876114239L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     @Nullable
     private Long id;

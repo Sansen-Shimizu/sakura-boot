@@ -22,12 +22,14 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.FindAllService;
+import org.sansenshimizu.sakuraboot.basic.api.persistence.BasicRepository;
 import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,7 +53,7 @@ import static org.mockito.BDDMockito.given;
  *
  * <pre>
  * public class YourServiceTest
- *     implements BasicServiceTest&lt;YourEntity, YourIdType&gt; {
+ *     implements FindAllServiceTest&lt;YourEntity, YourIdType&gt; {
  *
  *     private YourUtil util = new YourUtil();
  *
@@ -100,6 +102,14 @@ public interface FindAllServiceTest<E extends DataPresentation<I>,
      * @return A {@link FindAllService}.
      */
     FindAllService<E, I> getService();
+
+    /**
+     * Get the {@link BasicRepository} for test. Need to be {@link Mock}.
+     *
+     * @return A {@link BasicRepository}.
+     */
+    @SuppressWarnings("EmptyMethod")
+    BasicRepository<E, I> getRepository();
 
     @Test
     @DisplayName("GIVEN a pageable request,"

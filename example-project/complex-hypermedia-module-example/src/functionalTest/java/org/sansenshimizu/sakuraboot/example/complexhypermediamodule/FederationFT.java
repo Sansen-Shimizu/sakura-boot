@@ -23,13 +23,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexhypermediamodule.persistence.Federation;
-import org.sansenshimizu.sakuraboot.test.functional.basic.AllFT;
+import org.sansenshimizu.sakuraboot.test.functional.basic.BasicFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class FederationFT implements AllFT<Federation, Long> {
+public class FederationFT implements BasicFT<Federation, Long> {
 
     private final FederationFTUtil util;
 

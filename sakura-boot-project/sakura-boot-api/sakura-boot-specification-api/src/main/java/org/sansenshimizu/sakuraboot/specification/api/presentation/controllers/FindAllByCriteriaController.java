@@ -29,7 +29,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.SuperController;
 import org.sansenshimizu.sakuraboot.hypermedia.api.annotations.ApplyHypermediaOnPage;
 import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
 import org.sansenshimizu.sakuraboot.openapi.api.annotations.SwaggerBasicApiResponse;
@@ -37,6 +36,7 @@ import org.sansenshimizu.sakuraboot.openapi.api.annotations.SwaggerOkApiResponse
 import org.sansenshimizu.sakuraboot.openapi.api.annotations.SwaggerUpdateOperation;
 import org.sansenshimizu.sakuraboot.specification.api.business.services.FindAllByCriteriaService;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
+import org.sansenshimizu.sakuraboot.specification.api.presentation.SuperCriteriaController;
 
 /**
  * The controller interface for findAllByCriteria operation.
@@ -105,7 +105,7 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresent
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface FindAllByCriteriaController<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
-    F extends FilterPresentation<?>> extends SuperController<E, I> {
+    F extends FilterPresentation<?>> extends SuperCriteriaController<E, I, F> {
 
     /**
      * Returns the {@link FindAllByCriteriaService} associated with this

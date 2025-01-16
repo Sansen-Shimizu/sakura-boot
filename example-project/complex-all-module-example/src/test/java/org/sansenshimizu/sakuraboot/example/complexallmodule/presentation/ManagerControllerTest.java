@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.ManagerModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.ManagerTestUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -38,6 +39,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class ManagerControllerTest
     implements CriteriaControllerTest<Manager, UUID, ManagerDto, ManagerFilter>,
+    CriteriaBulkControllerTest<Manager, UUID, ManagerDto, ManagerFilter>,
     HypermediaTest<ManagerDto, ManagerModelAssembler> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

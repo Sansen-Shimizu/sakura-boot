@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.UpdateByIdService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.UpdateByIdController;
 import org.sansenshimizu.sakuraboot.test.BasicDataTestUtil;
@@ -117,9 +116,9 @@ public interface UpdateByIdControllerTest<E extends DataPresentation<I>,
     UpdateByIdController<E, I, D> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link UpdateByIdService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link UpdateByIdService}.
      */
     @Override
     UpdateByIdService<E, I> getService();
@@ -137,28 +136,8 @@ public interface UpdateByIdControllerTest<E extends DataPresentation<I>,
         given(getService().updateById(any(), any())).willReturn(dataWithId);
 
         // WHEN
-        final ResponseEntity<DataPresentation<I>> response
+        final ResponseEntity<?> response
             = getController().updateById(dataWithId, validId);
-
-        // THEN
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(dataWithId);
-    }
-
-    @Test
-    @DisplayName("GIVEN a valid entity,"
-        + " WHEN updating by ID,"
-        + " THEN the controller should update and return a valid response "
-        + "with the updated object")
-    default void testUpdateByIdWithNoId() {
-
-        // GIVEN
-        final D dataWithId = getUtil().getData();
-        given(getService().updateById(any(), any())).willReturn(dataWithId);
-
-        // WHEN
-        final ResponseEntity<DataPresentation<I>> response
-            = getController().updateById(dataWithId, null);
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

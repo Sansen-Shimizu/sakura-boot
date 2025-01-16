@@ -24,13 +24,16 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Employee;
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.EmployeeFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class EmployeeFT implements CriteriaFT<Employee, Long, EmployeeFilter> {
+public class EmployeeFT
+    implements CriteriaFT<Employee, Long, EmployeeFilter>,
+    CriteriaBulkFT<Employee, Long> {
 
     private final EmployeeFTUtil util;
 

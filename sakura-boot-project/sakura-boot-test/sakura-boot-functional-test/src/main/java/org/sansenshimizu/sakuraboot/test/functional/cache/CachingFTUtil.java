@@ -23,7 +23,7 @@ import javax.cache.Caching;
 import org.springframework.cache.CacheManager;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,11 +87,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        BasicFTUtil
+ * @see        SuperFTUtil
  * @since      0.1.0
  */
 public interface CachingFTUtil<E extends DataPresentation<I>,
-    I extends Comparable<? super I> & Serializable> extends BasicFTUtil<E, I> {
+    I extends Comparable<? super I> & Serializable> extends SuperFTUtil<E, I> {
 
     /**
      * Get the cache manager.

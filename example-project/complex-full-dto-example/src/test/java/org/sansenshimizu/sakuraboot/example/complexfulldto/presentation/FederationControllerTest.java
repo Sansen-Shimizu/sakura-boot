@@ -26,6 +26,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Federatio
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.FederationFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.FederationTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -36,6 +37,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class FederationControllerTest
     implements
     CriteriaControllerTest<Federation, Long, FederationDto, FederationFilter>,
+    CriteriaBulkControllerTest<Federation, Long, FederationDto,
+        FederationFilter>,
     HypermediaTest<FederationDto, FederationModelAssembler> {
 
     private final FederationTestUtil util = new FederationTestUtil();

@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
-import org.sansenshimizu.sakuraboot.basic.api.business.BasicService;
 import org.sansenshimizu.sakuraboot.basic.api.business.services.PatchByIdService;
 import org.sansenshimizu.sakuraboot.basic.api.presentation.controllers.PatchByIdController;
 import org.sansenshimizu.sakuraboot.test.BasicDataTestUtil;
@@ -117,9 +116,9 @@ public interface PatchByIdControllerTest<E extends DataPresentation<I>,
     PatchByIdController<E, I, D> getController();
 
     /**
-     * Get the {@link BasicService} for test. Need to be {@link Mock}.
+     * Get the {@link PatchByIdService} for test. Need to be {@link Mock}.
      *
-     * @return A {@link BasicService}.
+     * @return A {@link PatchByIdService}.
      */
     @Override
     PatchByIdService<E, I> getService();
@@ -138,29 +137,8 @@ public interface PatchByIdControllerTest<E extends DataPresentation<I>,
         given(getService().patchById(any(), any())).willReturn(dataWithId);
 
         // WHEN
-        final ResponseEntity<DataPresentation<I>> response
+        final ResponseEntity<?> response
             = getController().patchById(partialData, validId);
-
-        // THEN
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(dataWithId);
-    }
-
-    @Test
-    @DisplayName("GIVEN a valid partial entity,"
-        + " WHEN patching by ID,"
-        + " THEN the controller should patch and return a valid response "
-        + "with the patched object")
-    default void testPatchingByIdWithNoId() {
-
-        // GIVEN
-        final D dataWithId = getUtil().getData();
-        final D partialData = getUtil().getPartialData();
-        given(getService().patchById(any(), any())).willReturn(dataWithId);
-
-        // WHEN
-        final ResponseEntity<DataPresentation<I>> response
-            = getController().patchById(partialData, null);
 
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

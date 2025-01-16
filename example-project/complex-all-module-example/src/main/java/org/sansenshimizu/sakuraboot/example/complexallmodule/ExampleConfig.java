@@ -20,8 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(
-    basePackages = "org.sansenshimizu.sakuraboot.example.complexallmodule."
-        + "persistence")
+@EnableJpaRepositories(basePackages = {
+    "org.sansenshimizu.sakuraboot.example.complexallmodule.persistence",
+    "org.sansenshimizu.sakuraboot.bulk.api.persistence.impl"
+})
 // EnableJpaRepositories is only necessary in this example.
 public class ExampleConfig {}

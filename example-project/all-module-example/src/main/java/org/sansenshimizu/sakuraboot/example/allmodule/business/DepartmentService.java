@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import org.sansenshimizu.sakuraboot.bulk.api.business.CriteriaBulkService;
 import org.sansenshimizu.sakuraboot.cache.api.Cacheable;
 import org.sansenshimizu.sakuraboot.cache.api.CachingUtil;
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
@@ -35,7 +36,8 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 @Getter
 @RequiredArgsConstructor
 public class DepartmentService
-    implements CriteriaService<Department, Long, DepartmentFilter>, Cacheable,
+    implements CriteriaService<Department, Long, DepartmentFilter>,
+    CriteriaBulkService<Department, Long, DepartmentFilter>, Cacheable,
     Mappable<Department, DepartmentDto>, Loggable {
 
     private final DepartmentRepository repository;

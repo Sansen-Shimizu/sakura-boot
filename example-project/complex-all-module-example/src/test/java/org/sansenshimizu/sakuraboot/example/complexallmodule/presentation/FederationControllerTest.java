@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.FederationTestUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -39,6 +40,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class FederationControllerTest
     implements
     CriteriaControllerTest<Federation, UUID, FederationDto, FederationFilter>,
+    CriteriaBulkControllerTest<Federation, UUID, FederationDto,
+        FederationFilter>,
     HypermediaTest<FederationDto, FederationModelAssembler> {
 
     private final FederationTestUtil util = new FederationTestUtil();

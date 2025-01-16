@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.DepartmentFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
@@ -31,7 +32,8 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 })
 @Getter
 public class DepartmentFT
-    implements CriteriaFT<Department, Long, DepartmentFilter> {
+    implements CriteriaFT<Department, Long, DepartmentFilter>,
+    CriteriaBulkFT<Department, Long> {
 
     private final DepartmentFTUtil util;
 

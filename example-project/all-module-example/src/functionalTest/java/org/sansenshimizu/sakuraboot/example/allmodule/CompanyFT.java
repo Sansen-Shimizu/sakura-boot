@@ -24,13 +24,16 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.allmodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.CompanyFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class CompanyFT implements CriteriaFT<Company, Long, CompanyFilter> {
+public class CompanyFT
+    implements CriteriaFT<Company, Long, CompanyFilter>,
+    CriteriaBulkFT<Company, Long> {
 
     private final CompanyFTUtil util;
 

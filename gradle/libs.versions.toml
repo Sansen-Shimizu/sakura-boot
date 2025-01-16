@@ -37,6 +37,7 @@ hamcrest = { module = "org.hamcrest:hamcrest" }
 hibernate-core = { module = "org.hibernate.orm:hibernate-core" }
 hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache" }
 hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen" }
+hibernate-validator = { module = "org.hibernate.validator:hibernate-validator" }
 h2 = { module = "com.h2database:h2" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations" }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }

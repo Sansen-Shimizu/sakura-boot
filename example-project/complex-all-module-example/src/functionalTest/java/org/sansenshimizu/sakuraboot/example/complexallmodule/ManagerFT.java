@@ -26,13 +26,16 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Manager;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.ManagerFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
     "java:S2187", "JUnitTestCaseWithNoTests"
 })
 @Getter
-public class ManagerFT implements CriteriaFT<Manager, UUID, ManagerFilter> {
+public class ManagerFT
+    implements CriteriaFT<Manager, UUID, ManagerFilter>,
+    CriteriaBulkFT<Manager, UUID> {
 
     private final ManagerFTUtil util;
 

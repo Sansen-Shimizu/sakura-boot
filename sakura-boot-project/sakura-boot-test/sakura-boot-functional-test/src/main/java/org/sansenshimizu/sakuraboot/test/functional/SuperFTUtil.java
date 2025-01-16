@@ -35,18 +35,18 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  * <b>Example:</b>
  * </p>
  * <p>
- * To create a concrete util class that inherits from {@link BasicFTUtil},
+ * To create a concrete util class that inherits from {@link SuperFTUtil},
  * follow these steps:
  * </p>
  * <p>
- * Implements the {@link BasicFTUtil} interface:
+ * Implements the {@link SuperFTUtil} interface:
  * </p>
  * <blockquote>
  *
  * <pre>
  * &#064;Component
  * public class YourFTUtil //
- *     implements BasicFTUtil&lt;YourEntity, YourIdType&gt; {
+ *     implements SuperFTUtil&lt;YourEntity, YourIdType&gt; {
  *
  *     private final GlobalSpecification globalSpecification;
  *
@@ -80,7 +80,7 @@ import org.sansenshimizu.sakuraboot.test.SuperITUtil;
  * @since      0.1.0
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
-public interface BasicFTUtil<E extends DataPresentation<I>,
+public interface SuperFTUtil<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable> extends SuperITUtil<E, I> {
 
     /**

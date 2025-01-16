@@ -28,8 +28,7 @@ import org.sansenshimizu.sakuraboot.SuperService;
 import org.sansenshimizu.sakuraboot.cache.api.annotations.Caching;
 import org.sansenshimizu.sakuraboot.log.api.annotations.Logging;
 import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
-import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
-import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
+import org.sansenshimizu.sakuraboot.specification.api.business.SuperCriteriaService;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
 import org.sansenshimizu.sakuraboot.specification.api.relationship.annotations.FindAllByCriteriaWithRelationship;
 
@@ -77,21 +76,18 @@ import org.sansenshimizu.sakuraboot.specification.api.relationship.annotations.F
  *     private final SpecificationBuilder&lt;YourEntity&gt;//
  *     specificationBuilder;
  *
- *     public YourService(final YourRepository repository) {
+ *     public YourService(
+ *         final YourRepository repository,
+ *         final SpecificationBuilder&lt;YourEntity&gt; specificationBuilder) {
  *
  *         this.repository = repository;
+ *         this.specificationBuilder = specificationBuilder;
  *     }
  *
  *     &#064;Override
  *     public YourRepository getRepository() {
  *
  *         return repository;
- *     }
- *
- *     &#064;Override
- *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
- *
- *         return YourEntity.class;
  *     }
  *
  *     &#064;Override
@@ -115,34 +111,12 @@ import org.sansenshimizu.sakuraboot.specification.api.relationship.annotations.F
  */
 public interface FindAllByCriteriaService<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
-    F extends FilterPresentation<?>> extends SuperService<E, I> {
-
-    @Override
-    CriteriaRepository<E, I> getRepository();
-
-    /**
-     * Retrieves a {@link SpecificationBuilder} associated with this
-     * CriteriaService.
-     *
-     * @return A {@link SpecificationBuilder} instance used for apply filtering.
-     */
-    SpecificationBuilder<E> getSpecificationBuilder();
-
-    /**
-     * Retrieves a specification based on the provided filter.
-     *
-     * @param  filter the filter to be used in creating the specification
-     * @return        the created specification
-     */
-    default Specification<E> getSpecification(@Nullable final F filter) {
-
-        return getSpecificationBuilder().apply(filter, getEntityClass());
-    }
+    F extends FilterPresentation<?>> extends SuperCriteriaService<E, I, F> {
 
     /**
      * Retrieves a page of {@link DataPresentation} from the underlying data
-     * storage based on the provided
-     * {@link FilterPresentation} and pageable criteria.
+     * storage based on the provided {@link FilterPresentation} and pageable
+     * criteria.
      *
      * @param  filter   The {@link FilterPresentation} object to apply
      *                  criteria-based filtering.

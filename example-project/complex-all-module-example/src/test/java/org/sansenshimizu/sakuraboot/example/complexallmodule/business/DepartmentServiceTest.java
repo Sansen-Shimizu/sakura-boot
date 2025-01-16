@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Departm
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.DepartmentFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.DepartmentTestUtil;
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
+import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
@@ -41,7 +42,8 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 @Getter
 public class DepartmentServiceTest
     implements CriteriaServiceTest<Department, UUID, DepartmentFilter>,
-    CacheableTest, MappableTest<Department, DepartmentDto> {
+    CriteriaBulkServiceTest<Department, UUID, DepartmentFilter>, CacheableTest,
+    MappableTest<Department, DepartmentDto> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();
 

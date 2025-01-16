@@ -23,7 +23,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +30,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 import org.sansenshimizu.sakuraboot.specification.api.business.CriteriaService;
-import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.specification.api.business.services.FindAllByCriteriaService;
-import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.FilterPresentation;
-import org.sansenshimizu.sakuraboot.test.SuperServiceTest;
-import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
+import org.sansenshimizu.sakuraboot.test.specification.api.business.SuperCriteriaServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,12 +103,12 @@ import static org.mockito.Mockito.mock;
  * @param  <F> The {@link FilterPresentation} type.
  * @author     Malcolm Rozé
  * @see        CriteriaService
- * @see        SuperServiceTest
+ * @see        SuperCriteriaServiceTest
  * @since      0.1.0
  */
 public interface FindAllByCriteriaServiceTest<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable,
-    F extends FilterPresentation<?>> extends SuperServiceTest<E, I> {
+    F extends FilterPresentation<?>> extends SuperCriteriaServiceTest<E, I, F> {
 
     /**
      * Get the {@link CriteriaService} to test. Need to be {@link InjectMocks}.
@@ -121,32 +117,6 @@ public interface FindAllByCriteriaServiceTest<E extends DataPresentation<I>,
      */
     @Override
     FindAllByCriteriaService<E, I, F> getService();
-
-    /**
-     * Get the {@link CriteriaRepository} for test. Need to be {@link Mock}.
-     *
-     * @return A {@link CriteriaRepository}.
-     */
-    @Override
-    CriteriaRepository<E, I> getRepository();
-
-    /**
-     * Get the {@link SpecificationBuilder} for test. Need to be {@link Mock}.
-     *
-     * @return A {@link SpecificationBuilder}.
-     */
-    SpecificationBuilder<E> getSpecificationBuilder();
-
-    /**
-     * Get the expected class of the filter.
-     *
-     * @return The expected class of the filter.
-     */
-    default Class<F> getExpectedFilterClass() {
-
-        return ReflectionUtils.findGenericTypeFromInterface(getClass(),
-            FindAllByCriteriaServiceTest.class.getTypeName(), 2);
-    }
 
     @Test
     @DisplayName("GIVEN a null filter and pageable,"

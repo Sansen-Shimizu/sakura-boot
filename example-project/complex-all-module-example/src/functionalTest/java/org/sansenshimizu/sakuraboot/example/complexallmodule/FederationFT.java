@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Federation;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.FederationFilter;
+import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
@@ -33,7 +34,8 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 })
 @Getter
 public class FederationFT
-    implements CriteriaFT<Federation, UUID, FederationFilter> {
+    implements CriteriaFT<Federation, UUID, FederationFilter>,
+    CriteriaBulkFT<Federation, UUID> {
 
     private final FederationFTUtil util;
 

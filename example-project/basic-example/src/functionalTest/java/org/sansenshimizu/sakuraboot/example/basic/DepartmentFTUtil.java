@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
 
 import org.sansenshimizu.sakuraboot.configuration.GlobalSpecification;
 import org.sansenshimizu.sakuraboot.example.basic.persistence.Department;
-import org.sansenshimizu.sakuraboot.test.functional.BasicFTUtil;
+import org.sansenshimizu.sakuraboot.test.functional.SuperFTUtil;
 
 @Getter
 @RequiredArgsConstructor
 @Component
-public class DepartmentFTUtil implements BasicFTUtil<Department, Long> {
+public class DepartmentFTUtil implements SuperFTUtil<Department, Long> {
 
     private final GlobalSpecification globalSpecification;
 }

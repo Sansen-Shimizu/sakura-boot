@@ -18,7 +18,6 @@ package org.sansenshimizu.sakuraboot.basic.api.business.services;
 
 import java.io.Serializable;
 
-import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -76,11 +75,6 @@ import org.sansenshimizu.sakuraboot.mapper.api.annotations.Mapping;
  *
  *         return this.repository;
  *     }
- *
- *     public Class&lt;YourEntity&gt; getEntityClassToMap() {
- *
- *         return YourEntity.class;
- *     }
  * }
  * </pre>
  *
@@ -120,7 +114,7 @@ public interface UpdateByIdService<E extends DataPresentation<I>,
     @Mapping
     @Logging
     default DataPresentation<I> updateById(
-        final DataPresentation<I> data, @Nullable final I id) {
+        final DataPresentation<I> data, final I id) {
 
         final E entity;
 
@@ -145,7 +139,7 @@ public interface UpdateByIdService<E extends DataPresentation<I>,
         return getRepository().save(entity);
     }
 
-    private I getId(final DataPresentation<I> data, @Nullable final I id) {
+    private I getId(final DataPresentation<I> data, final I id) {
 
         final I dataId = data.getId();
 
@@ -156,7 +150,7 @@ public interface UpdateByIdService<E extends DataPresentation<I>,
                     + getEntityClass().getSimpleName());
         }
 
-        if (id != null && !dataId.equals(id)) {
+        if (!dataId.equals(id)) {
 
             throw new BadRequestException(
                 "Can't update an entity when different ID are provided : "

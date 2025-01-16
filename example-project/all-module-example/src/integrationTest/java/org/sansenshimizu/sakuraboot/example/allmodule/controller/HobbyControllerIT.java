@@ -35,6 +35,7 @@ import org.sansenshimizu.sakuraboot.example.allmodule.presentation.HobbyFilter;
 import org.sansenshimizu.sakuraboot.example.allmodule.presentation.HobbyModelAssembler;
 import org.sansenshimizu.sakuraboot.example.allmodule.util.HobbyITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -49,6 +50,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 })
 public class HobbyControllerIT
     implements CriteriaControllerIT<Hobby, Long, HobbyDto, HobbyFilter>,
+    CriteriaBulkControllerIT<Hobby, Long, HobbyDto, HobbyFilter>,
     HypermediaIT<Hobby, Long, HobbyDto> {
 
     private final HobbyITUtil util = new HobbyITUtil();

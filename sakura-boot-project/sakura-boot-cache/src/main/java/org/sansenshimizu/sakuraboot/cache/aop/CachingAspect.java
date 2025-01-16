@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.cache.aop;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -162,7 +163,6 @@ public final class CachingAspect implements AspectUtil {
      * @return            The same return value of the join point call.
      * @throws Throwable  If an exception occurs in the join point.
      */
-    @Nullable
     @Around(ALL_EXECUTION_POINTCUT + TARGET_POINTCUT + ANNOTATION_POINTCUT)
     public Object putCache(
         final ProceedingJoinPoint joinPoint, final Cacheable target,
@@ -171,7 +171,7 @@ public final class CachingAspect implements AspectUtil {
 
         methodCallLog(log, joinPoint, target, annotation);
 
-        Object result = joinPoint.proceed();
+        final Object result = joinPoint.proceed();
 
         final String[] cacheNames;
 
@@ -182,6 +182,38 @@ public final class CachingAspect implements AspectUtil {
 
             cacheNames = annotation.specificsCacheNames();
         }
+
+        if (annotation.refreshEntityCache()) {
+
+            target.getCachingUtil()
+                .removeAllCache(concatAllToCacheNames(cacheNames));
+            log.atInfo().log("remove \"all\" cache before");
+        }
+
+        if (result instanceof final Collection<?> collection) {
+
+            int index = 0;
+
+            for (final Object element: collection) {
+
+                putResultInCache(joinPoint, target, annotation, element,
+                    cacheNames, index);
+                index++;
+            }
+        } else {
+
+            putResultInCache(joinPoint, target, annotation, result, cacheNames,
+                null);
+        }
+
+        methodEndLog(log, joinPoint, target, annotation);
+        return result;
+    }
+
+    private void putResultInCache(
+        final ProceedingJoinPoint joinPoint, final Cacheable target,
+        final PutCache annotation, final Object result,
+        final String[] cacheNames, @Nullable final Integer index) {
 
         Object key;
         Object id = null;
@@ -202,8 +234,16 @@ public final class CachingAspect implements AspectUtil {
                 = Objects.requireNonNull(signature.getParameterNames());
             final Object[] parameters
                 = Objects.requireNonNull(joinPoint.getArgs());
-            key = parseSpelExpression(parametersNames, parameters,
-                keyAnnotation);
+
+            if (index == null) {
+
+                key = parseSpelExpression(parametersNames, parameters,
+                    keyAnnotation);
+            } else {
+
+                key = parseSpelExpressionForCollection(parametersNames,
+                    parameters, keyAnnotation, index);
+            }
         } else if (id != null) {
 
             key = id;
@@ -231,18 +271,9 @@ public final class CachingAspect implements AspectUtil {
             key = "";
         }
 
-        if (annotation.refreshEntityCache()) {
-
-            target.getCachingUtil()
-                .removeAllCache(concatAllToCacheNames(cacheNames));
-            log.atInfo().log("remove \"all\" cache before");
-        }
-
-        result = target.getCachingUtil().putCache(cacheNames, result, key);
-        log.atInfo().log("put cache : " + result + CACHE_IN_LOG + key);
-
-        methodEndLog(log, joinPoint, target, annotation);
-        return result;
+        final Object cachedResult
+            = target.getCachingUtil().putCache(cacheNames, result, key);
+        log.atInfo().log("put cache : " + cachedResult + CACHE_IN_LOG + key);
     }
 
     /**
@@ -276,6 +307,13 @@ public final class CachingAspect implements AspectUtil {
             cacheNames = annotation.specificsCacheNames();
         }
 
+        if (annotation.refreshEntityCache()) {
+
+            target.getCachingUtil()
+                .removeAllCache(concatAllToCacheNames(cacheNames));
+            log.atInfo().log("remove \"all\" cache");
+        }
+
         Object key;
         final String keyAnnotation
             = (String) AspectUtil.getAnnotationValue(annotation, "key");
@@ -301,13 +339,6 @@ public final class CachingAspect implements AspectUtil {
 
             target.getCachingUtil().removeAllCache(cacheNames);
             log.atInfo().log("remove cache");
-        }
-
-        if (annotation.refreshEntityCache()) {
-
-            target.getCachingUtil()
-                .removeAllCache(concatAllToCacheNames(cacheNames));
-            log.atInfo().log("remove \"all\" cache");
         }
 
         methodEndLog(log, joinPoint, target, annotation);

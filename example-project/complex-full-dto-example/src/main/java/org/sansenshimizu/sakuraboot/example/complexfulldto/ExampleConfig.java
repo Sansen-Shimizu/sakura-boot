@@ -22,6 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories(basePackages = {
     "org.sansenshimizu.sakuraboot.example.complexfulldto.persistence",
+    "org.sansenshimizu.sakuraboot.bulk.api.persistence.impl",
     "org.sansenshimizu.sakuraboot.specification.api.relationship.impl"
 })
 // EnableJpaRepositories is only necessary in this example.

@@ -26,6 +26,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Manager;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.ManagerFilter;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.ManagerModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.ManagerTestUtil;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -35,6 +36,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 @Getter
 public class ManagerControllerTest
     implements CriteriaControllerTest<Manager, Long, ManagerDto, ManagerFilter>,
+    CriteriaBulkControllerTest<Manager, Long, ManagerDto, ManagerFilter>,
     HypermediaTest<ManagerDto, ManagerModelAssembler> {
 
     private final ManagerTestUtil util = new ManagerTestUtil();

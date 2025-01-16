@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.EmployeeModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.EmployeeTestUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
+import org.sansenshimizu.sakuraboot.test.bulk.api.presentation.CriteriaBulkControllerTest;
 import org.sansenshimizu.sakuraboot.test.hypermedia.api.HypermediaTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.presentation.CriteriaControllerTest;
 
@@ -39,6 +40,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.presentation.Criteria
 public class EmployeeControllerTest
     implements
     CriteriaControllerTest<Employee, UUID, EmployeeDto, EmployeeFilter>,
+    CriteriaBulkControllerTest<Employee, UUID, EmployeeDto, EmployeeFilter>,
     HypermediaTest<EmployeeDto, EmployeeModelAssembler> {
 
     private final EmployeeTestUtil util = new EmployeeTestUtil();

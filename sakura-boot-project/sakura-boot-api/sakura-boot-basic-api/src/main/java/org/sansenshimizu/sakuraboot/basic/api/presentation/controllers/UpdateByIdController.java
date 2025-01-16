@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -131,16 +130,16 @@ public interface UpdateByIdController<E extends DataPresentation<I>,
     @SwaggerBasicApiResponse
     @SwaggerNotFoundApiResponse
     @SwaggerUpdateOperation
-    @PutMapping(value = {
-        "", "/{id}"
-    },
+    @PutMapping(
+        value = "/{id}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ApplyHypermedia
     @Logging
-    default ResponseEntity<DataPresentation<I>> updateById(
+    @SuppressWarnings("java:S1452")
+    default ResponseEntity<?> updateById(
         @Validated(DataPresentation.FullData.class) @RequestBody final D data,
-        @PathVariable(value = "id", required = false) @Nullable final I id) {
+        @PathVariable("id") final I id) {
 
         return ResponseEntity.ok(getService().updateById(data, id));
     }

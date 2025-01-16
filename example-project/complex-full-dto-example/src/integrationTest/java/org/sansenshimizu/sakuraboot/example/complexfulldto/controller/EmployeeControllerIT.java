@@ -35,6 +35,7 @@ import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.filter.E
 import org.sansenshimizu.sakuraboot.example.complexfulldto.presentation.model.EmployeeModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.util.EmployeeITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -50,6 +51,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class EmployeeControllerIT
     implements
     CriteriaControllerIT<Employee, Long, EmployeeDto, EmployeeFilter>,
+    CriteriaBulkControllerIT<Employee, Long, EmployeeDto, EmployeeFilter>,
     HypermediaIT<Employee, Long, EmployeeDto> {
 
     private final EmployeeITUtil util = new EmployeeITUtil();

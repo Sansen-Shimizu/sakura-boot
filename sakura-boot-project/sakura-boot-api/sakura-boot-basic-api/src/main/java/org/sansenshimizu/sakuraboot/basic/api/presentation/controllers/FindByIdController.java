@@ -120,8 +120,8 @@ public interface FindByIdController<E extends DataPresentation<I>,
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApplyHypermedia
     @Logging
-    default ResponseEntity<DataPresentation<I>> findById(
-        @PathVariable("id") final I id) {
+    @SuppressWarnings("java:S1452")
+    default ResponseEntity<?> findById(@PathVariable("id") final I id) {
 
         return ResponseEntity.ok(getService().findById(id));
     }

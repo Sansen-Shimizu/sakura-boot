@@ -37,6 +37,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.FederationModelAssembler;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.FederationITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
+import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -52,6 +53,7 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class FederationControllerIT
     implements
     CriteriaControllerIT<Federation, UUID, FederationDto, FederationFilter>,
+    CriteriaBulkControllerIT<Federation, UUID, FederationDto, FederationFilter>,
     HypermediaIT<Federation, UUID, FederationDto> {
 
     private final FederationITUtil util = new FederationITUtil();
