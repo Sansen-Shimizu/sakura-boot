@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper;
+/**
+ * The package for mapper SPI class.
+ *
+ * @author Malcolm Rozé
+ * @since  0.1.2
+ */
+@NonNullApi
+@NonNullFields
+package org.sansenshimizu.sakuraboot.mapper.spi;
 
-import org.mapstruct.Mapper;
-
-import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.EmployeeDto;
-import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Employee;
-import org.sansenshimizu.sakuraboot.mapper.api.AbstractBasicMapperForRelationship;
-import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
-
-@Mapper(config = BasicMapper.class)
-public abstract class AbstractEmployeeMapper
-    extends AbstractBasicMapperForRelationship<Employee, EmployeeDto> {}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

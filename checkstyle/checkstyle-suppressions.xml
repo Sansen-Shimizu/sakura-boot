@@ -19,7 +19,7 @@
                     files="CachesSpecification.java"
                     query="//METHOD_DEF/IDENT[@text='simple']"/>
     <suppress-xpath checks="CustomImportOrder"
-                    files="CacheConfiguration.java"
+                    files="CacheConfiguration.java|RelationshipExclusionStrategy.java"
                     query="//IMPORT[.//DOT/IDENT[@text='javax']]"/>
     <suppress-xpath checks=".*Javadoc.*|DesignForExtension|UncommentedMain"
                     files=".*example*."/>

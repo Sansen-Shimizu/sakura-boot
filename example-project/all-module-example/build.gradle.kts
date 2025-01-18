@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.sakuraBootStarterPredefinedAllModule)
     annotationProcessor(libs.hibernate.jpamodelgen)
     annotationProcessor(libs.mapstruct.processor)
+    annotationProcessor(projects.sakuraBootMapper)
 
     functionalTestImplementation(projects.sakuraBootStarterPredefinedAllModuleFunctionalTest)
     functionalTestCompileOnly(libs.lombok)

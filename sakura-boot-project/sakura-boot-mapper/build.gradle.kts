@@ -6,7 +6,7 @@ plugins {
 
 description =
     "Framework to simplify the creation of a spring boot application. " +
-        "The mapper functionalities."
+            "The mapper functionalities."
 
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description
@@ -19,8 +19,10 @@ dependencies {
     api(libs.spring.context)
     api(libs.spring.core)
     implementation(libs.commons.lang3)
+    implementation(libs.jakarta.persistence.api)
     implementation(libs.slf4j.api)
     implementation(libs.spring.data.commons)
+    implementation(libs.mapstruct.processor)
     compileOnly(libs.mapstruct)
     compileOnly(libs.spring.data.jpa)
 
