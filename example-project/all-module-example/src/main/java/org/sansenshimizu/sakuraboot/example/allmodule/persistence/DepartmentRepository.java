@@ -16,9 +16,9 @@
 
 package org.sansenshimizu.sakuraboot.example.allmodule.persistence;
 
-import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepositoryKeepContext;
+import org.sansenshimizu.sakuraboot.bulk.api.persistence.BulkRepository;
 import org.sansenshimizu.sakuraboot.specification.api.persistence.CriteriaRepository;
 
 public interface DepartmentRepository
     extends CriteriaRepository<Department, Long>,
-    BulkRepositoryKeepContext<Department, Long> {}
+    BulkRepository<Department, Long> {}

@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.LazyInitializationException;
+import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.lang.Nullable;
 
@@ -52,9 +53,8 @@ public class ToStringUtils {
 
     /**
      * This method help print nice toString for an object and remove the null
-     * fields.
-     * If a field is a container and is bigger than three elements, it will
-     * print an ellipse.
+     * fields. If a field is a container and is bigger than three elements, it
+     * will print an ellipse.
      *
      * @param  className The name of the class to print.
      * @param  fields    The fields of the class to print.
@@ -73,8 +73,7 @@ public class ToStringUtils {
      * @param  className        The name of the class to print.
      * @param  fields           The fields of the object to print.
      * @param  maxContainerSize The maximum number of elements to print for a
-     *                          container.
-     *                          (-1 for printing all the elements)
+     *                          container. (-1 for printing all the elements)
      * @return                  A pretty print toString.
      */
     public String toString(
@@ -90,7 +89,8 @@ public class ToStringUtils {
 
     private boolean isNotEmptyCollection(@Nullable final Object object) {
 
-        return !(object instanceof final Collection<?> collection)
+        return !(object instanceof final Collection<?> collection
+            && !(collection instanceof PersistentCollection<?>))
             || !collection.isEmpty();
     }
 
@@ -101,9 +101,8 @@ public class ToStringUtils {
 
     /**
      * This method help print nice toString for an object and keep the null
-     * fields.
-     * If a field is a container and is bigger than three elements, it will
-     * print an ellipse.
+     * fields. If a field is a container and is bigger than three elements, it
+     * will print an ellipse.
      *
      * @param  className The name of the class to print.
      * @param  fields    The fields of the class to print.
@@ -122,8 +121,7 @@ public class ToStringUtils {
      * @param  className        The name of the class to print.
      * @param  fields           The fields of the object to print.
      * @param  maxContainerSize The maximum number of elements to print for a
-     *                          container.
-     *                          (-1 for printing all the elements)
+     *                          container. (-1 for printing all the elements)
      * @return                  A pretty print toString.
      */
     public String toStringPrintNullFields(
@@ -158,13 +156,12 @@ public class ToStringUtils {
 
     /**
      * Method to print the toString of an object, including container. If a
-     * field is a container and is bigger than three elements, it will print
-     * an ellipse.
+     * field is a container and is bigger than three elements, it will print an
+     * ellipse.
      *
      * @param  object           The object to be convert toString.
      * @param  maxContainerSize The maximum number of elements to print for a
-     *                          container.
-     *                          (-1 for printing all the elements)
+     *                          container. (-1 for printing all the elements)
      * @return                  The toString of the given object.
      */
     public String objectToString(
@@ -189,6 +186,11 @@ public class ToStringUtils {
     private String collectionToString(
         final Collection<?> collection, final int maxContainerSize) {
 
+        if (collection instanceof final PersistentCollection<
+            ?> persistentCollection && !persistentCollection.wasInitialized()) {
+
+            return persistentCollection.render();
+        }
         return formatContainer(collection.stream(), maxContainerSize,
             collection.size());
     }
@@ -213,31 +215,41 @@ public class ToStringUtils {
 
     private String objectToStringAux(@Nullable final Object object) {
 
-        if (object instanceof final HibernateProxy proxy) {
+        return switch (object) {
 
-            try {
+            case final HibernateProxy proxy -> {
 
-                return proxy.getHibernateLazyInitializer()
-                    .getImplementationClass()
-                    .getSimpleName()
-                    + "Proxy{id="
-                    + proxy.getHibernateLazyInitializer()
-                        .getIdentifier()
-                        .toString()
-                    + "}";
-            } catch (final LazyInitializationException e) {
+                try {
 
-                return "UninitializedProxy";
+                    yield proxy.getHibernateLazyInitializer()
+                        .getImplementationClass()
+                        .getSimpleName()
+                        + "Proxy{id="
+                        + proxy.getHibernateLazyInitializer()
+                            .getIdentifier()
+                            .toString()
+                        + "}";
+                } catch (final LazyInitializationException e) {
+
+                    yield "UninitializedProxy";
+                }
             }
-        } else {
+            case null, default -> {
 
-            return Objects.requireNonNullElse(object, "null").toString();
-        }
+                if (object instanceof final PersistentCollection<
+                    ?> persistentCollection
+                    && !persistentCollection.wasInitialized()) {
+
+                    yield persistentCollection.render();
+                }
+                yield Objects.requireNonNullElse(object, "null").toString();
+            }
+        };
     }
 
     /**
-     * Helper method to get the list of fields for toString.
-     * Only get the fields present in the class and not in the superclass.
+     * Helper method to get the list of fields for toString. Only get the fields
+     * present in the class and not in the superclass.
      *
      * @param  object         The object to get the list of fields.
      * @param  list           The list of fields to print.

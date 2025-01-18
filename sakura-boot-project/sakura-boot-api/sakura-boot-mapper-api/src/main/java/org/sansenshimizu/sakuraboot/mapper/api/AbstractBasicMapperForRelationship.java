@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
@@ -50,41 +51,41 @@ import org.sansenshimizu.sakuraboot.util.RelationshipUtils;
  * Create a new class:
  * </p>
  * <blockquote>
- *
+ * 
  * <pre>
  * public class YourMapper
  *     extends AbstractBasicMapperForRelationship&lt;YourEntity, YourDto&gt; {
- *
+ * 
  *     &#064;Override
  *     public YourEntity toEntity(final YourDto dto) {
- *
+ * 
  *         // Use your prefer mapper to map or manually map using the entity
  *         // constructor.
  *         return mapper.toEntity(dto);
  *     }
- *
+ * 
  *     &#064;Override
  *     public YourDto toDto(final YourEntity entity) {
- *
+ * 
  *         // Use your prefer mapper to map or manually map using the dto
  *         // constructor.
  *         return mapper.toDto(entity);
  *     }
  * }
  * </pre>
- *
+ * 
  * </blockquote>
  * <p>
  * Or with MapStruct:
  * </p>
  * <blockquote>
- *
+ * 
  * <pre>
  * &#064;Mapper(config = BasicMapper.class)
  * public abstract class AbstractYourMapper
  *     extends AbstractBasicMapperForRelationship&lt;YourEntity, YourDto&gt; {}
  * </pre>
- *
+ * 
  * </blockquote>
  *
  * @param  <E> The entity type extending {@link DataPresentation}.
@@ -130,8 +131,8 @@ public abstract class AbstractBasicMapperForRelationship<
     }
 
     /**
-     * This method is executed after the mapping from an entity to a DTO.
-     * And map all the relationships from the entity to the DTO.
+     * This method is executed after the mapping from an entity to a DTO. And
+     * map all the relationships from the entity to the DTO.
      *
      * @param entity The entity to map.
      * @param dto    The mapped DTO.
@@ -160,8 +161,8 @@ public abstract class AbstractBasicMapperForRelationship<
     }
 
     /**
-     * This method is executed after the mapping from an entity to a DTO.
-     * And map the relationship from the entity to the DTO.
+     * This method is executed after the mapping from an entity to a DTO. And
+     * map the relationship from the entity to the DTO.
      *
      * @param entity The entity to map.
      * @param dto    The mapped DTO.
@@ -197,7 +198,7 @@ public abstract class AbstractBasicMapperForRelationship<
 
             if (relationalMapper == null) {
 
-                field.set(dto, Hibernate.unproxy(sourceFieldObject));
+                field.set(dto, sourceFieldObject);
                 mapEntityToId(dto, sourceFieldObject, idField);
                 return;
             }
@@ -212,25 +213,28 @@ public abstract class AbstractBasicMapperForRelationship<
     }
 
     private static <D extends DataPresentation<?>> void mapEntityToId(
-        final D dto, final Object sourceFieldObject, final Field idField)
+        final D dto, @Nullable final Object sourceFieldObject,
+        final Field idField)
         throws IllegalAccessException {
 
-        if (sourceFieldObject instanceof final Collection<?> collection) {
+        switch (sourceFieldObject) {
 
-            idField.set(dto,
+            case final Collection<?> collection -> idField.set(dto,
                 collection.stream()
                     .filter(DataPresentation.class::isInstance)
                     .map(DataPresentation.class::cast)
                     .map(relationship -> relationship.getId())
                     .filter(Objects::nonNull)
                     .collect(Collectors.toUnmodifiableSet()));
-            return;
-        }
 
-        if (sourceFieldObject instanceof final DataPresentation<
-            ?> relationship) {
+            case final HibernateProxy proxy -> idField.set(dto,
+                proxy.getHibernateLazyInitializer().getIdentifier());
+            case final DataPresentation<?> relationship
+                -> idField.set(dto, relationship.getId());
+            case null, default -> {
 
-            idField.set(dto, relationship.getId());
+                // Do nothing
+            }
         }
     }
 
@@ -294,8 +298,8 @@ public abstract class AbstractBasicMapperForRelationship<
     }
 
     /**
-     * This method is executed after the mapping from a DTO to an entity.
-     * And map all the relationships from the DTO to the entity.
+     * This method is executed after the mapping from a DTO to an entity. And
+     * map all the relationships from the DTO to the entity.
      *
      * @param dto    The DTO to map.
      * @param entity The mapped entity.
@@ -312,8 +316,8 @@ public abstract class AbstractBasicMapperForRelationship<
     }
 
     /**
-     * This method is executed after the mapping from a DTO to an entity.
-     * And map the relationship from the DTO to the entity.
+     * This method is executed after the mapping from a DTO to an entity. And
+     * map the relationship from the DTO to the entity.
      *
      * @param dto          The DTO to map.
      * @param entity       The mapped entity.

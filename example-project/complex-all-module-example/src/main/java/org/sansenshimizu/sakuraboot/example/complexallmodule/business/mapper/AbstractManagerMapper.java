@@ -17,8 +17,6 @@
 package org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.ManagerDto;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Manager;
@@ -27,15 +25,4 @@ import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
 
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractManagerMapper
-    extends AbstractBasicMapperForRelationship<Manager, ManagerDto> {
-
-    @Override
-    @Nullable
-    @Mapping(target = "department", ignore = true)
-    public abstract Manager toEntity(@Nullable ManagerDto dto);
-
-    @Override
-    @Nullable
-    @Mapping(target = "department", ignore = true)
-    public abstract ManagerDto toDto(@Nullable Manager entity);
-}
+    extends AbstractBasicMapperForRelationship<Manager, ManagerDto> {}

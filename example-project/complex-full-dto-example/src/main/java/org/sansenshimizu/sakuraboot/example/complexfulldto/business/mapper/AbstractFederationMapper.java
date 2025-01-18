@@ -17,8 +17,6 @@
 package org.sansenshimizu.sakuraboot.example.complexfulldto.business.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.example.complexfulldto.business.dto.FederationDto;
 import org.sansenshimizu.sakuraboot.example.complexfulldto.persistence.Federation;
@@ -28,16 +26,6 @@ import org.sansenshimizu.sakuraboot.mapper.api.BasicMapper;
 @Mapper(config = BasicMapper.class)
 public abstract class AbstractFederationMapper
     extends AbstractBasicMapperForRelationship<Federation, FederationDto> {
-
-    @Override
-    @Nullable
-    @Mapping(target = "hobbies", ignore = true)
-    public abstract Federation toEntity(@Nullable FederationDto dto);
-
-    @Override
-    @Nullable
-    @Mapping(target = "hobbies", ignore = true)
-    public abstract FederationDto toDto(@Nullable Federation entity);
 
     @Override
     public boolean useRelationObjectToMapToDto() {

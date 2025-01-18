@@ -82,6 +82,16 @@ public final class BeanCreatorHelper {
      */
     private static final int STRING_SIZE = 8;
 
+    /**
+     * The number of hours in a day.
+     */
+    private static final int HOURS = 24;
+
+    /**
+     * The number of minutes in an hour.
+     */
+    private static final int MINUTES = 60;
+
     private BeanCreatorHelper() {
 
         throw new UnsupportedOperationException(
@@ -276,7 +286,8 @@ public final class BeanCreatorHelper {
 
         if (clazz == LocalTime.class) {
 
-            return LocalTime.now().truncatedTo(ChronoUnit.MICROS);
+            return LocalTime.of(RANDOM.nextInt(HOURS), RANDOM.nextInt(MINUTES))
+                .truncatedTo(ChronoUnit.MICROS);
         }
 
         if (clazz == LocalDate.class) {
