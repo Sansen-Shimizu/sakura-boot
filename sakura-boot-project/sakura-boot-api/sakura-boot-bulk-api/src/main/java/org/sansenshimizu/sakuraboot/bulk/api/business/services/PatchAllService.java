@@ -25,12 +25,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -181,8 +183,7 @@ public interface PatchAllService<E extends DataPresentation<I>,
                 .entrySet()
                 .stream()
                 .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
-                .filter(entityEntry -> Arrays
-                    .stream(getEntityClass().getDeclaredFields())
+                .filter(entityEntry -> getAllFields(getEntityClass())
                     .map(Field::getName)
                     .anyMatch(entityEntry.getKey()::equals))
                 .collect(
@@ -254,5 +255,15 @@ public interface PatchAllService<E extends DataPresentation<I>,
             .map(DataPresentation::getId)
             .filter(Objects::nonNull)
             .toList();
+    }
+
+    private static Stream<Field> getAllFields(@Nullable final Class<?> clazz) {
+
+        if (clazz == null || clazz.equals(Object.class)) {
+
+            return Stream.empty();
+        }
+        return Stream.concat(Arrays.stream(clazz.getDeclaredFields()),
+            getAllFields(clazz.getSuperclass()));
     }
 }
