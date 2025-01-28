@@ -22,12 +22,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
@@ -171,16 +173,13 @@ public interface PatchByIdService<E extends DataPresentation<I>,
         final Map<String, Object> entityMap
             = getObjectMapper().convertValue(data, new TypeReference<>() {});
 
-        final Map<String,
-            Object> objectMapNonNullValues = entityMap.entrySet()
-                .stream()
-                .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
-                .filter(entityEntry -> Arrays
-                    .stream(getEntityClass().getDeclaredFields())
-                    .map(Field::getName)
-                    .anyMatch(entityEntry.getKey()::equals))
-                .collect(
-                    Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        final Map<String, Object> objectMapNonNullValues = entityMap.entrySet()
+            .stream()
+            .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
+            .filter(entityEntry -> getAllFields(getEntityClass())
+                .map(Field::getName)
+                .anyMatch(entityEntry.getKey()::equals))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         // MUST remove the null value manually because
         // setSerializationInclusion(Include.NON_NULL)
         // don't work with the @NotNull field.
@@ -230,5 +229,15 @@ public interface PatchByIdService<E extends DataPresentation<I>,
                     + getEntityClass().getSimpleName());
         }
         return dataId;
+    }
+
+    private static Stream<Field> getAllFields(@Nullable final Class<?> clazz) {
+
+        if (clazz == null || clazz.equals(Object.class)) {
+
+            return Stream.empty();
+        }
+        return Stream.concat(Arrays.stream(clazz.getDeclaredFields()),
+            getAllFields(clazz.getSuperclass()));
     }
 }
