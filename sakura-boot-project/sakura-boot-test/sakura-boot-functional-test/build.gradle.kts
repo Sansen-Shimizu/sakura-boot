@@ -2,7 +2,7 @@ plugins { alias(libs.plugins.component.framework) }
 
 description =
     "Framework to simplify the creation of a spring boot application. " +
-        "The functional test functionalities."
+            "The functional test functionalities."
 
 publishing.publications.getByName<MavenPublication>("mavenJava") {
     pom.description = description
@@ -11,6 +11,7 @@ publishing.publications.getByName<MavenPublication>("mavenJava") {
 dependencies {
     api(projects.sakuraBootCore)
     api(projects.sakuraBootCoreTest)
+    api(projects.sakuraBootFileTest)
     api(projects.sakuraBootMapperApi)
     api(libs.jackson.databind)
     api(libs.junit.jupiter.api)

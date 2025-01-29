@@ -38,6 +38,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.
 import org.sansenshimizu.sakuraboot.example.complexallmodule.util.CompanyITUtil;
 import org.sansenshimizu.sakuraboot.hypermedia.aop.HypermediaAspect;
 import org.sansenshimizu.sakuraboot.test.integration.controller.bulk.CriteriaBulkControllerIT;
+import org.sansenshimizu.sakuraboot.test.integration.controller.file.FileControllerIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.hypermedia.HypermediaIT;
 import org.sansenshimizu.sakuraboot.test.integration.controller.specification.CriteriaControllerIT;
 
@@ -53,7 +54,8 @@ import org.sansenshimizu.sakuraboot.test.integration.controller.specification.Cr
 public class CompanyControllerIT
     implements CriteriaControllerIT<Company, UUID, CompanyDto, CompanyFilter>,
     CriteriaBulkControllerIT<Company, UUID, CompanyDto, CompanyFilter>,
-    HypermediaIT<Company, UUID, CompanyDto> {
+    HypermediaIT<Company, UUID, CompanyDto>,
+    FileControllerIT<Company, UUID, CompanyDto> {
 
     private final CompanyITUtil util = new CompanyITUtil();
 

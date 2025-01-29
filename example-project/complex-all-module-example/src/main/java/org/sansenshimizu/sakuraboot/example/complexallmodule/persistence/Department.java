@@ -24,6 +24,7 @@ import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +44,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
+import org.sansenshimizu.sakuraboot.file.api.persistence.File;
 
 @Entity
 @Getter
@@ -82,6 +84,10 @@ public class Department extends AbstractBasicEntity<UUID> {
 
     @Nullable
     private Double income;
+
+    @Embedded
+    @Nullable
+    private File logo;
 
     @ElementCollection
     @Nullable

@@ -33,6 +33,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.util.DepartmentTest
 import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuilder;
 import org.sansenshimizu.sakuraboot.test.bulk.api.business.CriteriaBulkServiceTest;
 import org.sansenshimizu.sakuraboot.test.cache.api.CacheableTest;
+import org.sansenshimizu.sakuraboot.test.file.api.business.FileServiceTest;
 import org.sansenshimizu.sakuraboot.test.mapper.api.MappableTest;
 import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServiceTest;
 
@@ -43,7 +44,7 @@ import org.sansenshimizu.sakuraboot.test.specification.api.business.CriteriaServ
 public class DepartmentServiceTest
     implements CriteriaServiceTest<Department, UUID, DepartmentFilter>,
     CriteriaBulkServiceTest<Department, UUID, DepartmentFilter>, CacheableTest,
-    MappableTest<Department, DepartmentDto> {
+    MappableTest<Department, DepartmentDto>, FileServiceTest<Department, UUID> {
 
     private final DepartmentTestUtil util = new DepartmentTestUtil();
 

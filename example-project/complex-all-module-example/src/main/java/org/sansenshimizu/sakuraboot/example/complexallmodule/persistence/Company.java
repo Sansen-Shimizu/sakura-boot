@@ -20,6 +20,7 @@ import java.io.Serial;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -37,6 +38,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
 import org.sansenshimizu.sakuraboot.basic.persistence.AbstractBasicEntity;
+import org.sansenshimizu.sakuraboot.file.api.persistence.File;
 
 @Entity
 @Getter
@@ -61,6 +63,22 @@ public class Company extends AbstractBasicEntity<UUID> {
 
     @Nullable
     private String name;
+
+    @Embedded
+    @AttributeOverride(name = "bytes", column = @Column(name = "logo_bytes"))
+    @AttributeOverride(
+        name = "filename",
+        column = @Column(name = "logo_filename"))
+    @Nullable
+    private File logo;
+
+    @Embedded
+    @AttributeOverride(name = "bytes", column = @Column(name = "banner_bytes"))
+    @AttributeOverride(
+        name = "filename",
+        column = @Column(name = "banner_filename"))
+    @Nullable
+    private File banner;
 
     @Nullable
     private LocalDate createdDate;

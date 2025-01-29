@@ -16,6 +16,7 @@
 
 package org.sansenshimizu.sakuraboot.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -29,6 +30,7 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.lang.Nullable;
 
+import org.sansenshimizu.sakuraboot.exceptions.BadRequestException;
 import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
 
 /**
@@ -39,6 +41,62 @@ import org.sansenshimizu.sakuraboot.exceptions.NotFoundException;
  */
 @UtilityClass
 public class ReflectionUtils {
+
+    /**
+     * Check if a field exists from a class.
+     * Get the field from the superclass if the field is not found in the class.
+     *
+     * @param  clazz     The class to check the field from.
+     * @param  fieldName The name of the field.
+     * @return           {@code true} if the field exists, {@code false}
+     *                   otherwise.
+     */
+    public boolean isFieldExists(final Class<?> clazz, final String fieldName) {
+
+        Class<?> currentClass = clazz;
+
+        while (currentClass != null) {
+
+            try {
+
+                currentClass.getDeclaredField(fieldName);
+                return true;
+            } catch (final NoSuchFieldException e) {
+
+                currentClass = currentClass.getSuperclass();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get a field from a class and make it accessible.
+     * Get the field from the superclass if the field is not found in the class.
+     *
+     * @param  clazz               The class to get the field from.
+     * @param  fieldName           The name of the field.
+     * @return                     A {@link Field}.
+     * @throws BadRequestException If the field is not found.
+     */
+    public Field getField(final Class<?> clazz, final String fieldName) {
+
+        Class<?> currentClass = clazz;
+
+        while (currentClass != null) {
+
+            try {
+
+                final Field field = currentClass.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field;
+            } catch (final NoSuchFieldException e) {
+
+                currentClass = currentClass.getSuperclass();
+            }
+        }
+        throw new NotFoundException(fieldName);
+    }
 
     private Class<?> getParameterClass(
         final ParameterizedType parameterizedType, final int i,

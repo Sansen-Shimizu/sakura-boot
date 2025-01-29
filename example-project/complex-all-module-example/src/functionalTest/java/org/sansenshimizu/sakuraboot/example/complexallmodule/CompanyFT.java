@@ -27,6 +27,7 @@ import org.springframework.context.ApplicationContext;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.CompanyFilter;
 import org.sansenshimizu.sakuraboot.test.functional.bulk.CriteriaBulkFT;
+import org.sansenshimizu.sakuraboot.test.functional.file.FileFT;
 import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 
 @SuppressWarnings({
@@ -35,7 +36,7 @@ import org.sansenshimizu.sakuraboot.test.functional.specification.CriteriaFT;
 @Getter
 public class CompanyFT
     implements CriteriaFT<Company, UUID, CompanyFilter>,
-    CriteriaBulkFT<Company, UUID> {
+    CriteriaBulkFT<Company, UUID>, FileFT<Company, UUID> {
 
     private final CompanyFTUtil util;
 
