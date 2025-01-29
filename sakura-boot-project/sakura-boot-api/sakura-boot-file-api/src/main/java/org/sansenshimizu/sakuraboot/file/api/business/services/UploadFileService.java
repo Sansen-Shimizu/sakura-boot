@@ -45,12 +45,12 @@ import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
  * Create a new service interface:
  * </p>
  * <blockquote>
- * 
+ *
  * <pre>
  * public interface YourService
  *     extends UploadFileService&lt;YourEntity, YourIdType&gt; {}
  * </pre>
- * 
+ *
  * </blockquote>
  * <p>
  * To create a service class that implements {@link UploadFileService}, follow
@@ -60,27 +60,27 @@ import org.sansenshimizu.sakuraboot.util.ReflectionUtils;
  * Create a new service class:
  * </p>
  * <blockquote>
- * 
+ *
  * <pre>
  * &#064;Service
  * public class YourService //
  *     implements UploadFileService&lt;YourEntity, YourIdType&gt; {
- * 
+ *
  *     // Or implements your interface that extends BasicService.
  *     private final YourRepository repository;
- * 
+ *
  *     public YourService(final YourRepository repository) {
- * 
+ *
  *         this.repository = repository;
  *     }
- * 
+ *
  *     public YourRepository getRepository() {
- * 
+ *
  *         return this.repository;
  *     }
  * }
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * @param  <E> The {@link DataPresentation} type.
@@ -125,6 +125,7 @@ public interface UploadFileService<E extends DataPresentation<I>,
             }
             newFile = File.builder()
                 .filename(originalFilename)
+                .contentType(file.getContentType())
                 .bytes(file.getBytes())
                 .build();
         } catch (final IOException e) {

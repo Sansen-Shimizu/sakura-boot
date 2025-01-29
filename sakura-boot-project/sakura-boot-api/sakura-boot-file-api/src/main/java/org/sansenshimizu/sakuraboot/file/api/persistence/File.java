@@ -108,6 +108,12 @@ public class File implements Serializable {
     @Nullable
     private String filename;
 
+    /**
+     * The content type of the file.
+     */
+    @Nullable
+    private String contentType;
+
     @Override
     public String toString() {
 
