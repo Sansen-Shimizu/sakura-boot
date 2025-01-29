@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.exceptions;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -102,12 +103,11 @@ public class SuperControllerExceptionHandler
 
             message = "No message for: " + ex.getClass().getSimpleName();
         }
-        return handleException(ex, headers, status, request, message);
+        return handleException(ex, headers, status, request, message, null);
     }
 
     /**
-     * Handles generic exceptions with the provided status code and custom
-     * message.
+     * Handles generic exceptions with the provided status code and message.
      *
      * @param  ex      The exception to handle.
      * @param  headers The HTTP headers.
@@ -121,6 +121,28 @@ public class SuperControllerExceptionHandler
         final Exception ex, final HttpHeaders headers,
         final HttpStatusCode status, final WebRequest request,
         final String message) {
+
+        return handleException(ex, headers, status, request, message, null);
+    }
+
+    /**
+     * Handles generic exceptions with the provided status code and custom
+     * message.
+     *
+     * @param  ex               The exception to handle.
+     * @param  headers          The HTTP headers.
+     * @param  status           The HTTP status code.
+     * @param  request          The web request.
+     * @param  message          The custom message.
+     * @param  additionalValues Additional values to be included in the error.
+     * @return                  ResponseEntity containing the error response.
+     */
+    @Nullable
+    protected ResponseEntity<Object> handleException(
+        final Exception ex, final HttpHeaders headers,
+        final HttpStatusCode status, final WebRequest request,
+        final String message, @SuppressWarnings("SameParameterValue")
+        @Nullable final Map<String, Object> additionalValues) {
 
         String description = request.getDescription(false);
 
@@ -149,6 +171,7 @@ public class SuperControllerExceptionHandler
             .timestamp(Instant.now())
             .message(message)
             .description(description)
+            .additionalValues(additionalValues)
             .stackTrace(stackTrace)
             .build();
 
