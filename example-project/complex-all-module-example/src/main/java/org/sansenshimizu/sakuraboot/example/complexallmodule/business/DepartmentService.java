@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.Abs
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.DepartmentRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.DepartmentFilter;
+import org.sansenshimizu.sakuraboot.file.api.business.FileService;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
 import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.CriteriaService;
@@ -42,7 +43,8 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 public class DepartmentService
     implements CriteriaService<Department, UUID, DepartmentFilter>,
     CriteriaBulkService<Department, UUID, DepartmentFilter>, Cacheable,
-    Mappable<Department, DepartmentDto>, Loggable {
+    Mappable<Department, DepartmentDto>, Loggable,
+    FileService<Department, UUID> {
 
     private final DepartmentRepository repository;
 

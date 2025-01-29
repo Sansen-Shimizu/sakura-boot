@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.Depart
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Department;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.DepartmentFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.DepartmentModelAssembler;
+import org.sansenshimizu.sakuraboot.file.api.presentation.FileController;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaController;
@@ -41,7 +42,8 @@ public class DepartmentController
     implements
     CriteriaController<Department, UUID, DepartmentDto, DepartmentFilter>,
     CriteriaBulkController<Department, UUID, DepartmentDto, DepartmentFilter>,
-    Hypermedia<DepartmentDto, DepartmentModelAssembler>, Loggable {
+    Hypermedia<DepartmentDto, DepartmentModelAssembler>, Loggable,
+    FileController<Department, UUID> {
 
     private final DepartmentService service;
 

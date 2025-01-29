@@ -45,6 +45,7 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -347,6 +348,23 @@ public class SuperControllerExceptionHandler
         final HttpStatusCode status, final WebRequest request) {
 
         return handleException(ex, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    /**
+     * Handles MultipartException and returns an appropriate error
+     * response.
+     *
+     * @param  ex      The exception to handle.
+     * @param  request The web request.
+     * @return         ResponseEntity containing the error response.
+     */
+    @Nullable
+    @ExceptionHandler(MultipartException.class)
+    protected ResponseEntity<Object> handleMultipartException(
+        final MultipartException ex, final WebRequest request) {
+
+        return handleException(ex, HttpHeaders.EMPTY, HttpStatus.BAD_REQUEST,
+            request, "the request contains invalid or no multipart data");
     }
 
     /**

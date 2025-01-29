@@ -9,6 +9,7 @@ dependencies {
     api(projects.sakuraBootStarterBasicUnitTest)
     api(projects.sakuraBootBulkTest)
     api(projects.sakuraBootCacheTest)
+    api(projects.sakuraBootFileTest)
     api(projects.sakuraBootHypermediaTest)
     api(projects.sakuraBootMapperTest)
     api(projects.sakuraBootSpecificationTest)

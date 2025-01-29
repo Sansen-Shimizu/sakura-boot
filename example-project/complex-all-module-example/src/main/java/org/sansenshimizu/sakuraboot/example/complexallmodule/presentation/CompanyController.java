@@ -29,6 +29,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.business.dto.Compan
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.CompanyFilter;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.model.CompanyModelAssembler;
+import org.sansenshimizu.sakuraboot.file.api.presentation.FileController;
 import org.sansenshimizu.sakuraboot.hypermedia.api.Hypermedia;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
 import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaController;
@@ -40,7 +41,8 @@ import org.sansenshimizu.sakuraboot.specification.api.presentation.CriteriaContr
 public class CompanyController
     implements CriteriaController<Company, UUID, CompanyDto, CompanyFilter>,
     CriteriaBulkController<Company, UUID, CompanyDto, CompanyFilter>,
-    Hypermedia<CompanyDto, CompanyModelAssembler>, Loggable {
+    Hypermedia<CompanyDto, CompanyModelAssembler>, Loggable,
+    FileController<Company, UUID> {
 
     private final CompanyService service;
 

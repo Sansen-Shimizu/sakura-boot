@@ -31,6 +31,7 @@ import org.sansenshimizu.sakuraboot.example.complexallmodule.business.mapper.Com
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.Company;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.persistence.CompanyRepository;
 import org.sansenshimizu.sakuraboot.example.complexallmodule.presentation.filter.CompanyFilter;
+import org.sansenshimizu.sakuraboot.file.api.business.FileService;
 import org.sansenshimizu.sakuraboot.log.api.Loggable;
 import org.sansenshimizu.sakuraboot.mapper.api.Mappable;
 import org.sansenshimizu.sakuraboot.specification.api.business.CriteriaService;
@@ -42,7 +43,7 @@ import org.sansenshimizu.sakuraboot.specification.api.business.SpecificationBuil
 public class CompanyService
     implements CriteriaService<Company, UUID, CompanyFilter>,
     CriteriaBulkService<Company, UUID, CompanyFilter>, Cacheable,
-    Mappable<Company, CompanyDto>, Loggable {
+    Mappable<Company, CompanyDto>, Loggable, FileService<Company, UUID> {
 
     private final CompanyRepository repository;
 

@@ -11,6 +11,8 @@ dependencies {
     api(projects.sakuraBootBulkApi)
     api(projects.sakuraBootCache)
     api(projects.sakuraBootCacheApi)
+    api(projects.sakuraBootFile)
+    api(projects.sakuraBootFileApi)
     api(projects.sakuraBootHypermedia)
     api(projects.sakuraBootHypermediaApi)
     api(projects.sakuraBootLogApi)

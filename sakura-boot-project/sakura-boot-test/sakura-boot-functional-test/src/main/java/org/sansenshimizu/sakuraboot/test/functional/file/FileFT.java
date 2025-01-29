@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023-2024 Malcolm Rozé.
+ * Copyright (C) 2023-2025 Malcolm Rozé.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package org.sansenshimizu.sakuraboot.test.functional.bulk;
+package org.sansenshimizu.sakuraboot.test.functional.file;
 
 import java.io.Serializable;
 
 import org.sansenshimizu.sakuraboot.DataPresentation;
 
 /**
- * The interface for bulk functional tests.
+ * The interface for file functional tests.
  * <p>
  * <b>Example:</b>
  * </p>
  * <p>
- * To create a concrete test class that inherits from {@link BasicBulkFT},
+ * To create a concrete test class that inherits from {@link FileFT},
  * follow
  * these steps:
  * </p>
  * <p>
- * Implements the {@link BasicBulkFT} class:
+ * Implements the {@link FileFT} class:
  * </p>
  * <blockquote>
  *
  * <pre>
- * public class YourFT implements BasicBulkFT&lt;YourEntity, YourIdType&gt; {
+ * public class YourFT implements FileFT&lt;YourEntity, YourIdType&gt; {
  *
  *     private final YourUtil util;
  *
@@ -88,13 +88,11 @@ import org.sansenshimizu.sakuraboot.DataPresentation;
  * @param  <E> The entity type {@link DataPresentation}.
  * @param  <I> The ID of type Comparable and Serializable.
  * @author     Malcolm Rozé
- * @see        SaveAllFT
- * @see        UpdateAllFT
- * @see        PatchAllFT
- * @see        DeleteAllFT
+ * @see        DownloadFileFT
+ * @see        UploadFileFT
+ * @see        DeleteFileFT
  * @since      0.1.2
  */
-public interface BasicBulkFT<E extends DataPresentation<I>,
+public interface FileFT<E extends DataPresentation<I>,
     I extends Comparable<? super I> & Serializable>
-    extends SaveAllFT<E, I>, UpdateAllFT<E, I>, PatchAllFT<E, I>,
-    DeleteAllFT<E, I> {}
+    extends DownloadFileFT<E, I>, UploadFileFT<E, I>, DeleteFileFT<E, I> {}
