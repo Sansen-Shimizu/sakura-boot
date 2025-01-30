@@ -103,7 +103,7 @@ public class SuperControllerExceptionHandler
 
             message = "No message for: " + ex.getClass().getSimpleName();
         }
-        return handleException(ex, headers, status, request, message, null);
+        return handleException(ex, headers, status, request, message);
     }
 
     /**
