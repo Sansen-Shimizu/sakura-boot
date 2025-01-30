@@ -122,7 +122,8 @@ public class SuperControllerExceptionHandler
         final HttpStatusCode status, final WebRequest request,
         final String message) {
 
-        return handleException(ex, headers, status, request, message, null);
+        return handleException(ex, headers, status, request, message,
+            getAdditionalValues(ex, request));
     }
 
     /**
@@ -179,6 +180,20 @@ public class SuperControllerExceptionHandler
 
         return handleExceptionInternal(ex, errorResponse, headers, status,
             request);
+    }
+
+    /**
+     * Gets additional values to be included in the error response based on
+     * the provided exception and request.
+     *
+     * @param  ex      The exception.
+     * @param  request The web request.
+     * @return         Additional values to be included in the error response.
+     */
+    protected Map<String, Object> getAdditionalValues(
+        final Exception ex, final WebRequest request) {
+
+        return Map.of();
     }
 
     /**
