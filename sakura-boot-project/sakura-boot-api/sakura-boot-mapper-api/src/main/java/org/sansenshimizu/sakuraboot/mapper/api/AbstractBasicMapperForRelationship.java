@@ -192,6 +192,8 @@ public abstract class AbstractBasicMapperForRelationship<
 
         if (useRelationObjectToMapToDto()) {
 
+            Hibernate.initialize(sourceFieldObject);
+
             final BasicMapper<DataPresentation<?>,
                 DataPresentation<?>> relationalMapper
                     = getRelationalMapper(field);
