@@ -133,9 +133,10 @@ public interface DownloadFileService<E extends DataPresentation<I>,
             @SuppressWarnings("unchecked")
             final FileRepository<E, I> castRepository
                 = (FileRepository<E, I>) fileRepository;
-            final File file = castRepository.findFileById(id, fileFieldName,
-                getEntityClass());
-            return getResultFromFile(file);
+            final File file = castRepository
+                .findFileById(id, fileFieldName, getEntityClass())
+                .orElseThrow(() -> new NotFoundException(fileFieldName));
+            return getResultFromFile(file, fileFieldName);
         }
 
         final Field fileField
@@ -145,9 +146,14 @@ public interface DownloadFileService<E extends DataPresentation<I>,
 
         try {
 
+            if (fileField.get(entity) == null) {
+
+                throw new NotFoundException(fileFieldName);
+            }
+
             if (fileField.get(entity) instanceof final File file) {
 
-                return getResultFromFile(file);
+                return getResultFromFile(file, fileFieldName);
             }
             throw new BadRequestException(
                 "The field: " + fileFieldName + " is not a file.");
@@ -157,14 +163,15 @@ public interface DownloadFileService<E extends DataPresentation<I>,
         }
     }
 
-    private static Pair<Resource, String> getResultFromFile(final File file) {
+    private static Pair<Resource, String> getResultFromFile(
+        final File file, final String fieldFileName) {
 
         final byte[] bytes = file.getBytes();
         final ByteArrayResource resource;
 
         if (bytes == null) {
 
-            resource = null;
+            throw new NotFoundException(fieldFileName);
         } else {
 
             resource = new ByteArrayResource(bytes);

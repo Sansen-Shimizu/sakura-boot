@@ -173,16 +173,12 @@ public interface PatchByIdService<E extends DataPresentation<I>,
         final Map<String, Object> entityMap
             = getObjectMapper().convertValue(data, new TypeReference<>() {});
 
-        final Map<String, Object> objectMapNonNullValues = entityMap.entrySet()
-            .stream()
-            .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
-            .filter(entityEntry -> getAllFields(getEntityClass())
-                .map(Field::getName)
-                .anyMatch(entityEntry.getKey()::equals))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        // MUST remove the null value manually because
-        // setSerializationInclusion(Include.NON_NULL)
-        // don't work with the @NotNull field.
+        final Map<String, Object> objectMapNonNullValues
+            = removeNullValueFromMap(entityMap.entrySet()
+                .stream()
+                .filter(entityEntry -> getAllFields(getEntityClass())
+                    .map(Field::getName)
+                    .anyMatch(entityEntry.getKey()::equals)));
 
         try {
 
@@ -239,5 +235,28 @@ public interface PatchByIdService<E extends DataPresentation<I>,
         }
         return Stream.concat(Arrays.stream(clazz.getDeclaredFields()),
             getAllFields(clazz.getSuperclass()));
+    }
+
+    private static Map<String, Object> removeNullValueFromMap(
+        final Stream<Map.Entry<String, Object>> entityMap) {
+
+        return entityMap
+            .filter(entityEntry -> Objects.nonNull(entityEntry.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey,
+                (final Map.Entry<String, Object> entry) -> {
+
+                    final Object value = entry.getValue();
+
+                    if (value instanceof Map) {
+
+                        @SuppressWarnings("unchecked")
+                        final Map<String, Object> map
+                            = (Map<String, Object>) value;
+                        return removeNullValueFromMap(map.entrySet().stream());
+                    } else {
+
+                        return value;
+                    }
+                }));
     }
 }

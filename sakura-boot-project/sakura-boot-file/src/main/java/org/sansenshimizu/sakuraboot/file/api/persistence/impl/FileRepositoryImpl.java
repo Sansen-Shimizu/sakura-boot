@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.file.api.persistence.impl;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -53,7 +54,7 @@ public class FileRepositoryImpl<E extends DataPresentation<I>,
     protected EntityManager entityManager;
 
     @Override
-    public File findFileById(
+    public Optional<File> findFileById(
         final I id, final String fileFieldName, final Class<E> entityType) {
 
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -63,7 +64,8 @@ public class FileRepositoryImpl<E extends DataPresentation<I>,
         query.select(root.get(fileFieldName))
             .where(cb.equal(root.get("id"), id));
 
-        return entityManager.createQuery(query).getSingleResult();
+        return Optional
+            .ofNullable(entityManager.createQuery(query).getSingleResult());
     }
 
     @Override
