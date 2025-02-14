@@ -130,7 +130,7 @@ public interface DownloadFileServiceTest<E extends DataPresentation<I>,
 
                 given(getRepository().existsById(any())).willReturn(true);
                 given(fileRepository.findFileById(any(), any(), any()))
-                    .willReturn(file);
+                    .willReturn(Optional.of(file));
             } else {
 
                 given(getRepository().findById(any()))

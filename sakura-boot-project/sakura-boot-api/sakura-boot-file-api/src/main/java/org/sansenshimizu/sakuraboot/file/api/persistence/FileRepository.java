@@ -17,6 +17,7 @@
 package org.sansenshimizu.sakuraboot.file.api.persistence;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import org.springframework.lang.Nullable;
 
@@ -60,7 +61,8 @@ public interface FileRepository<E extends DataPresentation<I>,
      * @param  entityType    The type of the entity.
      * @return               a {@link File}.
      */
-    File findFileById(I id, String fileFieldName, Class<E> entityType);
+    Optional<File>
+        findFileById(I id, String fileFieldName, Class<E> entityType);
 
     /**
      * Update the specified file of the entity with the given id.
