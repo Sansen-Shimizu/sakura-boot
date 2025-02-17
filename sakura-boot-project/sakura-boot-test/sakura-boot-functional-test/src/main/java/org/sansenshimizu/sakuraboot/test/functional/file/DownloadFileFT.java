@@ -23,7 +23,6 @@ import java.util.Objects;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
-import org.apache.commons.lang3.tuple.Pair;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -131,11 +130,15 @@ public interface DownloadFileFT<E extends DataPresentation<I>,
             final Field fileField = ReflectionUtils
                 .getField(getUtil().getEntityClass(), fileFieldName);
             final File file = (File) fileField.get(saveEntity);
-            final Pair<Resource,
-                String> expectedResult = Pair.of(
-                    new ByteArrayResource(
-                        Objects.requireNonNull(file.getBytes())),
-                    file.getFilename());
+            final Resource expectedResult = new ByteArrayResource(
+                Objects.requireNonNull(file.getBytes())) {
+
+                @Override
+                public String getFilename() {
+
+                    return file.getFilename();
+                }
+            };
 
             // WHEN
             final ValidatableResponse response = RestAssured.given()
@@ -152,10 +155,10 @@ public interface DownloadFileFT<E extends DataPresentation<I>,
                 .assertThat()
                 .header("Content-Disposition",
                     Matchers.containsString("attachment; filename=\""
-                        + expectedResult.getValue()
+                        + expectedResult.getFilename()
                         + "\""));
             assertThat(response.extract().asByteArray())
-                .isEqualTo(expectedResult.getKey().getContentAsByteArray());
+                .isEqualTo(expectedResult.getContentAsByteArray());
         }
     }
 

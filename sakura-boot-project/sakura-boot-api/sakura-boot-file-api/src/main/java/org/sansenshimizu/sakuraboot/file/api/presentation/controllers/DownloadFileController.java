@@ -18,7 +18,6 @@ package org.sansenshimizu.sakuraboot.file.api.presentation.controllers;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -131,11 +130,10 @@ public interface DownloadFileController<E extends DataPresentation<I>,
         @PathVariable("id") final I id,
         @PathVariable("fileFieldName") final String fileFieldName) {
 
-        final Pair<Resource, String> file
-            = getService().downloadFile(id, fileFieldName);
+        final Resource file = getService().downloadFile(id, fileFieldName);
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getValue() + "\"")
-            .body(file.getKey());
+                "attachment; filename=\"" + file.getFilename() + "\"")
+            .body(file);
     }
 }

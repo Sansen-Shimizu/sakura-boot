@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -148,11 +147,15 @@ public interface DownloadFileControllerIT<E extends DataPresentation<I>,
             final Field fileField = ReflectionUtils
                 .getField(getUtil().getEntityClass(), fileFieldName);
             final File file = (File) fileField.get(entityWithId);
-            final Pair<Resource,
-                String> expectedResult = Pair.of(
-                    new ByteArrayResource(
-                        Objects.requireNonNull(file.getBytes())),
-                    file.getFilename());
+            final Resource expectedResult = new ByteArrayResource(
+                Objects.requireNonNull(file.getBytes())) {
+
+                @Override
+                public String getFilename() {
+
+                    return file.getFilename();
+                }
+            };
             given(getService().downloadFile(any(), any()))
                 .willReturn(expectedResult);
 
@@ -166,10 +169,10 @@ public interface DownloadFileControllerIT<E extends DataPresentation<I>,
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(header().string("Content-Disposition",
                     containsString("attachment; filename=\""
-                        + expectedResult.getValue()
+                        + expectedResult.getFilename()
                         + "\"")))
                 .andExpect(MockMvcResultMatchers.content()
-                    .bytes(expectedResult.getKey().getContentAsByteArray()));
+                    .bytes(expectedResult.getContentAsByteArray()));
         }
     }
 }
