@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -138,13 +137,13 @@ public interface DownloadFileServiceTest<E extends DataPresentation<I>,
             }
 
             // WHEN
-            final Pair<Resource, String> foundFile
+            final Resource foundFile
                 = getService().downloadFile(getValidId(), fileFieldName);
 
             // THEN
-            assertThat(foundFile.getKey().getContentAsByteArray())
+            assertThat(foundFile.getContentAsByteArray())
                 .isEqualTo(file.getBytes());
-            assertThat(foundFile.getValue()).isEqualTo(file.getFilename());
+            assertThat(foundFile.getFilename()).isEqualTo(file.getFilename());
         }
     }
 

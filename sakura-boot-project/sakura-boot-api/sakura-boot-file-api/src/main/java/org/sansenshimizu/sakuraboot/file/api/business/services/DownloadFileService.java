@@ -19,7 +19,6 @@ package org.sansenshimizu.sakuraboot.file.api.business.services;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
@@ -113,8 +112,7 @@ public interface DownloadFileService<E extends DataPresentation<I>,
      * @throws BadRequestException If the field is not a file.
      */
     @Logging
-    default Pair<Resource, String> downloadFile(
-        final I id, final String fileFieldName) {
+    default Resource downloadFile(final I id, final String fileFieldName) {
 
         if (getRepository() instanceof final FileRepository<?,
             ?> fileRepository) {
@@ -163,7 +161,7 @@ public interface DownloadFileService<E extends DataPresentation<I>,
         }
     }
 
-    private static Pair<Resource, String> getResultFromFile(
+    private static Resource getResultFromFile(
         final File file, final String fieldFileName) {
 
         final byte[] bytes = file.getBytes();
@@ -174,8 +172,15 @@ public interface DownloadFileService<E extends DataPresentation<I>,
             throw new NotFoundException(fieldFileName);
         } else {
 
-            resource = new ByteArrayResource(bytes);
+            resource = new ByteArrayResource(bytes) {
+
+                @Override
+                public String getFilename() {
+
+                    return file.getFilename();
+                }
+            };
         }
-        return Pair.of(resource, file.getFilename());
+        return resource;
     }
 }

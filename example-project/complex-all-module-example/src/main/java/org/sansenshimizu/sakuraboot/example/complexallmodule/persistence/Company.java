@@ -69,6 +69,9 @@ public class Company extends AbstractBasicEntity<UUID> {
     @AttributeOverride(
         name = "filename",
         column = @Column(name = "logo_filename"))
+    @AttributeOverride(
+        name = "contentType",
+        column = @Column(name = "logo_content_type"))
     @Nullable
     private File logo;
 
@@ -77,6 +80,9 @@ public class Company extends AbstractBasicEntity<UUID> {
     @AttributeOverride(
         name = "filename",
         column = @Column(name = "banner_filename"))
+    @AttributeOverride(
+        name = "contentType",
+        column = @Column(name = "banner_content_type"))
     @Nullable
     private File banner;
 
