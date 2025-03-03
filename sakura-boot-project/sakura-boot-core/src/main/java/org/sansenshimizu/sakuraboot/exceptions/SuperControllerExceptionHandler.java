@@ -123,7 +123,7 @@ public class SuperControllerExceptionHandler
         final String message) {
 
         return handleException(ex, headers, status, request, message,
-            getAdditionalValues(ex, request));
+            getAdditionalValues(ex, headers, status, request));
     }
 
     /**
@@ -187,11 +187,14 @@ public class SuperControllerExceptionHandler
      * the provided exception and request.
      *
      * @param  ex      The exception.
+     * @param  headers The HTTP headers.
+     * @param  status  The HTTP status code.
      * @param  request The web request.
      * @return         Additional values to be included in the error response.
      */
     protected Map<String, Object> getAdditionalValues(
-        final Exception ex, final WebRequest request) {
+        final Exception ex, final HttpHeaders headers,
+        final HttpStatusCode status, final WebRequest request) {
 
         return Map.of();
     }
