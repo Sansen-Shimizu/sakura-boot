@@ -51,7 +51,7 @@ public interface DataPresentation<
      *
      * <pre>
      *
-     * &#064;NotNull(groups = DataPresentation.FullDto.class)
+     * &#064;NotNull(groups = DataPresentation.FullData.class)
      * private Object yourField;
      * </pre>
      *
@@ -61,4 +61,27 @@ public interface DataPresentation<
      * @since  0.1.0
      */
     interface FullData {}
+
+    /**
+     * A marker interface that can be used to represent a partial data object.
+     * This interface can be used as a parameter in validation annotations to
+     * specify that certain fields should be validated when performing partial
+     * data operations (e.g., PATCH).
+     * <p>
+     * <b>Example:</b>
+     * </p>
+     * <blockquote>
+     *
+     * <pre>
+     *
+     * &#064;NotNull(groups = DataPresentation.PartialData.class)
+     * private Object yourField;
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @author Malcolm Rozé
+     * @since  0.1.5
+     */
+    interface PartialData {}
 }

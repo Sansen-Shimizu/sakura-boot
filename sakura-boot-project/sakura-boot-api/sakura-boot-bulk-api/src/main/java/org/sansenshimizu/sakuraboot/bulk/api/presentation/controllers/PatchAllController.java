@@ -20,6 +20,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.groups.ConvertGroup;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -138,7 +141,8 @@ public interface PatchAllController<E extends DataPresentation<I>,
     @Logging
     @SuppressWarnings("java:S1452")
     default ResponseEntity<List<?>> patchAll(
-        @RequestBody final Collection<D> datas) {
+        @RequestBody final Collection<@Valid @ConvertGroup(
+            to = DataPresentation.PartialData.class) D> datas) {
 
         @SuppressWarnings("unchecked")
         final Collection<DataPresentation<I>> castDatas
