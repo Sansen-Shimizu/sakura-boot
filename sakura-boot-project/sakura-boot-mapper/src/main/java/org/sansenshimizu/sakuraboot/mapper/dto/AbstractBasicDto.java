@@ -48,10 +48,12 @@ import org.sansenshimizu.sakuraboot.util.ToStringUtils;
  * <pre>
  * public class YourDto extends AbstractBasicDto&lt;YourIdType&gt; {
  *
- *     // Add your fields using {&#064;link FullData} if necessary
+ *     // Add your fields using {&#064;link FullData} or
+ *     // {&#064;link PartialData} if necessary
  *     private YourIdType id;
  *
  *     &#064;NotNull(groups = DataPresentation.FullData.class)
+ *     &#064;NotNull(groups = DataPresentation.PartialData.class)
  *     private final Object yourField;
  *
  *     &#064;JsonCreator

@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -137,6 +138,7 @@ public interface PatchByIdController<E extends DataPresentation<I>,
     @Logging
     @SuppressWarnings("java:S1452")
     default ResponseEntity<?> patchById(
+        @Validated(DataPresentation.PartialData.class)
         @RequestBody final D data, @PathVariable("id") final I id) {
 
         return ResponseEntity.ok(getService().patchById(data, id));
