@@ -16,6 +16,10 @@ By https://sansen-shimizu.co.jp[Sansen Shimizu]
 
 toc::[]
 
+= Archive
+
+This project is now in an archive state.
+
 == Introduction
 
 This framework, built on top of Spring Boot, is designed to speed up the development of robust backends.
